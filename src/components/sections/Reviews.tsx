@@ -18,7 +18,7 @@ export function Reviews() {
           subtitle="Opinie z wizytówki Google Maps."
         />
 
-        <div className="mb-8 flex flex-wrap items-center gap-4">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
           <div className="flex items-center gap-2">
             <p className="font-display text-3xl font-semibold text-navy">
               {googleRatingSummary.rating.toFixed(1)}
@@ -44,7 +44,7 @@ export function Reviews() {
             href={siteConfig.googleBusinessUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-secondary"
+            className="btn btn-secondary w-full sm:w-auto"
           >
             Zobacz wizytówkę Google
           </a>

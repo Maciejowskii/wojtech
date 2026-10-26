@@ -63,19 +63,19 @@ export function Contact() {
               </div>
             </dl>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href={siteConfig.phone.href} className="btn btn-primary">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href={siteConfig.phone.href} className="btn btn-primary w-full sm:w-auto">
                 Zadzwoń
               </a>
               <a
                 href={siteConfig.address.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-secondary"
+                className="btn btn-secondary w-full sm:w-auto"
               >
                 Trasa
               </a>
-              <Link href="/#wycena" className="btn btn-ghost">
+              <Link href="/#wycena" className="btn btn-ghost w-full sm:w-auto">
                 Formularz wyceny →
               </Link>
             </div>

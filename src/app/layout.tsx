@@ -1,11 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, Source_Sans_3 } from "next/font/google";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
-import { MobileCta } from "@/components/layout/MobileCta";
+import { SiteShell } from "@/components/layout/SiteShell";
 import { localBusinessJsonLd } from "@/lib/schema";
 import { siteConfig } from "@/lib/site.config";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#f3f6f9",
+};
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -60,15 +65,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pl"
       className={`${archivo.variable} ${sourceSans.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-mist font-sans text-graphite pb-20 md:pb-0">
+      <body className="flex min-h-full flex-col overflow-x-clip bg-mist font-sans text-graphite">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <MobileCta />
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );

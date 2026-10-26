@@ -38,26 +38,28 @@ export default async function RealizationsPage({ searchParams }: Props) {
           subtitle="Opisy i zdjęcia napraw wykonanych w serwisie WOJ-TECH."
         />
 
-        <div className="flex flex-wrap gap-2">
-          {realizationFilters().map((f) => {
-            const active =
-              (f.id === "all" && !kategoria) || kategoria === f.id;
-            const href =
-              f.id === "all" ? "/realizacje" : `/realizacje?kategoria=${f.id}`;
-            return (
-              <Link
-                key={f.id}
-                href={href}
-                className={`min-h-10 rounded-[var(--radius-md)] border px-4 py-2 text-sm font-medium ${
-                  active
-                    ? "border-accent bg-accent text-white"
-                    : "border-border bg-white text-navy"
-                }`}
-              >
-                {f.label}
-              </Link>
-            );
-          })}
+        <div className="-mx-[var(--page-gutter)] overflow-x-auto px-[var(--page-gutter)] pb-1 sm:mx-0 sm:overflow-visible sm:px-0">
+          <div className="flex w-max min-w-full flex-nowrap gap-2 sm:w-auto sm:flex-wrap">
+            {realizationFilters().map((f) => {
+              const active =
+                (f.id === "all" && !kategoria) || kategoria === f.id;
+              const href =
+                f.id === "all" ? "/realizacje" : `/realizacje?kategoria=${f.id}`;
+              return (
+                <Link
+                  key={f.id}
+                  href={href}
+                  className={`inline-flex min-h-11 shrink-0 items-center rounded-[var(--radius-md)] border px-4 py-2 text-sm font-medium ${
+                    active
+                      ? "border-accent bg-accent text-white"
+                      : "border-border bg-white text-navy"
+                  }`}
+                >
+                  {f.label}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         {items.length === 0 ? (

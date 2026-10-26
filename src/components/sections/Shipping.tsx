@@ -42,11 +42,14 @@ export function Shipping() {
                 </li>
               ))}
             </ul>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/#wycena" className="btn btn-primary">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Link href="/#wycena" className="btn btn-primary w-full sm:w-auto">
                 Zapytaj o wysyłkę
               </Link>
-              <a href={siteConfig.phone.href} className="btn btn-phone">
+              <a
+                href={siteConfig.phone.href}
+                className="btn btn-phone w-full sm:w-auto"
+              >
                 Skontaktuj się z serwisem
               </a>
             </div>

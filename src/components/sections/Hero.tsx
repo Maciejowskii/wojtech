@@ -4,37 +4,40 @@ import { siteConfig } from "@/lib/site.config";
 export function Hero() {
   return (
     <section id="start" className="border-b border-border bg-mist">
-      <div className="container-page grid items-end gap-10 py-12 md:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-20">
+      <div className="container-page grid items-end gap-8 py-10 sm:gap-10 sm:py-12 md:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-20">
         <div>
           <p className="section-label">Elektroserwis</p>
-          <h1 className="max-w-xl text-[clamp(2.75rem,7vw,4.25rem)] font-semibold tracking-tight text-navy">
+          <h1 className="max-w-xl text-[clamp(2.35rem,9vw,4.25rem)] font-semibold tracking-tight text-navy">
             WOJ-TECH
           </h1>
-          <p className="mt-2 text-xl font-medium text-navy md:text-2xl">
+          <p className="mt-2 text-lg font-medium text-navy sm:text-xl md:text-2xl">
             {siteConfig.owner}
           </p>
-          <p className="mt-5 max-w-[38rem] text-pretty text-base leading-relaxed text-muted md:text-lg">
+          <p className="mt-4 max-w-[38rem] text-pretty text-base leading-relaxed text-muted sm:mt-5 md:text-lg">
             Naprawa elektroniki, ekspresów do kawy, sprzętu AGD, elektroniki
             samochodowej oraz rowerów i hulajnóg elektrycznych w Ostrzeszowie.
             Sprawdź ofertę i zapytaj o wycenę naprawy.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/#wycena" className="btn btn-primary">
+          <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
+            <Link href="/#wycena" className="btn btn-primary w-full sm:w-auto">
               Zapytaj o wycenę
             </Link>
-            <a href={siteConfig.phone.href} className="btn btn-phone">
+            <a
+              href={siteConfig.phone.href}
+              className="btn btn-phone w-full sm:w-auto"
+            >
               Zadzwoń: {siteConfig.phone.display}
             </a>
           </div>
 
-          <p className="mt-6 text-sm text-muted">
+          <p className="mt-5 text-sm leading-relaxed text-muted sm:mt-6">
             Serwis w Ostrzeszowie · możliwa wysyłka sprzętu · indywidualna wycena
           </p>
         </div>
 
         <div className="relative">
-          <div className="relative aspect-[5/4] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-navy lg:aspect-[4/5]">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-navy sm:aspect-[5/4] lg:aspect-[4/5]">
             <svg
               className="absolute inset-0 h-full w-full"
               viewBox="0 0 480 560"
@@ -75,8 +78,8 @@ export function Hero() {
 
       {/* Practical info strip — jak na stronie referencyjnej */}
       <div className="border-t border-border bg-white">
-        <div className="container-page grid gap-6 py-7 sm:grid-cols-3">
-          <div>
+        <div className="container-page grid gap-5 py-6 sm:grid-cols-3 sm:gap-6 sm:py-7">
+          <div className="border-b border-border pb-5 sm:border-0 sm:pb-0">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
               Adres
             </p>
@@ -84,7 +87,7 @@ export function Hero() {
               {siteConfig.address.street}
             </p>
           </div>
-          <div>
+          <div className="border-b border-border pb-5 sm:border-0 sm:pb-0">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
               Miasto
             </p>
@@ -99,11 +102,11 @@ export function Hero() {
             </p>
             <a
               href={siteConfig.phone.href}
-              className="mt-2 inline-block font-medium text-navy underline-offset-2 hover:text-accent hover:underline"
+              className="mt-2 inline-block min-h-11 py-1 font-medium text-navy underline-offset-2 hover:text-accent hover:underline"
             >
               {siteConfig.phone.display}
             </a>
-            <p className="mt-1 text-sm text-muted">
+            <p className="mt-1 text-sm leading-relaxed text-muted">
               {siteConfig.openingHours.length > 0
                 ? siteConfig.openingHours.map((h) => h.hours).join(" · ")
                 : "Godziny — uzupełnij w konfiguracji"}

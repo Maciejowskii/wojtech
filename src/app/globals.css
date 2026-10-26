@@ -20,8 +20,10 @@
   --radius: var(--radius-lg);
 
   --content-width: 1200px;
-  --page-gutter: 24px;
-  --header-h: 4.25rem;
+  --page-gutter: 16px;
+  --header-h: 3.75rem;
+  --mobile-cta-h: 4.5rem;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 
   --space-1: 4px;
   --space-2: 8px;
@@ -53,15 +55,33 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 0.75rem);
+  scroll-padding-bottom: calc(var(--mobile-cta-h) + var(--safe-bottom) + 0.5rem);
 }
 
 body {
   background: var(--mist);
   color: var(--graphite);
   font-family: var(--font-source), system-ui, sans-serif;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.65;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 24px;
+    --header-h: 4.25rem;
+  }
+
+  body {
+    font-size: 17px;
+  }
+
+  html {
+    scroll-padding-bottom: 0.75rem;
+  }
 }
 
 ::selection {
@@ -91,7 +111,7 @@ h4 {
 }
 
 .section-pad {
-  padding-block: clamp(3.5rem, 7vw, 5.75rem);
+  padding-block: clamp(2.75rem, 6vw, 5.75rem);
 }
 
 .section-label {
@@ -221,12 +241,24 @@ h4 {
 
 .field {
   width: 100%;
+  max-width: 100%;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: #fff;
-  padding: 0.8rem 0.95rem;
+  padding: 0.85rem 0.95rem;
   font: inherit;
+  font-size: 16px; /* iOS: unikamy auto-zoom przy focus */
   color: var(--graphite);
+}
+
+.btn-stack-mobile {
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .btn-stack-mobile {
+    width: auto;
+  }
 }
 
 .field:focus {
@@ -329,6 +361,15 @@ h4 {
   height: auto;
   border-radius: var(--radius-md);
   margin: 1rem 0;
+}
+
+.mobile-cta-bar {
+  padding-bottom: calc(0.75rem + var(--safe-bottom));
+}
+
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
 }
 
 @media (prefers-reduced-motion: reduce) {

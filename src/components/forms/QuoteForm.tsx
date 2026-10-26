@@ -228,7 +228,7 @@ export function QuoteForm() {
                 return (
                   <label
                     key={cat.id}
-                    className={`cursor-pointer rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
+                    className={`flex min-h-12 cursor-pointer items-center rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
                       selected
                         ? "border-accent bg-accent/10 text-navy"
                         : "border-border bg-white text-navy hover:border-accent/50"
@@ -373,7 +373,7 @@ export function QuoteForm() {
                 ).map(([value, label]) => (
                   <label
                     key={value}
-                    className={`cursor-pointer rounded-xl border px-4 py-2 text-sm ${
+                    className={`inline-flex min-h-11 cursor-pointer items-center rounded-xl border px-4 py-2 text-sm ${
                       form.contactPreference === value
                         ? "border-accent bg-accent/10"
                         : "border-border"
@@ -538,23 +538,27 @@ export function QuoteForm() {
           </div>
         )}
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary w-full sm:w-auto"
             onClick={back}
             disabled={step === 0 || status === "loading"}
           >
             Wstecz
           </button>
           {step < STEPS.length - 1 ? (
-            <button type="button" className="btn btn-primary" onClick={next}>
+            <button
+              type="button"
+              className="btn btn-primary w-full sm:w-auto"
+              onClick={next}
+            >
               Dalej
             </button>
           ) : (
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary w-full sm:w-auto"
               onClick={submit}
               disabled={status === "loading"}
             >

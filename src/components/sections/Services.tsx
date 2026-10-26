@@ -66,19 +66,19 @@ export function Services() {
                       ? "Twój ekspres znów może działać jak należy. Diagnostyka i naprawa ekspresów oraz innych urządzeń AGD."
                       : service.summary}
                   </p>
-                  <div className="mt-5 flex flex-wrap gap-2">
+                  <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                     {service.href.startsWith("/") &&
                     !service.href.includes("#") ? (
                       <Link
                         href={service.href}
-                        className="btn btn-secondary px-4 py-2 text-sm"
+                        className="btn btn-secondary min-h-11 w-full px-4 py-2 text-sm sm:w-auto"
                       >
                         Sprawdź szczegóły
                       </Link>
                     ) : null}
                     <Link
                       href="/#wycena"
-                      className="btn btn-ghost px-4 py-2 text-sm"
+                      className="btn btn-ghost min-h-11 w-full px-4 py-2 text-sm sm:w-auto"
                     >
                       Zapytaj o naprawę
                     </Link>

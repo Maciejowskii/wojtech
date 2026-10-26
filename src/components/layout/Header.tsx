@@ -26,7 +26,6 @@ function isNavActive(
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
-  // Anchor links only apply on the homepage
   if (pathname !== "/") return false;
 
   const id = sectionId(href);
@@ -112,8 +111,8 @@ export function Header() {
         scrolled ? "border-border" : "border-border/60"
       }`}
     >
-      <div className="container-page flex h-[var(--header-h)] items-center gap-6">
-        <Logo />
+      <div className="container-page flex h-[var(--header-h)] items-center gap-3 sm:gap-6">
+        <Logo className="min-w-0" />
 
         <div className="ml-auto hidden items-center gap-1 lg:flex">
           <nav className="flex items-center gap-0.5" aria-label="Główna nawigacja">
@@ -138,22 +137,34 @@ export function Header() {
           </a>
         </div>
 
-        <button
-          type="button"
-          className="ml-auto inline-flex size-10 items-center justify-center rounded-[var(--radius-sm)] border border-graphite/25 bg-transparent text-navy lg:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Zamknij menu" : "Otwórz menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+        <div className="ml-auto flex items-center gap-2 lg:hidden">
+          <a
+            href={siteConfig.phone.href}
+            className="touch-target inline-flex items-center justify-center rounded-[var(--radius-sm)] border border-graphite/25 text-navy"
+            aria-label={`Zadzwoń: ${siteConfig.phone.display}`}
+          >
+            <Phone className="size-5" aria-hidden strokeWidth={2} />
+          </a>
+          <button
+            type="button"
+            className="touch-target inline-flex items-center justify-center rounded-[var(--radius-sm)] border border-graphite/25 bg-transparent text-navy"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Zamknij menu" : "Otwórz menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </div>
 
       {open ? (
-        <div id="mobile-nav" className="border-t border-border bg-mist lg:hidden">
+        <div
+          id="mobile-nav"
+          className="max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-border bg-mist lg:hidden"
+        >
           <nav
-            className="container-page flex flex-col py-3"
+            className="container-page flex flex-col pb-[calc(var(--mobile-cta-h)+var(--safe-bottom)+1rem)] pt-2"
             aria-label="Menu mobilne"
           >
             {siteConfig.nav.map((item) => {
@@ -162,7 +173,7 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`border-l-2 px-3 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.12em] ${
+                  className={`min-h-12 border-l-2 px-3 py-3 text-[0.8rem] font-semibold uppercase tracking-[0.12em] ${
                     active
                       ? "border-accent text-accent"
                       : "border-transparent text-navy"
@@ -176,10 +187,10 @@ export function Header() {
             })}
             <a
               href={siteConfig.phone.href}
-              className="btn-nav-phone mt-3 w-full justify-center"
+              className="btn btn-primary mt-4 w-full"
               onClick={() => setOpen(false)}
             >
-              <Phone className="size-3.5" aria-hidden />
+              <Phone className="size-4" aria-hidden />
               {siteConfig.phone.display}
             </a>
           </nav>

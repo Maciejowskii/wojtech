@@ -22,14 +22,17 @@ export function ServicePageContent({ service }: { service: Service }) {
               </p>
             </div>
           </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/#wycena" className="btn btn-primary">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link href="/#wycena" className="btn btn-primary w-full sm:w-auto">
               Zapytaj o wycenę
             </Link>
-            <a href={siteConfig.phone.href} className="btn btn-phone">
+            <a
+              href={siteConfig.phone.href}
+              className="btn btn-phone w-full sm:w-auto"
+            >
               Zadzwoń: {siteConfig.phone.display}
             </a>
-            <Link href="/#oferta" className="btn btn-ghost">
+            <Link href="/#oferta" className="btn btn-ghost w-full sm:w-auto">
               Sprawdź ofertę
             </Link>
           </div>
