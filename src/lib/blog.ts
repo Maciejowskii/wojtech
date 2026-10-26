@@ -1,14 +1,21 @@
 import { nanoid } from "nanoid";
-import { getDb, type BlogPost, type BlogStatus } from "@/lib/db";
+import {
+  getDb,
+  type BlogContentFormat,
+  type BlogPost,
+  type BlogStatus,
+} from "@/lib/db";
 import { slugify } from "@/lib/slug";
 
 function rowToBlog(row: Record<string, unknown>): BlogPost {
+  const format = String(row.content_format || "visual");
   return {
     id: String(row.id),
     title: String(row.title),
     slug: String(row.slug),
     excerpt: String(row.excerpt ?? ""),
     content: String(row.content ?? ""),
+    content_format: (format === "html" ? "html" : "visual") as BlogContentFormat,
     cover_image: row.cover_image ? String(row.cover_image) : null,
     status: String(row.status) as BlogStatus,
     published_at: row.published_at ? String(row.published_at) : null,
@@ -85,6 +92,7 @@ export type BlogInput = {
   slug?: string;
   excerpt?: string;
   content?: string;
+  content_format?: BlogContentFormat;
   cover_image?: string | null;
   status: BlogStatus;
   published_at?: string | null;
@@ -96,20 +104,20 @@ export function createBlogPost(input: BlogInput): BlogPost {
   const id = nanoid();
   const slug = uniqueBlogSlug(input.slug || input.title);
   const publishedAt =
-    input.status === "draft"
-      ? null
-      : input.published_at || now;
+    input.status === "draft" ? null : input.published_at || now;
+  const contentFormat = input.content_format === "html" ? "html" : "visual";
 
   db.prepare(
     `INSERT INTO blog_posts
-     (id, title, slug, excerpt, content, cover_image, status, published_at, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+     (id, title, slug, excerpt, content, content_format, cover_image, status, published_at, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   ).run(
     id,
     input.title.trim(),
     slug,
     input.excerpt?.trim() || "",
     input.content || "",
+    contentFormat,
     input.cover_image || null,
     input.status,
     publishedAt,
@@ -128,6 +136,12 @@ export function updateBlogPost(id: string, input: BlogInput): BlogPost | null {
   const now = new Date().toISOString();
   const slug = uniqueBlogSlug(input.slug || input.title, id);
   let publishedAt = input.published_at ?? existing.published_at;
+  const contentFormat =
+    input.content_format === "html"
+      ? "html"
+      : input.content_format === "visual"
+        ? "visual"
+        : existing.content_format;
 
   if (input.status === "draft") {
     publishedAt = null;
@@ -139,7 +153,7 @@ export function updateBlogPost(id: string, input: BlogInput): BlogPost | null {
 
   db.prepare(
     `UPDATE blog_posts SET
-      title = ?, slug = ?, excerpt = ?, content = ?, cover_image = ?,
+      title = ?, slug = ?, excerpt = ?, content = ?, content_format = ?, cover_image = ?,
       status = ?, published_at = ?, updated_at = ?
      WHERE id = ?`,
   ).run(
@@ -147,6 +161,7 @@ export function updateBlogPost(id: string, input: BlogInput): BlogPost | null {
     slug,
     input.excerpt?.trim() || "",
     input.content || "",
+    contentFormat,
     input.cover_image || null,
     input.status,
     publishedAt,

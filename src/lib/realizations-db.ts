@@ -5,10 +5,14 @@ import {
   type RealizationRow,
   type RealizationWithImages,
 } from "@/lib/db";
+import { categoryLabel, publicCategoryFilters } from "@/lib/categories";
 import { slugify } from "@/lib/slug";
-import { realizationFilters } from "@/data/realizations";
 
-export { realizationFilters };
+export { categoryLabel };
+
+export function realizationFilters() {
+  return publicCategoryFilters();
+}
 
 function rowToRealization(row: Record<string, unknown>): RealizationRow {
   return {
@@ -223,10 +227,4 @@ export function deleteRealization(id: string) {
   const db = getDb();
   db.prepare(`DELETE FROM realization_images WHERE realization_id = ?`).run(id);
   db.prepare(`DELETE FROM realizations WHERE id = ?`).run(id);
-}
-
-export function categoryLabel(category: string) {
-  return (
-    realizationFilters.find((f) => f.id === category)?.label || category
-  );
 }

@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import type { BlogPost, BlogStatus } from "@/lib/db";
+import { ImageUploadButton } from "@/components/admin/ImageUploadButton";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import type { BlogContentFormat, BlogPost, BlogStatus } from "@/lib/db";
 
 type Props = {
   initial?: BlogPost | null;
@@ -14,17 +16,20 @@ export function BlogEditor({ initial }: Props) {
   const [slug, setSlug] = useState(initial?.slug || "");
   const [excerpt, setExcerpt] = useState(initial?.excerpt || "");
   const [content, setContent] = useState(initial?.content || "");
+  const [contentFormat, setContentFormat] = useState<BlogContentFormat>(
+    initial?.content_format || "visual",
+  );
   const [coverImage, setCoverImage] = useState(initial?.cover_image || "");
   const [status, setStatus] = useState<BlogStatus>(initial?.status || "draft");
   const [publishedAt, setPublishedAt] = useState(
-    initial?.published_at
-      ? initial.published_at.slice(0, 16)
-      : "",
+    initial?.published_at ? initial.published_at.slice(0, 16) : "",
   );
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
-  async function uploadCover(file: File) {
+  async function uploadCover(files: FileList) {
+    const file = files[0];
+    if (!file) return;
     const form = new FormData();
     form.set("file", file);
     form.set("folder", "blog");
@@ -44,6 +49,7 @@ export function BlogEditor({ initial }: Props) {
       slug: slug || undefined,
       excerpt,
       content,
+      content_format: contentFormat,
       cover_image: coverImage || null,
       status,
       published_at:
@@ -81,7 +87,12 @@ export function BlogEditor({ initial }: Props) {
     <form onSubmit={onSubmit} className="space-y-5">
       <label className="block">
         <span className="mb-1.5 block text-sm font-semibold text-navy">Tytuł *</span>
-        <input className="field" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <input
+          className="field"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
       </label>
 
       <label className="block">
@@ -105,15 +116,55 @@ export function BlogEditor({ initial }: Props) {
         />
       </label>
 
-      <label className="block">
+      <div>
+        <span className="mb-2 block text-sm font-semibold text-navy">
+          Sposób pisania treści
+        </span>
+        <div className="inline-flex rounded-[var(--radius-md)] border border-border bg-mist/40 p-1">
+          <button
+            type="button"
+            className={`rounded-[var(--radius-sm)] px-4 py-2 text-sm font-semibold ${
+              contentFormat === "visual"
+                ? "bg-accent text-white"
+                : "text-navy hover:bg-white"
+            }`}
+            onClick={() => setContentFormat("visual")}
+          >
+            Edytor wizualny
+          </button>
+          <button
+            type="button"
+            className={`rounded-[var(--radius-sm)] px-4 py-2 text-sm font-semibold ${
+              contentFormat === "html"
+                ? "bg-accent text-white"
+                : "text-navy hover:bg-white"
+            }`}
+            onClick={() => setContentFormat("html")}
+          >
+            HTML
+          </button>
+        </div>
+        <p className="mt-2 text-sm text-muted">
+          {contentFormat === "visual"
+            ? "Formatuj tekst przyciskami (pogrubienie, listy, nagłówki, linki)."
+            : "Wklej lub wpisz gotowy kod HTML wpisu."}
+        </p>
+      </div>
+
+      <div>
         <span className="mb-1.5 block text-sm font-semibold text-navy">Treść</span>
-        <textarea
-          className="field min-h-64 font-mono text-sm"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Możesz pisać zwykłym tekstem. Akapity oddzielaj pustą linią."
-        />
-      </label>
+        {contentFormat === "visual" ? (
+          <RichTextEditor value={content} onChange={setContent} />
+        ) : (
+          <textarea
+            className="field min-h-72 font-mono text-sm"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder={'<p>Twój tekst…</p>\n<h2>Nagłówek</h2>'}
+            spellCheck={false}
+          />
+        )}
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
@@ -146,17 +197,33 @@ export function BlogEditor({ initial }: Props) {
         <span className="mb-1.5 block text-sm font-semibold text-navy">
           Zdjęcie okładki
         </span>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) uploadCover(file).catch((err) => setError(err.message));
+        <ImageUploadButton
+          label="Dodaj zdjęcie okładki"
+          multiple={false}
+          onFiles={async (files) => {
+            try {
+              await uploadCover(files);
+            } catch (err) {
+              setError(err instanceof Error ? err.message : "Błąd uploadu");
+            }
           }}
         />
         {coverImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={coverImage} alt="" className="mt-3 max-h-40 rounded-[var(--radius-md)] border border-border object-cover" />
+          <div className="mt-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={coverImage}
+              alt=""
+              className="max-h-48 rounded-[var(--radius-md)] border border-border object-cover"
+            />
+            <button
+              type="button"
+              className="btn btn-ghost mt-2 py-2 text-sm"
+              onClick={() => setCoverImage("")}
+            >
+              Usuń okładkę
+            </button>
+          </div>
         ) : null}
       </div>
 

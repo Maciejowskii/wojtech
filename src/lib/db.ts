@@ -17,6 +17,13 @@ export function getDb() {
   return dbInstance;
 }
 
+function hasColumn(db: DatabaseSync, table: string, column: string) {
+  const rows = db.prepare(`PRAGMA table_info(${table})`).all() as {
+    name: string;
+  }[];
+  return rows.some((r) => r.name === column);
+}
+
 function migrate(db: DatabaseSync) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS blog_posts (
@@ -55,12 +62,50 @@ function migrate(db: DatabaseSync) {
       FOREIGN KEY (realization_id) REFERENCES realizations(id) ON DELETE CASCADE
     );
 
+    CREATE TABLE IF NOT EXISTS categories (
+      id TEXT PRIMARY KEY,
+      label TEXT NOT NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_blog_status ON blog_posts(status, published_at);
     CREATE INDEX IF NOT EXISTS idx_realizations_published ON realizations(published, created_at);
   `);
+
+  if (!hasColumn(db, "blog_posts", "content_format")) {
+    db.exec(
+      `ALTER TABLE blog_posts ADD COLUMN content_format TEXT NOT NULL DEFAULT 'visual'`,
+    );
+  }
+
+  seedCategories(db);
+}
+
+function seedCategories(db: DatabaseSync) {
+  const count = db
+    .prepare(`SELECT COUNT(*) as c FROM categories`)
+    .get() as { c: number };
+  if (count.c > 0) return;
+
+  const now = new Date().toISOString();
+  const defaults = [
+    { id: "ekspresy", label: "Ekspresy do kawy", sort: 1 },
+    { id: "auto", label: "Elektronika samochodowa", sort: 2 },
+    { id: "rtv", label: "RTV i elektronika", sort: 3 },
+    { id: "rowery", label: "Rowery i hulajnogi", sort: 4 },
+    { id: "elektronarzedzia", label: "Elektronarzędzia i sterowniki", sort: 5 },
+  ];
+  const stmt = db.prepare(
+    `INSERT INTO categories (id, label, sort_order, created_at) VALUES (?, ?, ?, ?)`,
+  );
+  for (const cat of defaults) {
+    stmt.run(cat.id, cat.label, cat.sort, now);
+  }
 }
 
 export type BlogStatus = "draft" | "scheduled" | "published";
+export type BlogContentFormat = "visual" | "html";
 
 export type BlogPost = {
   id: string;
@@ -68,11 +113,19 @@ export type BlogPost = {
   slug: string;
   excerpt: string;
   content: string;
+  content_format: BlogContentFormat;
   cover_image: string | null;
   status: BlogStatus;
   published_at: string | null;
   created_at: string;
   updated_at: string;
+};
+
+export type Category = {
+  id: string;
+  label: string;
+  sort_order: number;
+  created_at: string;
 };
 
 export type RealizationRow = {

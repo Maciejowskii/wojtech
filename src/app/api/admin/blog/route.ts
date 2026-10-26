@@ -37,6 +37,7 @@ export async function POST(request: Request) {
     slug: body.slug,
     excerpt: body.excerpt,
     content: body.content,
+    content_format: body.content_format,
     cover_image: body.cover_image,
     status,
     published_at: body.published_at,

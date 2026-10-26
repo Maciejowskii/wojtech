@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublicBlogBySlug } from "@/lib/blog";
-import { renderPlainContent } from "@/lib/content";
+import { renderBlogHtml } from "@/lib/content";
 import { requireDynamic } from "@/lib/dynamic";
 
 export const instant = false;
@@ -28,7 +28,7 @@ export default async function BlogPostPage({ params }: Props) {
   const post = getPublicBlogBySlug(slug);
   if (!post) notFound();
 
-  const paragraphs = renderPlainContent(post.content);
+  const html = renderBlogHtml(post.content, post.content_format);
 
   return (
     <article className="section-pad">
@@ -64,11 +64,10 @@ export default async function BlogPostPage({ params }: Props) {
           <p className="mt-8 text-lg leading-relaxed text-muted">{post.excerpt}</p>
         ) : null}
 
-        <div className="mt-8 space-y-4 text-base leading-relaxed text-navy">
-          {paragraphs.map((html, i) => (
-            <p key={i} dangerouslySetInnerHTML={{ __html: html }} />
-          ))}
-        </div>
+        <div
+          className="blog-content mt-8"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link href="/blog" className="btn btn-secondary">

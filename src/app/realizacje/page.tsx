@@ -39,7 +39,7 @@ export default async function RealizationsPage({ searchParams }: Props) {
         />
 
         <div className="flex flex-wrap gap-2">
-          {realizationFilters.map((f) => {
+          {realizationFilters().map((f) => {
             const active =
               (f.id === "all" && !kategoria) || kategoria === f.id;
             const href =
