@@ -18,8 +18,8 @@ export const siteConfig = {
 
   /** Uzupełnij prawdziwy e-mail serwisu */
   email: {
-    display: "", // np. "kontakt@woj-tech.pl"
-    href: "", // np. "mailto:kontakt@woj-tech.pl"
+    display: "wkijewski71@wp.pl",
+    href: "mailto:wkijewski71@wp.pl",
   },
 
   address: {
@@ -30,25 +30,22 @@ export const siteConfig = {
     country: "PL",
     full: "Olszyna 84C, 63-500 Ostrzeszów",
     mapsQuery: "Olszyna 84C, 63-500 Ostrzeszów",
-    mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Olszyna+84C,+63-500+Ostrzesz%C3%B3w",
+    mapsUrl: "https://maps.app.goo.gl/q6WaaCuwKPzqR8Mo9",
     mapsEmbed:
-      "https://maps.google.com/maps?q=Olszyna+84C,+63-500+Ostrzesz%C3%B3w&z=15&output=embed",
+      "https://maps.google.com/maps?q=51.4162526,17.9071801&z=16&output=embed",
   },
 
   /**
    * Godziny otwarcia — uzupełnij, gdy właściciel je poda.
    * Puste = sekcja pokazuje placeholder.
    */
-  openingHours: [] as { days: string; hours: string }[],
-  // Przykład po uzupełnieniu:
-  // openingHours: [
-  //   { days: "Poniedziałek – Piątek", hours: "8:00 – 17:00" },
-  //   { days: "Sobota", hours: "po wcześniejszym kontakcie" },
-  // ],
+  openingHours: [
+    { days: "Poniedziałek – Piątek", hours: "9:00 – 17:00" },
+    { days: "Sobota – Niedziela", hours: "zamknięte" },
+  ],
 
-  /** Link do profilu Google (opinie) — uzupełnij gdy dostępny */
-  googleBusinessUrl: "",
+  /** Profil firmy w Google Maps / opinie */
+  googleBusinessUrl: "https://maps.app.goo.gl/q6WaaCuwKPzqR8Mo9",
 
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://woj-tech.pl",
 

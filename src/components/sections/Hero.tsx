@@ -1,188 +1,114 @@
 import Link from "next/link";
-import {
-  MapPin,
-  Package,
-  Cpu,
-  ClipboardList,
-} from "lucide-react";
 import { siteConfig } from "@/lib/site.config";
-
-const highlights = [
-  {
-    icon: MapPin,
-    label: "Serwis w Ostrzeszowie",
-  },
-  {
-    icon: Package,
-    label: "Możliwość wysyłki sprzętu z innych miejscowości",
-  },
-  {
-    icon: Cpu,
-    label: "Naprawy wielu rodzajów urządzeń",
-  },
-  {
-    icon: ClipboardList,
-    label: "Indywidualna wycena usterek",
-  },
-];
 
 export function Hero() {
   return (
-    <section
-      id="start"
-      className="relative overflow-hidden border-b border-border bg-mist"
-    >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.55]"
-        aria-hidden
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse 80% 60% at 85% 20%, color-mix(in srgb, var(--color-steel) 55%, transparent), transparent 55%),
-            linear-gradient(135deg, transparent 40%, color-mix(in srgb, var(--color-accent) 6%, transparent) 100%)
-          `,
-        }}
-      />
-
-      <div className="container-page relative grid items-center gap-10 py-14 md:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
-        <div className="reveal">
-          <p className="font-display text-sm font-semibold tracking-[0.12em] text-accent">
-            WOJ-TECH · ELEKTROSERWIS
-          </p>
-          <h1 className="mt-3 max-w-xl text-4xl font-bold leading-[1.08] tracking-tight text-navy md:text-5xl lg:text-[3.25rem]">
-            Naprawiamy elektronikę. Przywracamy sprzęt do życia.
+    <section id="start" className="border-b border-border bg-mist">
+      <div className="container-page grid items-end gap-10 py-12 md:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-20">
+        <div>
+          <p className="section-label">Elektroserwis</p>
+          <h1 className="max-w-xl text-[clamp(2.75rem,7vw,4.25rem)] font-semibold tracking-tight text-navy">
+            WOJ-TECH
           </h1>
-          <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted md:text-lg">
-            Od ekspresów do kawy i sprzętu RTV/AGD, przez elektronikę
-            samochodową, aż po rowery i hulajnogi elektryczne. Sprawdź ofertę
-            naszego serwisu w Ostrzeszowie i zapytaj o wycenę naprawy.
+          <p className="mt-2 text-xl font-medium text-navy md:text-2xl">
+            {siteConfig.owner}
+          </p>
+          <p className="mt-5 max-w-[38rem] text-pretty text-base leading-relaxed text-muted md:text-lg">
+            Naprawa elektroniki, ekspresów do kawy, sprzętu AGD, elektroniki
+            samochodowej oraz rowerów i hulajnóg elektrycznych w Ostrzeszowie.
+            Sprawdź ofertę i zapytaj o wycenę naprawy.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/#wycena" className="btn btn-primary">
               Zapytaj o wycenę
             </Link>
-            <Link href="/#oferta" className="btn btn-secondary">
-              Poznaj nasze usługi
-            </Link>
-            <a href={siteConfig.phone.href} className="btn btn-ghost">
+            <a href={siteConfig.phone.href} className="btn btn-phone">
               Zadzwoń: {siteConfig.phone.display}
             </a>
           </div>
 
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2">
-            {highlights.map(({ icon: Icon, label }) => (
-              <li
-                key={label}
-                className="flex items-start gap-3 rounded-2xl border border-border/80 bg-white/80 px-4 py-3 shadow-sm"
-              >
-                <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-card text-accent">
-                  <Icon className="size-4" aria-hidden />
-                </span>
-                <span className="text-sm font-medium leading-snug text-navy">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <p className="mt-6 text-sm text-muted">
+            Serwis w Ostrzeszowie · możliwa wysyłka sprzętu · indywidualna wycena
+          </p>
         </div>
 
-        <div className="reveal relative" style={{ animationDelay: "120ms" }}>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] border border-border bg-navy shadow-soft sm:aspect-[5/4] lg:aspect-[4/5]">
-            {/* Visual stand-in until owner provides workshop photo */}
+        <div className="relative">
+          <div className="relative aspect-[5/4] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-navy lg:aspect-[4/5]">
             <svg
               className="absolute inset-0 h-full w-full"
-              viewBox="0 0 480 600"
+              viewBox="0 0 480 560"
               preserveAspectRatio="xMidYMid slice"
               role="img"
-              aria-label="Ilustracja stanowiska serwisowego — zastąp zdjęciem warsztatu"
+              aria-label="Miejsce na zdjęcie stanowiska serwisowego"
             >
               <defs>
-                <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                <linearGradient id="heroBg" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0%" stopColor="#20354B" />
                   <stop offset="100%" stopColor="#17191D" />
                 </linearGradient>
-                <pattern
-                  id="grid"
-                  width="24"
-                  height="24"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M24 0H0V24"
-                    fill="none"
-                    stroke="#B2C3D7"
-                    strokeOpacity="0.12"
-                    strokeWidth="1"
-                  />
-                </pattern>
               </defs>
-              <rect width="480" height="600" fill="url(#bg)" />
-              <rect width="480" height="600" fill="url(#grid)" />
-              <rect
-                x="48"
-                y="120"
-                width="384"
-                height="280"
-                rx="16"
-                fill="#267A9B"
-                fillOpacity="0.18"
+              <rect width="480" height="560" fill="url(#heroBg)" />
+              <path
+                d="M60 420 L180 180 L260 300 L340 140 L420 420"
+                fill="none"
                 stroke="#B2C3D7"
                 strokeOpacity="0.35"
+                strokeWidth="2"
               />
-              <rect
-                x="80"
-                y="160"
-                width="140"
-                height="90"
-                rx="8"
-                fill="#FEFEFE"
-                fillOpacity="0.08"
-                stroke="#B2C3D7"
-                strokeOpacity="0.4"
-              />
-              <circle cx="320" cy="205" r="42" fill="#267A9B" fillOpacity="0.35" />
-              <path
-                d="M100 340h80M100 360h120M100 380h60"
-                stroke="#B2C3D7"
-                strokeWidth="3"
-                strokeLinecap="round"
-                opacity="0.5"
-              />
-              <path
-                d="M280 320c20-30 60-30 80 0s60 30 80 0"
-                fill="none"
-                stroke="#267A9B"
-                strokeWidth="3"
-                opacity="0.7"
-              />
+              <circle cx="180" cy="180" r="6" fill="#267A9B" />
+              <circle cx="340" cy="140" r="6" fill="#267A9B" />
               <text
-                x="240"
-                y="480"
-                textAnchor="middle"
+                x="40"
+                y="500"
                 fill="#B2C3D7"
                 fontFamily="system-ui,sans-serif"
-                fontSize="15"
-                fontWeight="600"
-                letterSpacing="2"
+                fontSize="13"
+                letterSpacing="1.5"
               >
-                STANOWISKO SERWISOWE
-              </text>
-              <text
-                x="240"
-                y="508"
-                textAnchor="middle"
-                fill="#B2C3D7"
-                fontFamily="system-ui,sans-serif"
-                fontSize="12"
-                opacity="0.7"
-              >
-                Dodaj zdjęcie warsztatu w /public/images
+                STANOWISKO SERWISOWE — DODAJ ZDJĘCIE
               </text>
             </svg>
           </div>
-          <p className="mt-3 text-center text-xs text-muted lg:text-left">
-            Miejsce na zdjęcie rzeczywistego stanowiska serwisowego.
-          </p>
+        </div>
+      </div>
+
+      {/* Practical info strip — jak na stronie referencyjnej */}
+      <div className="border-t border-border bg-white">
+        <div className="container-page grid gap-6 py-7 sm:grid-cols-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+              Adres
+            </p>
+            <p className="mt-2 font-medium text-navy">
+              {siteConfig.address.street}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+              Miasto
+            </p>
+            <p className="mt-2 font-medium text-navy">
+              {siteConfig.address.city}
+            </p>
+            <p className="text-sm text-muted">{siteConfig.address.postalCode}</p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+              Kontakt
+            </p>
+            <a
+              href={siteConfig.phone.href}
+              className="mt-2 inline-block font-medium text-navy underline-offset-2 hover:text-accent hover:underline"
+            >
+              {siteConfig.phone.display}
+            </a>
+            <p className="mt-1 text-sm text-muted">
+              {siteConfig.openingHours.length > 0
+                ? siteConfig.openingHours.map((h) => h.hours).join(" · ")
+                : "Godziny — uzupełnij w konfiguracji"}
+            </p>
+          </div>
         </div>
       </div>
     </section>

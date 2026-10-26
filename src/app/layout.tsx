@@ -29,6 +29,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/brand/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/brand/icon.png", sizes: "180x180" }],
+    shortcut: ["/favicon.ico"],
+  },
   openGraph: {
     type: "website",
     locale: "pl_PL",
@@ -36,6 +44,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: "WOJ-TECH Elektroserwis Ostrzeszów",
     description: siteConfig.description,
+    images: [{ url: "/brand/icon-512.png", width: 512, height: 512 }],
   },
   robots: {
     index: true,
@@ -51,7 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pl"
       className={`${archivo.variable} ${sourceSans.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-white font-sans text-graphite pb-20 md:pb-0">
+      <body className="flex min-h-full flex-col bg-mist font-sans text-graphite pb-20 md:pb-0">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

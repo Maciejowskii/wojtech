@@ -11,8 +11,9 @@ export function Quote() {
       <div className="container-page">
         <SectionHeading
           id="wycena-title"
+          label="Wycena"
           title="Ile może kosztować naprawa?"
-          subtitle="Opisz problem ze swoim urządzeniem. Przekażemy Ci informacje o możliwej wycenie i dalszych krokach."
+          subtitle="Opisz problem ze swoim urządzeniem. Przekażemy informacje o możliwej wycenie i dalszych krokach."
         />
         <div className="mx-auto max-w-3xl">
           <QuoteForm />

@@ -1,4 +1,3 @@
-import { Clock, MapPin, Navigation, Phone } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { siteConfig } from "@/lib/site.config";
 
@@ -12,42 +11,44 @@ export function Location() {
       <div className="container-page">
         <SectionHeading
           id="lokalizacja-title"
+          label="Lokalizacja"
           title="Odwiedź nasz serwis w Ostrzeszowie"
           subtitle="Urządzenie możesz dostarczyć osobiście. Brak dojazdu do klienta."
         />
 
-        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="card-surface p-6 md:p-8">
-            <ul className="space-y-5">
-              <li className="flex gap-3">
-                <MapPin className="mt-0.5 size-5 text-accent" aria-hidden />
-                <div>
-                  <p className="font-semibold text-navy">Adres</p>
-                  <p className="mt-1 text-sm text-muted">
-                    {siteConfig.address.street}
-                    <br />
-                    {siteConfig.address.postalCode} {siteConfig.address.city}
-                  </p>
-                </div>
-              </li>
-              <li className="flex gap-3">
-                <Phone className="mt-0.5 size-5 text-accent" aria-hidden />
-                <div>
-                  <p className="font-semibold text-navy">Telefon</p>
+            <dl className="space-y-5">
+              <div>
+                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                  Adres
+                </dt>
+                <dd className="mt-2 text-navy">
+                  {siteConfig.address.street}
+                  <br />
+                  {siteConfig.address.postalCode} {siteConfig.address.city}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                  Telefon
+                </dt>
+                <dd className="mt-2">
                   <a
                     href={siteConfig.phone.href}
-                    className="mt-1 inline-block text-sm font-medium text-accent hover:underline"
+                    className="font-semibold text-navy underline-offset-2 hover:text-accent hover:underline"
                   >
                     {siteConfig.phone.display}
                   </a>
-                </div>
-              </li>
-              <li className="flex gap-3">
-                <Clock className="mt-0.5 size-5 text-accent" aria-hidden />
-                <div>
-                  <p className="font-semibold text-navy">Godziny otwarcia</p>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                  Godziny otwarcia
+                </dt>
+                <dd className="mt-2 text-sm text-muted">
                   {siteConfig.openingHours.length > 0 ? (
-                    <ul className="mt-1 space-y-1 text-sm text-muted">
+                    <ul className="space-y-1">
                       {siteConfig.openingHours.map((row) => (
                         <li key={row.days}>
                           {row.days}: {row.hours}
@@ -55,14 +56,11 @@ export function Location() {
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-1 text-sm text-muted">
-                      Godziny otwarcia zostaną uzupełnione. Przed wizytą
-                      zadzwoń, aby potwierdzić dostępność.
-                    </p>
+                    "Godziny otwarcia zostaną uzupełnione. Przed wizytą zadzwoń, aby potwierdzić dostępność."
                   )}
-                </div>
-              </li>
-            </ul>
+                </dd>
+              </div>
+            </dl>
 
             <a
               href={siteConfig.address.mapsUrl}
@@ -70,7 +68,6 @@ export function Location() {
               rel="noopener noreferrer"
               className="btn btn-primary mt-8"
             >
-              <Navigation className="size-4" aria-hidden />
               Wyznacz trasę
             </a>
           </div>

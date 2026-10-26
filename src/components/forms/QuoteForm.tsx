@@ -181,7 +181,7 @@ export function QuoteForm() {
 
   return (
     <div className="card-surface overflow-hidden">
-      <div className="border-b border-border bg-mist/70 px-5 py-4 md:px-8">
+      <div className="border-b border-border bg-mist px-5 py-4 md:px-8">
         <div className="flex items-center justify-between gap-3">
           <p className="text-sm font-semibold text-navy">
             Krok {step + 1} z {STEPS.length}: {STEPS[step]}

@@ -1,22 +1,32 @@
 # DESIGN.md — WOJ-TECH Elektroserwis
 
 ## World
-Jasny, techniczny serwis lokalny: stalowy błękit, granat, biały, jeden akcent `#267A9B`. Kompozycja inspirowana lokalnymi stronami usługowymi (czysta hierarchia, dużo przestrzeni), bez kopiowania układu.
+Spokojny, uporządkowany lokalny serwis — kompozycja i rytm inspirowane stylem projektyostrzeszow.pl. Kolory własne marki WOJ-TECH.
 
-## Palette
+## Palette (zachowane)
 - Steel `#B2C3D7`
 - White `#FEFEFE`
 - Graphite `#17191D`
 - Navy `#20354B`
-- Accent `#267A9B`
-- Mist `#F3F6F9`
+- Accent `#267A9B` (CTA / marka)
+- Mist `#F3F6F9` (tło strony)
+- Border `#D5DEE8`
 
 ## Type
-- Display: Archivo
-- Body: Source Sans 3
+- Display + body: Archivo / Source Sans 3
+- Hero H1: duża nazwa marki (jak Mar-Bud)
+- Section labels: uppercase + kreska akcentowa
+- Body ~17px, line-height ~1.65
 
 ## Surfaces
-Zaokrąglone karty (`14px`), subtelny cień, jasne tła. Hero z ilustracją zastępczą stanowiska — do wymiany na zdjęcie warsztatu.
+- Promienie 6–10px
+- Karty: obramowanie 1px, bez mocnych cieni
+- Kontener 1200px, gutter 24px
+- CTA min. 48px wysokości
 
-## Motion
-Delikatne `rise` na hero; przejścia przycisków; respekt `prefers-reduced-motion`.
+## Composition
+- Hero: nazwa marki → właściciel → opis → CTA → pasek adres/miasto/kontakt
+- Oferta: ponumerowane karty (01…)
+- Proces: siatka etapów z numerami
+- FAQ: accordion z +/−
+- Kontakt: dane + formularz, telefon i trasa wyeksponowane

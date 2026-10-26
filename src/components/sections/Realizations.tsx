@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ImageIcon } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   realizationFilters,
@@ -27,8 +26,9 @@ export function Realizations() {
       <div className="container-page">
         <SectionHeading
           id="realizacje-title"
+          label="Realizacje"
           title="Zobacz, co naprawiamy"
-          subtitle="Galeria realizacji będzie uzupełniana rzeczywistymi zdjęciami napraw. Poniżej znajdziesz strukturę gotową do rozbudowy."
+          subtitle="Galeria będzie uzupełniana rzeczywistymi zdjęciami napraw — bez stocków udających wykonane prace."
         />
 
         <div
@@ -44,10 +44,10 @@ export function Realizations() {
                 type="button"
                 role="tab"
                 aria-selected={active}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                className={`min-h-10 rounded-[var(--radius-md)] border px-4 py-2 text-sm font-medium transition-colors ${
                   active
-                    ? "bg-accent text-white"
-                    : "bg-white text-navy ring-1 ring-border hover:bg-card"
+                    ? "border-accent bg-accent text-white"
+                    : "border-border bg-white text-navy hover:border-accent/50"
                 }`}
                 onClick={() => setFilter(f.id)}
               >
@@ -58,17 +58,16 @@ export function Realizations() {
         </div>
 
         {items.length === 0 ? (
-          <div className="card-surface mt-8 flex flex-col items-center px-6 py-16 text-center">
-            <span className="grid size-14 place-items-center rounded-2xl bg-card text-accent">
-              <ImageIcon className="size-7" aria-hidden />
-            </span>
-            <h3 className="mt-5 text-xl font-bold text-navy">
+          <div className="card-surface mt-8 px-6 py-14 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
+              Portfolio
+            </p>
+            <h3 className="mt-3 text-xl font-semibold text-navy">
               Realizacje w przygotowaniu
             </h3>
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
-              Nie publikujemy fikcyjnych napraw ani zdjęć stockowych jako
-              wykonanych prac. Po dodaniu zdjęć przed/po pojawią się tutaj wraz z
-              krótkim opisem.
+            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted">
+              Po dodaniu zdjęć przed/po pojawią się tutaj wraz z krótkim
+              opisem problemu i wykonanych prac.
             </p>
             <Link href="/#oferta" className="btn btn-secondary mt-6">
               Sprawdź ofertę usług
@@ -80,14 +79,9 @@ export function Realizations() {
               <article key={item.id} className="card-surface overflow-hidden">
                 <div className="aspect-[4/3] bg-card" />
                 <div className="p-5">
-                  <h3 className="font-bold text-navy">{item.title}</h3>
+                  <h3 className="font-semibold text-navy">{item.title}</h3>
                   <p className="mt-2 text-sm text-muted">{item.problem}</p>
                   <p className="mt-2 text-sm text-navy">{item.work}</p>
-                  {item.demo ? (
-                    <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-accent">
-                      Przykład demonstracyjny
-                    </p>
-                  ) : null}
                 </div>
               </article>
             ))}

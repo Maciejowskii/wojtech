@@ -6,15 +6,55 @@ import { Menu, Phone, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { siteConfig } from "@/lib/site.config";
 
+function normalizeHash(href: string) {
+  if (href.includes("#")) return `#${href.split("#")[1]}`;
+  return href;
+}
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeHash, setActiveHash] = useState("#start");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const syncHash = () => {
+      setActiveHash(window.location.hash || "#start");
+    };
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, []);
+
+  useEffect(() => {
+    const ids = siteConfig.nav
+      .map((item) => item.href.split("#")[1])
+      .filter(Boolean);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target.id) {
+          setActiveHash(`#${visible[0].target.id}`);
+        }
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0.1, 0.35, 0.6] },
+    );
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id!);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -26,46 +66,42 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b transition-[background-color,box-shadow,border-color] duration-200 ${
-        scrolled
-          ? "border-border bg-white/95 shadow-soft backdrop-blur-md"
-          : "border-transparent bg-white/90 backdrop-blur-sm"
+      className={`sticky top-0 z-50 border-b bg-mist/95 backdrop-blur-sm transition-colors ${
+        scrolled ? "border-border" : "border-border/60"
       }`}
     >
-      <div className="container-page flex h-[var(--header-h)] items-center justify-between gap-4">
+      <div className="container-page flex h-[var(--header-h)] items-center gap-6">
         <Logo />
 
-        <nav
-          className="hidden items-center gap-1 lg:flex"
-          aria-label="Główna nawigacja"
-        >
-          {siteConfig.nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-navy/85 transition-colors hover:bg-mist hover:text-accent"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="ml-auto hidden items-center gap-1 lg:flex">
+          <nav className="flex items-center gap-0.5" aria-label="Główna nawigacja">
+            {siteConfig.nav.map((item) => {
+              const hash = normalizeHash(item.href);
+              const active = activeHash === hash;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`nav-link ${active ? "nav-link-active" : ""}`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
           <a
             href={siteConfig.phone.href}
-            className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-navy transition-colors hover:text-accent"
+            className="btn-nav-phone ml-3"
           >
-            <Phone className="size-4" aria-hidden />
+            <Phone className="size-3.5" aria-hidden strokeWidth={2} />
             {siteConfig.phone.display}
           </a>
-          <Link href="/#wycena" className="btn btn-primary">
-            Zapytaj o naprawę
-          </Link>
         </div>
 
         <button
           type="button"
-          className="inline-flex size-11 items-center justify-center rounded-xl border border-border bg-white text-navy lg:hidden"
+          className="ml-auto inline-flex size-10 items-center justify-center rounded-[var(--radius-sm)] border border-graphite/25 bg-transparent text-navy lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Zamknij menu" : "Otwórz menu"}
@@ -76,39 +112,35 @@ export function Header() {
       </div>
 
       {open ? (
-        <div
-          id="mobile-nav"
-          className="border-t border-border bg-white lg:hidden"
-        >
+        <div id="mobile-nav" className="border-t border-border bg-mist lg:hidden">
           <nav
-            className="container-page flex flex-col gap-1 py-4"
+            className="container-page flex flex-col py-3"
             aria-label="Menu mobilne"
           >
-            {siteConfig.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-xl px-3 py-3 text-base font-medium text-navy hover:bg-mist"
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {siteConfig.nav.map((item) => {
+              const hash = normalizeHash(item.href);
+              const active = activeHash === hash;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`px-1 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.12em] ${
+                    active ? "text-accent" : "text-navy"
+                  }`}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <a
               href={siteConfig.phone.href}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl border border-border px-3 py-3 font-semibold text-navy"
+              className="btn-nav-phone mt-3 w-full justify-center"
               onClick={() => setOpen(false)}
             >
-              <Phone className="size-4" aria-hidden />
-              Zadzwoń: {siteConfig.phone.display}
+              <Phone className="size-3.5" aria-hidden />
+              {siteConfig.phone.display}
             </a>
-            <Link
-              href="/#wycena"
-              className="btn btn-primary mt-1 w-full"
-              onClick={() => setOpen(false)}
-            >
-              Zapytaj o naprawę
-            </Link>
           </nav>
         </div>
       ) : null}
