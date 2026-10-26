@@ -42,12 +42,19 @@ Opcjonalnie `MAIL_ALLOW_FILE_FALLBACK=true` zapisuje zgłoszenia do `data/submis
 
 Uzupełnij wpisy w `src/data/pricing.ts`. Pusta lista = komunikat o indywidualnej wycenie.
 
-## Realizacje i opinie
+## Panel admina (blog + realizacje)
 
-- `src/data/realizations.ts`
-- `src/data/reviews.ts`
+- Adres: `/admin` (logowanie: `/admin/login`)
+- Domyślne dane (zmień w produkcji): `ADMIN_USERNAME=admin`, `ADMIN_PASSWORD=wojtech-admin`
+- Ustaw też `ADMIN_SESSION_SECRET` w `.env.local`
+- SQLite: `data/wojtech.db` (gitignore)
+- Uploady: `public/uploads/` (gitignore)
 
-Nie dodawaj fikcyjnych treści.
+Funkcje: tworzenie / edycja / usuwanie wpisów (szkic, zaplanowany, opublikowany) oraz realizacji ze zdjęciami. Na landingu widać kilka najnowszych realizacji i wpisów; pełne listy: `/realizacje`, `/blog`.
+
+## Opinie Google
+
+- `src/data/reviews.ts` — ręczne wpisy z Google (bez fikcyjnych treści)
 
 ## Podstrony usług
 

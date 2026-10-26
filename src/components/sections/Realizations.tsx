@@ -1,21 +1,15 @@
-"use client";
-
-import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { requireDynamic } from "@/lib/dynamic";
 import {
-  realizationFilters,
-  realizations,
-  type RealizationCategory,
-} from "@/data/realizations";
+  categoryLabel,
+  listPublicRealizations,
+} from "@/lib/realizations-db";
 
-export function Realizations() {
-  const [filter, setFilter] = useState<RealizationCategory | "all">("all");
-
-  const items = useMemo(() => {
-    if (filter === "all") return realizations;
-    return realizations.filter((r) => r.category === filter);
-  }, [filter]);
+export async function Realizations() {
+  await requireDynamic();
+  const items = listPublicRealizations(3);
 
   return (
     <section
@@ -28,37 +22,11 @@ export function Realizations() {
           id="realizacje-title"
           label="Realizacje"
           title="Zobacz, co naprawiamy"
-          subtitle="Galeria będzie uzupełniana rzeczywistymi zdjęciami napraw — bez stocków udających wykonane prace."
+          subtitle="Najnowsze przykłady napraw z naszego serwisu."
         />
 
-        <div
-          className="flex flex-wrap gap-2"
-          role="tablist"
-          aria-label="Filtr kategorii realizacji"
-        >
-          {realizationFilters.map((f) => {
-            const active = filter === f.id;
-            return (
-              <button
-                key={f.id}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                className={`min-h-10 rounded-[var(--radius-md)] border px-4 py-2 text-sm font-medium transition-colors ${
-                  active
-                    ? "border-accent bg-accent text-white"
-                    : "border-border bg-white text-navy hover:border-accent/50"
-                }`}
-                onClick={() => setFilter(f.id)}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-        </div>
-
         {items.length === 0 ? (
-          <div className="card-surface mt-8 px-6 py-14 text-center">
+          <div className="card-surface px-6 py-14 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
               Portfolio
             </p>
@@ -66,26 +34,56 @@ export function Realizations() {
               Realizacje w przygotowaniu
             </h3>
             <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted">
-              Po dodaniu zdjęć przed/po pojawią się tutaj wraz z krótkim
-              opisem problemu i wykonanych prac.
+              Wkrótce pojawią się tutaj zdjęcia i opisy wykonanych napraw.
             </p>
-            <Link href="/#oferta" className="btn btn-secondary mt-6">
-              Sprawdź ofertę usług
-            </Link>
           </div>
         ) : (
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-              <article key={item.id} className="card-surface overflow-hidden">
-                <div className="aspect-[4/3] bg-card" />
-                <div className="p-5">
-                  <h3 className="font-semibold text-navy">{item.title}</h3>
-                  <p className="mt-2 text-sm text-muted">{item.problem}</p>
-                  <p className="mt-2 text-sm text-navy">{item.work}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+          <>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {items.map((item) => {
+                const cover =
+                  item.images.find((i) => i.kind === "after") ||
+                  item.images[0];
+                return (
+                  <Link
+                    key={item.id}
+                    href={`/realizacje/${item.slug}`}
+                    className="card-surface overflow-hidden transition-colors hover:border-accent/40"
+                  >
+                    <div className="relative aspect-[4/3] bg-card">
+                      {cover ? (
+                        <Image
+                          src={cover.url}
+                          alt={cover.alt || item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      ) : null}
+                    </div>
+                    <div className="p-5">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+                        {categoryLabel(item.category)}
+                      </p>
+                      <h3 className="mt-2 font-semibold text-navy">
+                        {item.title}
+                      </h3>
+                      {item.problem ? (
+                        <p className="mt-2 line-clamp-2 text-sm text-muted">
+                          {item.problem}
+                        </p>
+                      ) : null}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+            <div className="mt-8">
+              <Link href="/realizacje" className="btn btn-secondary">
+                Wszystkie realizacje
+              </Link>
+            </div>
+          </>
         )}
       </div>
     </section>

@@ -37,6 +37,11 @@ yarn-error.log*
 # local form submissions (dev fallback)
 /data/submissions/
 
+# SQLite database + uploaded media
+/data/*.db
+/data/*.db-*
+/public/uploads/
+
 # vercel
 .vercel
 

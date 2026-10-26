@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { BlogTeaser } from "@/components/sections/BlogTeaser";
 import { Contact } from "@/components/sections/Contact";
 import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
@@ -33,7 +35,12 @@ export default function HomePage() {
       <Quote />
       <Process />
       <Shipping />
-      <Realizations />
+      <Suspense fallback={null}>
+        <Realizations />
+      </Suspense>
+      <Suspense fallback={null}>
+        <BlogTeaser />
+      </Suspense>
       <Reviews />
       <Location />
       <Faq />
