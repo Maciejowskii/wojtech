@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import {
   getDb,
+  tryGetDb,
   type RealizationImage,
   type RealizationRow,
   type RealizationWithImages,
@@ -65,16 +66,19 @@ export function listAllRealizations(): RealizationWithImages[] {
 }
 
 export function listPublicRealizations(limit?: number): RealizationWithImages[] {
-  const db = getDb();
-  const sql = limit
-    ? `SELECT * FROM realizations WHERE published = 1 ORDER BY datetime(created_at) DESC LIMIT ?`
-    : `SELECT * FROM realizations WHERE published = 1 ORDER BY datetime(created_at) DESC`;
-  const rows = (
-    limit
-      ? db.prepare(sql).all(limit)
-      : db.prepare(sql).all()
-  ) as Record<string, unknown>[];
-  return rows.map((r) => withImages(rowToRealization(r)));
+  const db = tryGetDb();
+  if (!db) return [];
+  try {
+    const sql = limit
+      ? `SELECT * FROM realizations WHERE published = 1 ORDER BY datetime(created_at) DESC LIMIT ?`
+      : `SELECT * FROM realizations WHERE published = 1 ORDER BY datetime(created_at) DESC`;
+    const rows = (
+      limit ? db.prepare(sql).all(limit) : db.prepare(sql).all()
+    ) as Record<string, unknown>[];
+    return rows.map((r) => withImages(rowToRealization(r)));
+  } catch {
+    return [];
+  }
 }
 
 export function getRealizationById(id: string): RealizationWithImages | null {
@@ -88,11 +92,16 @@ export function getRealizationById(id: string): RealizationWithImages | null {
 export function getPublicRealizationBySlug(
   slug: string,
 ): RealizationWithImages | null {
-  const db = getDb();
-  const row = db
-    .prepare(`SELECT * FROM realizations WHERE slug = ? AND published = 1`)
-    .get(slug) as Record<string, unknown> | undefined;
-  return row ? withImages(rowToRealization(row)) : null;
+  const db = tryGetDb();
+  if (!db) return null;
+  try {
+    const row = db
+      .prepare(`SELECT * FROM realizations WHERE slug = ? AND published = 1`)
+      .get(slug) as Record<string, unknown> | undefined;
+    return row ? withImages(rowToRealization(row)) : null;
+  } catch {
+    return null;
+  }
 }
 
 export function uniqueRealizationSlug(base: string, excludeId?: string) {

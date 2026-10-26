@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import {
   getDb,
+  tryGetDb,
   type BlogContentFormat,
   type BlogPost,
   type BlogStatus,
@@ -36,17 +37,22 @@ export function listAllBlogPosts(): BlogPost[] {
 
 /** Opublikowane + zaplanowane, których data już minęła */
 export function listPublicBlogPosts(): BlogPost[] {
-  const db = getDb();
-  const now = new Date().toISOString();
-  const rows = db
-    .prepare(
-      `SELECT * FROM blog_posts
-       WHERE status = 'published'
-          OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
-       ORDER BY datetime(published_at) DESC`,
-    )
-    .all(now) as Record<string, unknown>[];
-  return rows.map(rowToBlog);
+  const db = tryGetDb();
+  if (!db) return [];
+  try {
+    const now = new Date().toISOString();
+    const rows = db
+      .prepare(
+        `SELECT * FROM blog_posts
+         WHERE status = 'published'
+            OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
+         ORDER BY datetime(published_at) DESC`,
+      )
+      .all(now) as Record<string, unknown>[];
+    return rows.map(rowToBlog);
+  } catch {
+    return [];
+  }
 }
 
 export function getBlogById(id: string): BlogPost | null {
@@ -58,19 +64,24 @@ export function getBlogById(id: string): BlogPost | null {
 }
 
 export function getPublicBlogBySlug(slug: string): BlogPost | null {
-  const db = getDb();
-  const now = new Date().toISOString();
-  const row = db
-    .prepare(
-      `SELECT * FROM blog_posts
-       WHERE slug = ?
-         AND (
-           status = 'published'
-           OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
-         )`,
-    )
-    .get(slug, now) as Record<string, unknown> | undefined;
-  return row ? rowToBlog(row) : null;
+  const db = tryGetDb();
+  if (!db) return null;
+  try {
+    const now = new Date().toISOString();
+    const row = db
+      .prepare(
+        `SELECT * FROM blog_posts
+         WHERE slug = ?
+           AND (
+             status = 'published'
+             OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
+           )`,
+      )
+      .get(slug, now) as Record<string, unknown> | undefined;
+    return row ? rowToBlog(row) : null;
+  } catch {
+    return null;
+  }
 }
 
 export function uniqueBlogSlug(base: string, excludeId?: string) {

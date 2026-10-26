@@ -47,10 +47,18 @@ Uzupełnij wpisy w `src/data/pricing.ts`. Pusta lista = komunikat o indywidualne
 - Adres: `/admin` (logowanie: `/admin/login`)
 - Domyślne dane (zmień w produkcji): `ADMIN_USERNAME=admin`, `ADMIN_PASSWORD=wojtech-admin`
 - Ustaw też `ADMIN_SESSION_SECRET` w `.env.local`
-- SQLite: `data/wojtech.db` (gitignore)
+- SQLite: `data/wojtech.db` (gitignore) — działa lokalnie (`npm run dev`)
 - Uploady: `public/uploads/` (gitignore)
 
 Funkcje: tworzenie / edycja / usuwanie wpisów (szkic, zaplanowany, opublikowany) oraz realizacji ze zdjęciami. Na landingu widać kilka najnowszych realizacji i wpisów; pełne listy: `/realizacje`, `/blog`.
+
+### Vercel
+
+Lokalne SQLite **nie działa** na Vercel (brak trwałego dysku). Strona publiczna uruchamia się bez bazy (puste blog/realizacje). Panel admina wymaga zewnętrznej bazy (np. Turso) i storage na zdjęcia (np. Vercel Blob) — do podłączenia osobno.
+
+W Vercel → Settings → Environment Variables ustaw m.in.:
+- `NEXT_PUBLIC_SITE_URL=https://twoja-domena.vercel.app`
+- `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `ADMIN_SESSION_SECRET`
 
 ## Opinie Google
 

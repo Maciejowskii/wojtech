@@ -9,7 +9,12 @@ import {
 
 export async function Realizations() {
   await requireDynamic();
-  const items = listPublicRealizations(3);
+  let items: ReturnType<typeof listPublicRealizations> = [];
+  try {
+    items = listPublicRealizations(3);
+  } catch {
+    items = [];
+  }
 
   return (
     <section

@@ -1,20 +1,67 @@
-import { DatabaseSync } from "node:sqlite";
 import fs from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
+
+type DatabaseSync = {
+  exec(sql: string): void;
+  prepare(sql: string): {
+    run(...params: unknown[]): unknown;
+    get(...params: unknown[]): unknown;
+    all(...params: unknown[]): unknown[];
+  };
+  close(): void;
+};
 
 const dataDir = path.join(process.cwd(), "data");
 const dbPath = path.join(dataDir, "wojtech.db");
 
 let dbInstance: DatabaseSync | null = null;
+let dbFailed = false;
 
-export function getDb() {
+/** Na Vercel lokalne SQLite nie działa (read-only FS + brak trwałego storage). */
+export function isDbDisabled() {
+  return Boolean(
+    process.env.VERCEL ||
+      process.env.DISABLE_SQLITE === "1" ||
+      process.env.NEXT_PHASE === "phase-production-build",
+  );
+}
+
+function loadDatabaseSync(): new (path: string) => DatabaseSync {
+  // createRequire omija bundling Turbopack i działa w Node runtime.
+  const nodeRequire = createRequire(path.join(process.cwd(), "package.json"));
+  return nodeRequire("node:sqlite").DatabaseSync as new (
+    path: string,
+  ) => DatabaseSync;
+}
+
+export function getDb(): DatabaseSync {
   if (dbInstance) return dbInstance;
+  if (dbFailed || isDbDisabled()) {
+    throw new Error("DATABASE_UNAVAILABLE");
+  }
 
-  fs.mkdirSync(dataDir, { recursive: true });
-  dbInstance = new DatabaseSync(dbPath);
-  dbInstance.exec("PRAGMA foreign_keys = ON;");
-  migrate(dbInstance);
-  return dbInstance;
+  try {
+    const DatabaseSync = loadDatabaseSync();
+    fs.mkdirSync(dataDir, { recursive: true });
+    dbInstance = new DatabaseSync(dbPath);
+    dbInstance.exec("PRAGMA foreign_keys = ON;");
+    migrate(dbInstance);
+    return dbInstance;
+  } catch (err) {
+    dbFailed = true;
+    console.error("[db] SQLite niedostępne:", err);
+    throw new Error("DATABASE_UNAVAILABLE");
+  }
+}
+
+export function tryGetDb(): DatabaseSync | null {
+  if (isDbDisabled()) return null;
+  try {
+    return getDb();
+  } catch {
+    return null;
+  }
 }
 
 function hasColumn(db: DatabaseSync, table: string, column: string) {
