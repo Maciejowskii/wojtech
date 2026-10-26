@@ -236,6 +236,7 @@ h4 {
 }
 
 .nav-link {
+  position: relative;
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -252,6 +253,17 @@ h4 {
 
 .nav-link-active {
   color: var(--accent);
+}
+
+.nav-link-active::after {
+  content: "";
+  position: absolute;
+  left: 0.7rem;
+  right: 0.7rem;
+  bottom: 0.15rem;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
 }
 
 .rich-editor:empty::before {

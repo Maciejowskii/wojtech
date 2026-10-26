@@ -1,20 +1,49 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { siteConfig } from "@/lib/site.config";
 
-function normalizeHash(href: string) {
-  if (href.includes("#")) return `#${href.split("#")[1]}`;
-  return href;
+function isPathNav(href: string) {
+  return href.startsWith("/") && !href.includes("#");
+}
+
+function sectionId(href: string) {
+  if (!href.includes("#")) return null;
+  return href.split("#")[1] || null;
+}
+
+function isNavActive(
+  href: string,
+  pathname: string,
+  activeSection: string | null,
+) {
+  if (isPathNav(href)) {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
+  // Anchor links only apply on the homepage
+  if (pathname !== "/") return false;
+
+  const id = sectionId(href);
+  if (!id) return false;
+
+  if (id === "start") {
+    return !activeSection || activeSection === "start";
+  }
+
+  return activeSection === id;
 }
 
 export function Header() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeHash, setActiveHash] = useState("#start");
+  const [activeSection, setActiveSection] = useState<string | null>("start");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
@@ -24,18 +53,27 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    const syncHash = () => {
-      setActiveHash(window.location.hash || "#start");
+    if (pathname !== "/") {
+      setActiveSection(null);
+      return;
+    }
+
+    const fromHash = window.location.hash.replace(/^#/, "") || "start";
+    setActiveSection(fromHash);
+
+    const onHash = () => {
+      setActiveSection(window.location.hash.replace(/^#/, "") || "start");
     };
-    syncHash();
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
-  }, []);
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, [pathname]);
 
   useEffect(() => {
+    if (pathname !== "/") return;
+
     const ids = siteConfig.nav
-      .map((item) => item.href.split("#")[1])
-      .filter(Boolean);
+      .map((item) => sectionId(item.href))
+      .filter((id): id is string => Boolean(id));
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -43,19 +81,19 @@ export function Header() {
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         if (visible[0]?.target.id) {
-          setActiveHash(`#${visible[0].target.id}`);
+          setActiveSection(visible[0].target.id);
         }
       },
       { rootMargin: "-20% 0px -55% 0px", threshold: [0.1, 0.35, 0.6] },
     );
 
     ids.forEach((id) => {
-      const el = document.getElementById(id!);
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -63,6 +101,10 @@ export function Header() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <header
@@ -76,13 +118,13 @@ export function Header() {
         <div className="ml-auto hidden items-center gap-1 lg:flex">
           <nav className="flex items-center gap-0.5" aria-label="Główna nawigacja">
             {siteConfig.nav.map((item) => {
-              const hash = normalizeHash(item.href);
-              const active = activeHash === hash;
+              const active = isNavActive(item.href, pathname, activeSection);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={`nav-link ${active ? "nav-link-active" : ""}`}
+                  aria-current={active ? "page" : undefined}
                 >
                   {item.label}
                 </Link>
@@ -90,10 +132,7 @@ export function Header() {
             })}
           </nav>
 
-          <a
-            href={siteConfig.phone.href}
-            className="btn-nav-phone ml-3"
-          >
+          <a href={siteConfig.phone.href} className="btn-nav-phone ml-3">
             <Phone className="size-3.5" aria-hidden strokeWidth={2} />
             {siteConfig.phone.display}
           </a>
@@ -118,15 +157,17 @@ export function Header() {
             aria-label="Menu mobilne"
           >
             {siteConfig.nav.map((item) => {
-              const hash = normalizeHash(item.href);
-              const active = activeHash === hash;
+              const active = isNavActive(item.href, pathname, activeSection);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-1 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.12em] ${
-                    active ? "text-accent" : "text-navy"
+                  className={`border-l-2 px-3 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.12em] ${
+                    active
+                      ? "border-accent text-accent"
+                      : "border-transparent text-navy"
                   }`}
+                  aria-current={active ? "page" : undefined}
                   onClick={() => setOpen(false)}
                 >
                   {item.label}
