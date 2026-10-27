@@ -1,5 +1,5 @@
 /**
- * Orientacyjny cennik — uzupełnij przedziały cenowe.
+ * Orientacyjny cennik - uzupełnij przedziały cenowe.
  * Puste wpisy = komunikat o indywidualnej wycenie.
  *
  * kind:
@@ -15,9 +15,9 @@ export type PriceEntry = {
   categoryIds: string[];
   label: string;
   kind: PriceKind;
-  /** Cena w PLN — tylko gdy kind === "fixed" */
+  /** Cena w PLN - tylko gdy kind === "fixed" */
   amount?: number;
-  /** Przedział — tylko gdy kind === "range" */
+  /** Przedział - tylko gdy kind === "range" */
   min?: number;
   max?: number;
   note?: string;
@@ -69,7 +69,7 @@ export function formatPrice(entry: PriceEntry): string {
     typeof entry.min === "number" &&
     typeof entry.max === "number"
   ) {
-    return `${entry.min}–${entry.max} zł`;
+    return `${entry.min}-${entry.max} zł`;
   }
   return "Wycena indywidualna";
 }

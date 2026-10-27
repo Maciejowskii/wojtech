@@ -68,8 +68,7 @@ export function ServicePageContent({ service }: { service: Service }) {
               <li>Po diagnostyce podamy koszt i zakres.</li>
             </ol>
             <p className="mt-4 text-sm text-muted">
-              Adres: {siteConfig.address.full}. Brak dojazdu do klienta.
-              Wysyłka możliwa po uzgodnieniu.
+              Adres: {siteConfig.address.full}. Wysyłka możliwa po uzgodnieniu.
             </p>
             <Link href="/kontakt#wycena" className="btn btn-primary mt-6 w-full">
               Formularz wyceny

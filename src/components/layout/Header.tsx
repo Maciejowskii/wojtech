@@ -41,18 +41,20 @@ export function Header() {
         scrolled ? "border-border" : "border-border/60"
       }`}
     >
-      <div className="container-page flex h-[var(--header-h)] items-center gap-3 sm:gap-6">
+      <div className="container-page flex h-[var(--header-h)] items-center gap-4 sm:gap-8">
         <Logo className="min-w-0" />
 
-        <div className="ml-auto hidden items-center gap-1 lg:flex">
-          <nav className="flex items-center gap-0.5" aria-label="Główna nawigacja">
+        <div className="ml-auto hidden items-center gap-2 lg:flex">
+          <nav className="flex items-center gap-1" aria-label="Główna nawigacja">
             {siteConfig.nav.map((item) => {
               const active = isNavActive(item.href, pathname);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`nav-link ${active ? "nav-link-active" : ""}`}
+                  className={
+                    active ? "nav-link nav-link-active text-accent" : "nav-link"
+                  }
                   aria-current={active ? "page" : undefined}
                 >
                   {item.label}
@@ -103,10 +105,8 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`min-h-12 border-l-2 px-3 py-3 text-[0.8rem] font-semibold uppercase tracking-[0.12em] ${
-                    active
-                      ? "border-accent text-accent"
-                      : "border-transparent text-navy"
+                  className={`min-h-12 px-3 py-3 text-[0.95rem] font-bold uppercase tracking-[0.1em] ${
+                    active ? "text-accent" : "text-navy"
                   }`}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setOpen(false)}

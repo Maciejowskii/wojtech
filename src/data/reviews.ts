@@ -11,7 +11,7 @@ export type Review = {
 /**
  * Opinie z wizytówki Google Maps firmy.
  * Link do profilu: siteConfig.googleBusinessUrl
- * Źródło: Google Maps — WOJ-TECH Elektroserwis (4 opinie, 5.0)
+ * Źródło: Google Maps - WOJ-TECH Elektroserwis (4 opinie, 5.0)
  */
 export const reviews: Review[] = [
   {

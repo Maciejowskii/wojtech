@@ -31,18 +31,18 @@ export async function POST(request: Request) {
   }
 
   const text = [
-    "Nowa wiadomość kontaktowa — WOJ-TECH",
+    "Nowa wiadomość kontaktowa - WOJ-TECH",
     "",
     `Imię: ${data.name}`,
-    `Telefon: ${data.phone || "—"}`,
-    `E-mail: ${data.email || "—"}`,
+    `Telefon: ${data.phone || "-"}`,
+    `E-mail: ${data.email || "-"}`,
     `Temat: ${data.subject}`,
     "",
     data.message,
   ].join("\n");
 
   const result = await sendMail({
-    subject: `Kontakt: ${data.subject} — ${data.name}`,
+    subject: `Kontakt: ${data.subject} - ${data.name}`,
     text,
     replyTo: data.email || undefined,
   });

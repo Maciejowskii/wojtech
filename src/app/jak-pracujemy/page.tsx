@@ -7,7 +7,7 @@ import { siteConfig } from "@/lib/site.config";
 export const metadata: Metadata = {
   title: "Jak pracujemy",
   description:
-    "Jak wygląda naprawa w WOJ-TECH Ostrzeszów: zgłoszenie, dostawa sprzętu, diagnostyka, wycena i naprawa. Bez dojazdu do klienta.",
+    "Jak wygląda naprawa w WOJ-TECH Ostrzeszów: zgłoszenie, dostawa sprzętu, diagnostyka, wycena i naprawa.",
   alternates: { canonical: "/jak-pracujemy" },
 };
 

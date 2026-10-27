@@ -3,7 +3,6 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { siteConfig } from "@/lib/site.config";
 
 const points = [
-  { ok: false, text: "Brak dojazdu do klienta" },
   { ok: true, text: "Osobiste dostarczenie urządzenia" },
   { ok: true, text: "Wysyłka po wcześniejszym kontakcie" },
   { ok: true, text: "Rozmowa o usterce przed wysłaniem sprzętu" },
@@ -67,7 +66,7 @@ export function Shipping() {
               {siteConfig.address.postalCode} {siteConfig.address.city}
             </p>
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Urządzenia przyjmujemy w serwisie. Brak usług z dojazdem.
+              Urządzenia przyjmujemy w serwisie.
             </p>
           </aside>
         </div>

@@ -61,7 +61,7 @@ export async function BlogTeaser() {
 
         <div className="mt-8">
           <Link href="/blog" className="btn btn-secondary">
-            Wszystkie wpisy
+            Wyświetl więcej
           </Link>
         </div>
       </div>

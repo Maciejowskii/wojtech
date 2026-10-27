@@ -40,7 +40,7 @@ async function saveToFile(payload: MailPayload) {
  * - RESEND_API_KEY
  * - MAIL_FROM (np. "WOJ-TECH <onboarding@resend.dev>")
  * - MAIL_TO (adres serwisu)
- * - MAIL_ALLOW_FILE_FALLBACK=true — zezwala na zapis pliku gdy brak e-maila
+ * - MAIL_ALLOW_FILE_FALLBACK=true - zezwala na zapis pliku gdy brak e-maila
  */
 export async function sendMail(payload: MailPayload): Promise<MailResult> {
   if (isEmailConfigured()) {

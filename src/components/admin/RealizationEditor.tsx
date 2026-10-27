@@ -166,7 +166,7 @@ export function RealizationEditor({ initial }: Props) {
             required
           >
             {categories.length === 0 ? (
-              <option value="">Brak kategorii — dodaj poniżej</option>
+              <option value="">Brak kategorii - dodaj poniżej</option>
             ) : null}
             {categories.map((c) => (
               <option key={c.id} value={c.id}>

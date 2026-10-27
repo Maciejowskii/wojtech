@@ -38,7 +38,7 @@ export function Process({ showHeading = true }: ProcessProps) {
               id="proces-title"
               label="Metodologia"
               title="Jak pracujemy"
-              subtitle="Od zgłoszenia do naprawy. Bez dojazdu do klienta. Sprzęt dostarczasz do serwisu."
+              subtitle="Od zgłoszenia do naprawy. Sprzęt dostarczasz do serwisu."
             />
           </ScrollReveal>
         ) : null}

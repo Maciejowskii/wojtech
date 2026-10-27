@@ -1,5 +1,5 @@
 /**
- * Centralne dane firmy — edytuj tutaj, zmiany propagują się po całej stronie.
+ * Centralne dane firmy - edytuj tutaj, zmiany propagują się po całej stronie.
  */
 export const siteConfig = {
   name: "WOJ-TECH Elektroserwis",
@@ -36,12 +36,12 @@ export const siteConfig = {
   },
 
   /**
-   * Godziny otwarcia — uzupełnij, gdy właściciel je poda.
+   * Godziny otwarcia - uzupełnij, gdy właściciel je poda.
    * Puste = sekcja pokazuje placeholder.
    */
   openingHours: [
-    { days: "Poniedziałek – Piątek", hours: "9:00 – 17:00" },
-    { days: "Sobota – Niedziela", hours: "zamknięte" },
+    { days: "Poniedziałek - Piątek", hours: "9:00 - 17:00" },
+    { days: "Sobota - Niedziela", hours: "zamknięte" },
   ],
 
   /** Profil firmy w Google Maps / opinie */
@@ -49,13 +49,22 @@ export const siteConfig = {
 
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://woj-tech.pl",
 
+  /** Skrócone menu w nagłówku */
   nav: [
     { label: "Strona główna", href: "/" },
     { label: "Oferta", href: "/oferta" },
-    { label: "Jak pracujemy", href: "/jak-pracujemy" },
     { label: "Realizacje", href: "/realizacje" },
+    { label: "Kontakt", href: "/kontakt" },
+  ],
+
+  /** Pełniejsza nawigacja w stopce (sekcje LP + blog) */
+  footerNav: [
+    { label: "Strona główna", href: "/" },
+    { label: "Oferta", href: "/oferta" },
+    { label: "Jak pracujemy", href: "/#jak-pracujemy" },
+    { label: "Realizacje", href: "/#realizacje" },
+    { label: "Opinie", href: "/#opinie" },
     { label: "Blog", href: "/blog" },
-    { label: "Opinie", href: "/opinie" },
     { label: "Kontakt", href: "/kontakt" },
   ],
 } as const;

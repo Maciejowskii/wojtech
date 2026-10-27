@@ -35,29 +35,29 @@ export async function POST(request: Request) {
     quoteCategories.find((c) => c.id === data.category)?.label ?? data.category;
 
   const text = [
-    "Nowe zgłoszenie wyceny — WOJ-TECH",
+    "Nowe zgłoszenie wyceny - WOJ-TECH",
     "",
     `Kategoria: ${categoryLabel}`,
     `Producent: ${data.brand}`,
-    `Model: ${data.model || "—"}`,
-    `Wiek: ${data.age || "—"}`,
+    `Model: ${data.model || "-"}`,
+    `Wiek: ${data.age || "-"}`,
     `Rodzaj usterki: ${data.issueType}`,
     "",
     "Opis:",
     data.description,
     "",
-    `Budżet orientacyjny: ${data.budget || "—"}`,
-    `Uwagi: ${data.notes || "—"}`,
+    `Budżet orientacyjny: ${data.budget || "-"}`,
+    `Uwagi: ${data.notes || "-"}`,
     "",
     `Imię: ${data.name}`,
     `Telefon: ${data.phone}`,
-    `E-mail: ${data.email || "—"}`,
+    `E-mail: ${data.email || "-"}`,
     `Preferowany kontakt: ${data.contactPreference}`,
     `Dostarczenie: ${data.delivery === "in_person" ? "osobiście" : "wysyłka"}`,
   ].join("\n");
 
   const result = await sendMail({
-    subject: `Wycena: ${categoryLabel} — ${data.name}`,
+    subject: `Wycena: ${categoryLabel} - ${data.name}`,
     text,
     replyTo: data.email || undefined,
   });

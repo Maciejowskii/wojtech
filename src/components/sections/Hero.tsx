@@ -8,103 +8,104 @@ export function Hero() {
   const rating = googleRatingSummary.rating.toFixed(1).replace(".", ",");
   const reviewCount = googleRatingSummary.count;
   const weekday = siteConfig.openingHours[0];
-  const weekend = siteConfig.openingHours[1];
+  const hoursLine =
+    weekday?.days === "Poniedziałek - Piątek"
+      ? `Pon-Pt ${weekday.hours}`
+      : weekday
+        ? `${weekday.days} ${weekday.hours}`
+        : null;
 
   return (
-    <section id="start" className="border-b border-border bg-mist">
-      <div className="container-page grid gap-8 py-10 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-12 xl:min-h-[calc(100svh-var(--header-h))]">
-        <div className="flex flex-col gap-10 lg:col-span-5 lg:py-4">
-          <div className="hero-enter">
-            <p className="section-label !mb-4">Elektroserwis</p>
-            <h1 className="mb-2 whitespace-nowrap text-[clamp(2.35rem,5.8vw,4.85rem)] font-bold leading-[0.92] tracking-[-0.04em] text-navy">
-              WOJ-TECH
-            </h1>
-            <p className="font-display text-2xl font-semibold tracking-tight text-navy md:text-3xl">
-              {siteConfig.owner}
-            </p>
-            <p className="font-display mt-4 max-w-lg text-balance text-xl font-medium tracking-tight text-muted md:text-2xl">
-              Naprawa ekspresów do kawy, AGD, RTV, elektroniki samochodowej oraz
-              rowerów i hulajnóg elektrycznych w Ostrzeszowie.
-              <br />
-              Każda naprawa po diagnostyce i uzgodnieniu kosztów.
-            </p>
-            <p className="mt-4 text-sm text-muted">
-              {rating} · {reviewCount} opinie Google
-            </p>
+    <section
+      id="start"
+      className="flex flex-col justify-center border-b border-border bg-mist lg:min-h-[calc(100svh-var(--header-h))]"
+    >
+      <div className="container-page grid items-center gap-8 py-12 sm:gap-10 sm:py-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 lg:py-14 xl:gap-16">
+        <div className="hero-enter min-w-0">
+          <h1 className="text-[clamp(2.75rem,8.5vw,5.25rem)] font-bold leading-[0.9] tracking-[-0.03em] text-navy">
+            WOJ-TECH
+          </h1>
 
-            <div className="mt-7 flex flex-col gap-3">
-              <div className="flex flex-wrap gap-3">
-                <Link href="/kontakt#wycena" className="btn btn-primary">
-                  Zapytaj o wycenę
-                </Link>
-                <Link href="/oferta" className="btn btn-secondary">
-                  Zobacz ofertę
-                </Link>
-              </div>
-              <a
-                href={siteConfig.phone.href}
-                className="btn btn-secondary inline-flex w-full max-w-md items-center justify-center gap-2"
-              >
-                <Phone className="size-4 shrink-0" aria-hidden strokeWidth={2} />
-                {siteConfig.phone.display}
-              </a>
-            </div>
+          <p className="mt-4 text-lg font-medium text-navy sm:text-xl">
+            <span className="text-accent">Elektroserwis</span>
+            <span className="mx-2 text-border" aria-hidden>
+              ·
+            </span>
+            {siteConfig.owner}
+          </p>
+
+          <p className="mt-7 max-w-[36rem] text-pretty text-lg leading-relaxed text-graphite sm:mt-8 sm:text-[1.15rem] sm:leading-[1.65]">
+            Naprawiam ekspresy do kawy, AGD, RTV, elektronikę samochodową oraz
+            rowery i hulajnogi elektryczne. Serwis w Ostrzeszowie: sprzęt
+            oddajesz na miejscu, koszt uzgadniamy po diagnostyce.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center">
+            <a href={siteConfig.phone.href} className="btn btn-primary">
+              <Phone className="size-4 shrink-0" aria-hidden strokeWidth={2} />
+              {siteConfig.phone.display}
+            </a>
+            <Link href="/kontakt#wycena" className="btn btn-secondary">
+              Zapytaj o wycenę
+            </Link>
+            <Link
+              href="/oferta"
+              className="text-sm font-semibold text-muted underline-offset-4 transition-colors hover:text-accent hover:underline"
+            >
+              Pełna oferta
+            </Link>
           </div>
 
-          <div className="hero-enter-strip border-t-2 border-navy pt-6">
-            <div className="grid gap-6 sm:grid-cols-3 sm:gap-0">
-              <div className="sm:pr-5">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-                  Adres
-                </p>
-                <p className="font-display mt-2 text-base font-semibold tracking-tight text-navy md:text-lg">
-                  {siteConfig.address.street}
-                </p>
-              </div>
-              <div className="border-border sm:border-l sm:px-5">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-                  Miasto
-                </p>
-                <p className="font-display mt-2 text-base font-semibold tracking-tight text-navy md:text-lg">
-                  {siteConfig.address.city}
-                </p>
-                <p className="mt-0.5 text-sm text-muted">
-                  {siteConfig.address.postalCode}
-                </p>
-              </div>
-              <div className="border-border sm:border-l sm:pl-5">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-                  Godziny
-                </p>
-                {weekday ? (
-                  <p className="font-display mt-2 text-base font-semibold tracking-tight text-navy md:text-lg">
-                    {weekday.days === "Poniedziałek – Piątek"
-                      ? `Pon-Pt ${weekday.hours}`
-                      : `${weekday.days} ${weekday.hours}`}
-                  </p>
-                ) : null}
-                {weekend ? (
-                  <p className="mt-0.5 text-sm leading-snug text-muted">
-                    {weekend.days}: {weekend.hours}
-                  </p>
-                ) : null}
-              </div>
-            </div>
-          </div>
+          <p className="mt-8 text-sm leading-relaxed text-muted sm:mt-10">
+            {siteConfig.address.street}, {siteConfig.address.postalCode}{" "}
+            {siteConfig.address.city}
+            {hoursLine ? (
+              <>
+                <span className="mx-2 text-border" aria-hidden>
+                  ·
+                </span>
+                {hoursLine}
+              </>
+            ) : null}
+            <span className="mx-2 text-border" aria-hidden>
+              ·
+            </span>
+            {rating} · {reviewCount} opinie Google
+          </p>
         </div>
 
-        <div className="hero-enter-media w-full lg:col-span-7">
-          <div className="relative aspect-[3/2] w-full">
+        <figure className="hero-enter-media relative hidden w-full lg:block">
+          <div
+            className="absolute inset-y-6 -left-5 right-10 -z-10 bg-steel"
+            aria-hidden
+          />
+          <div className="relative h-[min(70svh,36rem)] overflow-hidden border border-navy/15 bg-navy">
             <Image
               src="/brand/stanowisko.jpg"
               alt="WOJ-TECH Elektroserwis, wejście do serwisu przy Olszynie 84C w Ostrzeszowie"
               fill
               priority
-              className="object-cover object-center"
-              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-cover object-[48%_35%]"
+              sizes="(max-width: 1280px) 42vw, 36rem"
             />
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-navy/90 via-navy/45 to-transparent"
+              aria-hidden
+            />
+            <figcaption className="absolute inset-x-0 bottom-0 flex flex-col gap-1.5 px-6 pb-6 pt-10">
+              <span className="text-sm font-semibold uppercase tracking-[0.16em] text-white">
+                Serwis · Ostrzeszów
+              </span>
+              <span className="text-base text-steel">
+                {siteConfig.address.street}, {siteConfig.address.city}
+              </span>
+            </figcaption>
           </div>
-        </div>
+          <div
+            className="absolute -bottom-2 left-12 right-0 h-1.5 bg-accent"
+            aria-hidden
+          />
+        </figure>
       </div>
     </section>
   );

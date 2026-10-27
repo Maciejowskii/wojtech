@@ -34,7 +34,7 @@ export default function PrivacyPage() {
         <p className="mt-3 text-sm leading-relaxed text-muted">
           Dane podane w formularzu wyceny lub kontaktowym przetwarzamy w celu
           obsługi zgłoszenia, kontaktu zwrotnego oraz przygotowania informacji o
-          możliwej naprawie — na podstawie zgody lub prawnie uzasadnionego
+          możliwej naprawie - na podstawie zgody lub prawnie uzasadnionego
           interesu związanego z odpowiedzią na zapytanie.
         </p>
 
@@ -46,8 +46,8 @@ export default function PrivacyPage() {
 
         <h2 className="mt-8 text-xl font-bold text-navy">Okres przechowywania</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted">
-          Dane przechowujemy przez czas potrzebny do obsługi zgłoszenia oraz —
-          gdy to konieczne — przez okres wynikający z przepisów prawa.
+          Dane przechowujemy przez czas potrzebny do obsługi zgłoszenia oraz -
+          gdy to konieczne - przez okres wynikający z przepisów prawa.
         </p>
 
         <h2 className="mt-8 text-xl font-bold text-navy">Prawa osób</h2>

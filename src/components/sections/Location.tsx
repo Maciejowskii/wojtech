@@ -13,7 +13,7 @@ export function Location() {
           id="lokalizacja-title"
           label="Lokalizacja"
           title="Serwis w Ostrzeszowie"
-          subtitle="Urządzenie dostarczasz osobiście. Brak dojazdu do klienta."
+          subtitle="Urządzenie dostarczasz osobiście do serwisu."
         />
 
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
@@ -74,7 +74,7 @@ export function Location() {
 
           <div className="card-surface overflow-hidden">
             <iframe
-              title="Mapa — WOJ-TECH Elektroserwis, Ostrzeszów"
+              title="Mapa - WOJ-TECH Elektroserwis, Ostrzeszów"
               src={siteConfig.address.mapsEmbed}
               className="h-[320px] w-full border-0 md:h-full md:min-h-[360px]"
               loading="lazy"

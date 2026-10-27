@@ -54,7 +54,7 @@ export default async function AdminBlogListPage() {
                   <td className="px-4 py-3 text-muted">
                     {post.published_at
                       ? new Date(post.published_at).toLocaleString("pl-PL")
-                      : "—"}
+                      : "-"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-2">

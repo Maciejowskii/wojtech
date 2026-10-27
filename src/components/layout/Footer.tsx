@@ -27,7 +27,7 @@ export function Footer() {
             Nawigacja
           </h3>
           <ul className="mt-4 space-y-2 text-sm">
-            {siteConfig.nav.map((item) => (
+            {siteConfig.footerNav.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="hover:text-accent">
                   {item.label}

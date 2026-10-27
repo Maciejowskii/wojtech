@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Kolory WOJ-TECH — układ i rytm wg stylu projektyostrzeszow.pl */
+/* Kolory WOJ-TECH - układ i rytm wg stylu projektyostrzeszow.pl */
 :root {
   --steel: #b2c3d7;
   --white: #fefefe;
@@ -8,6 +8,9 @@
   --navy: #20354b;
   --accent: #267a9b;
   --accent-hover: #1f6580;
+  /* Jaśniejszy błękit z rodziny accent (nie nazywać \"sky\" - koliduje z Tailwind) */
+  --azure: #4a9ebc;
+  --azure-hover: #3a8aaa;
   --mist: #f3f6f9;
   --border: #d5dee8;
   --muted: #5a6573;
@@ -21,7 +24,7 @@
 
   --content-width: 1200px;
   --page-gutter: 16px;
-  --header-h: 3.75rem;
+  --header-h: 4.5rem;
   --mobile-cta-h: 4.5rem;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 
@@ -43,6 +46,8 @@
   --color-navy: var(--navy);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-azure: var(--azure);
+  --color-azure-hover: var(--azure-hover);
   --color-mist: var(--mist);
   --color-border: var(--border);
   --color-muted: var(--muted);
@@ -72,7 +77,7 @@ body {
 @media (min-width: 768px) {
   :root {
     --page-gutter: 24px;
-    --header-h: 4.25rem;
+    --header-h: 5.25rem;
   }
 
   body {
@@ -211,13 +216,13 @@ h4 {
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  min-height: 40px;
-  padding: 0.45rem 0.9rem;
+  min-height: 44px;
+  padding: 0.55rem 1.05rem;
   border: 1px solid color-mix(in srgb, var(--graphite) 28%, transparent);
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--navy);
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
@@ -230,7 +235,7 @@ h4 {
 .btn-nav-phone:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .card-surface {
@@ -268,34 +273,22 @@ h4 {
 }
 
 .nav-link {
-  position: relative;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--navy);
   text-decoration: none;
-  padding: 0.5rem 0.7rem;
+  padding: 0.7rem 0.85rem;
   transition: color 160ms ease;
 }
 
 .nav-link:hover {
-  color: var(--accent);
+  color: var(--accent) !important;
 }
 
-.nav-link-active {
-  color: var(--accent);
-}
-
-.nav-link-active::after {
-  content: "";
-  position: absolute;
-  left: 0.7rem;
-  right: 0.7rem;
-  bottom: 0.15rem;
-  height: 2px;
-  background: var(--accent);
-  border-radius: 1px;
+.nav-link.nav-link-active {
+  color: var(--accent) !important;
 }
 
 .rich-editor:empty::before {

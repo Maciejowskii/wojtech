@@ -204,7 +204,7 @@ export function QuoteForm() {
       </div>
 
       <div className="p-5 md:p-8">
-        {/* honeypot — ukryty przed użytkownikami */}
+        {/* honeypot - ukryty przed użytkownikami */}
         <div className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
           <label>
             Strona WWW
@@ -404,9 +404,6 @@ export function QuoteForm() {
             <legend className="text-lg font-bold text-navy">
               Jak dostarczysz sprzęt?
             </legend>
-            <p className="mt-2 text-sm text-muted">
-              Nie oferujemy dojazdu do klienta ani odbioru sprzętu z domu.
-            </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {(
                 [
@@ -457,7 +454,7 @@ export function QuoteForm() {
               <dl className="mt-3 grid gap-2 sm:grid-cols-2">
                 <Item label="Kategoria" value={categoryLabel} />
                 <Item label="Producent" value={form.brand} />
-                <Item label="Model" value={form.model || "—"} />
+                <Item label="Model" value={form.model || "-"} />
                 <Item label="Usterka" value={form.issueType} />
                 <Item label="Imię" value={form.name} />
                 <Item label="Telefon" value={form.phone} />
@@ -491,7 +488,7 @@ export function QuoteForm() {
                         {p.kind !== "fixed" ? (
                           <span className="mt-0.5 block text-xs text-muted">
                             {p.kind === "range"
-                              ? "Orientacyjny przedział — nie gwarantowana cena końcowa"
+                              ? "Orientacyjny przedział - nie gwarantowana cena końcowa"
                               : "Wymaga indywidualnej diagnostyki"}
                           </span>
                         ) : null}
