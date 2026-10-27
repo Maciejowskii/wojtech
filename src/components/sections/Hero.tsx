@@ -11,112 +11,98 @@ export function Hero() {
   const weekend = siteConfig.openingHours[1];
 
   return (
-    <section
-      id="start"
-      className="flex min-h-[calc(100svh-var(--header-h))] flex-col border-b border-border bg-mist"
-    >
-      <div className="relative min-h-[min(72vh,36rem)] flex-1 overflow-hidden lg:min-h-0">
-        <div className="absolute inset-0 hero-enter-media">
-          <Image
-            src="/brand/stanowisko.jpg"
-            alt="WOJ-TECH Elektroserwis, wejście do serwisu przy Olszynie 84C w Ostrzeszowie"
-            fill
-            priority
-            className="object-cover object-[center_30%] lg:object-[68%_35%]"
-            sizes="100vw"
-          />
-          <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(243,246,249,0.25)_0%,rgba(243,246,249,0.45)_35%,rgba(243,246,249,0.88)_68%,rgba(243,246,249,0.96)_100%)] lg:bg-[linear-gradient(105deg,rgba(243,246,249,0.97)_0%,rgba(243,246,249,0.9)_28%,rgba(243,246,249,0.45)_46%,rgba(243,246,249,0.08)_62%,transparent_74%)]"
-            aria-hidden
-          />
-        </div>
-
-        <div className="relative z-10 flex h-full min-h-[inherit] flex-col justify-end px-[var(--page-gutter)] pb-10 pt-12 sm:pb-12 sm:pt-14 lg:pb-14 lg:pt-16 lg:pl-[max(var(--page-gutter),calc((100vw-var(--content-width))/2))]">
-          <div className="hero-enter w-full max-w-xl">
-            <p className="section-label">Elektroserwis</p>
-            <h1 className="text-[clamp(2.85rem,7.5vw,5.25rem)] font-semibold tracking-tight text-navy">
+    <section id="start" className="border-b border-border bg-mist">
+      <div className="container-page grid gap-8 py-10 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-12 xl:min-h-[calc(100svh-var(--header-h))]">
+        <div className="flex flex-col gap-10 lg:col-span-5 lg:py-4">
+          <div className="hero-enter">
+            <p className="section-label !mb-4">Elektroserwis</p>
+            <h1 className="mb-2 whitespace-nowrap text-[clamp(2.35rem,5.8vw,4.85rem)] font-bold leading-[0.92] tracking-[-0.04em] text-navy">
               WOJ-TECH
             </h1>
-            <p className="mt-2 text-lg font-medium text-navy sm:text-xl md:text-2xl">
+            <p className="font-display text-2xl font-semibold tracking-tight text-navy md:text-3xl">
               {siteConfig.owner}
             </p>
-            <p className="mt-5 text-pretty text-base leading-relaxed text-muted md:text-lg">
+            <p className="font-display mt-4 max-w-lg text-balance text-xl font-medium tracking-tight text-muted md:text-2xl">
               Naprawa ekspresów do kawy, AGD, RTV, elektroniki samochodowej oraz
               rowerów i hulajnóg elektrycznych w Ostrzeszowie.
               <br />
               Każda naprawa po diagnostyce i uzgodnieniu kosztów.
             </p>
-
             <p className="mt-4 text-sm text-muted">
               {rating} · {reviewCount} opinie Google
             </p>
 
-            <div className="mt-8 flex flex-col gap-3">
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href="/kontakt#wycena"
-                  className="btn btn-primary w-full sm:w-auto"
-                >
+            <div className="mt-7 flex flex-col gap-3">
+              <div className="flex flex-wrap gap-3">
+                <Link href="/kontakt#wycena" className="btn btn-primary">
                   Zapytaj o wycenę
                 </Link>
-                <Link
-                  href="/oferta"
-                  className="btn btn-secondary w-full sm:w-auto"
-                >
+                <Link href="/oferta" className="btn btn-secondary">
                   Zobacz ofertę
                 </Link>
               </div>
               <a
                 href={siteConfig.phone.href}
-                className="btn btn-phone w-full sm:max-w-md"
+                className="btn btn-secondary inline-flex w-full max-w-md items-center justify-center gap-2"
               >
-                <Phone
-                  className="size-4 shrink-0"
-                  aria-hidden
-                  strokeWidth={2}
-                />
+                <Phone className="size-4 shrink-0" aria-hidden strokeWidth={2} />
                 {siteConfig.phone.display}
               </a>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="relative z-10 border-t border-border bg-white hero-enter-strip">
-        <div className="container-page grid gap-5 py-4 sm:grid-cols-3 sm:gap-0 sm:py-5">
-          <div className="border-b border-border pb-4 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
-              Adres
-            </p>
-            <p className="mt-1.5 font-medium text-navy">
-              {siteConfig.address.street}
-            </p>
+          <div className="hero-enter-strip border-t-2 border-navy pt-6">
+            <div className="grid gap-6 sm:grid-cols-3 sm:gap-0">
+              <div className="sm:pr-5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                  Adres
+                </p>
+                <p className="font-display mt-2 text-base font-semibold tracking-tight text-navy md:text-lg">
+                  {siteConfig.address.street}
+                </p>
+              </div>
+              <div className="border-border sm:border-l sm:px-5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                  Miasto
+                </p>
+                <p className="font-display mt-2 text-base font-semibold tracking-tight text-navy md:text-lg">
+                  {siteConfig.address.city}
+                </p>
+                <p className="mt-0.5 text-sm text-muted">
+                  {siteConfig.address.postalCode}
+                </p>
+              </div>
+              <div className="border-border sm:border-l sm:pl-5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                  Godziny
+                </p>
+                {weekday ? (
+                  <p className="font-display mt-2 text-base font-semibold tracking-tight text-navy md:text-lg">
+                    {weekday.days === "Poniedziałek – Piątek"
+                      ? `Pon-Pt ${weekday.hours}`
+                      : `${weekday.days} ${weekday.hours}`}
+                  </p>
+                ) : null}
+                {weekend ? (
+                  <p className="mt-0.5 text-sm leading-snug text-muted">
+                    {weekend.days}: {weekend.hours}
+                  </p>
+                ) : null}
+              </div>
+            </div>
           </div>
-          <div className="border-b border-border pb-4 sm:border-b-0 sm:border-r sm:px-8 sm:pb-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
-              Miasto
-            </p>
-            <p className="mt-1.5 font-medium text-navy">
-              {siteConfig.address.city}
-            </p>
-            <p className="text-sm text-muted">{siteConfig.address.postalCode}</p>
-          </div>
-          <div className="sm:pl-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
-              Godziny
-            </p>
-            {weekday ? (
-              <p className="mt-1.5 font-medium text-navy">
-                {weekday.days === "Poniedziałek – Piątek"
-                  ? `Pon-Pt ${weekday.hours}`
-                  : `${weekday.days} ${weekday.hours}`}
-              </p>
-            ) : null}
-            {weekend ? (
-              <p className="text-sm text-muted">
-                {weekend.days}: {weekend.hours}
-              </p>
-            ) : null}
+        </div>
+
+        <div className="hero-enter-media w-full lg:col-span-7">
+          <div className="relative aspect-[3/2] w-full">
+            <Image
+              src="/brand/stanowisko.jpg"
+              alt="WOJ-TECH Elektroserwis, wejście do serwisu przy Olszynie 84C w Ostrzeszowie"
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 55vw"
+            />
           </div>
         </div>
       </div>
