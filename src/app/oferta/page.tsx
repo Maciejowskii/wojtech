@@ -16,8 +16,7 @@ export default function OfertaPage() {
     <>
       <section className="border-b border-border bg-mist">
         <div className="container-page py-12 md:py-16">
-          <p className="section-label">Oferta</p>
-          <h1 className="mt-2 max-w-3xl text-[clamp(2rem,4vw,3rem)] font-semibold tracking-tight text-navy">
+          <h1 className="max-w-3xl text-[clamp(2rem,4vw,3rem)] font-semibold tracking-tight text-navy">
             Co naprawiamy w Ostrzeszowie
           </h1>
           <p className="mt-4 max-w-[65ch] text-lg leading-relaxed text-muted">

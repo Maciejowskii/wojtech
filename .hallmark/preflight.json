@@ -1,0 +1,21 @@
+{
+  "project": "wojtech",
+  "framework": "Next.js 16.4.3 + React 19 + Tailwind 4",
+  "designMd": "DESIGN.md (locked)",
+  "preserved": {
+    "palette": ["steel #B2C3D7", "navy #20354B", "accent #267A9B", "mist #F3F6F9", "graphite #17191D"],
+    "type": ["Archivo display", "Source Sans 3 body"],
+    "brand": "WOJ-TECH Elektroserwis / Wojciech Kijewski",
+    "routes": ["/", "/oferta", "/jak-pracujemy", "/realizacje", "/blog", "/opinie", "/kontakt", "service pages"],
+    "wiring": "forms QuoteForm/ContactForm, phone tel links, Google Maps embed"
+  },
+  "introduced": "Hallmark redesign pending user confirm",
+  "citations": {
+    "DESIGN.md": "1-33 locked world/palette/type/composition",
+    "src/app/globals.css": "1-53 tokens; 117-127 .section-label tracked uppercase (Floor 54 conflict with locked design)",
+    "src/app/layout.tsx": "Archivo + Source_Sans_3"
+  },
+  "devServer": "http://localhost:3000",
+  "genre_inferred": "editorial",
+  "job_inferred": "visit / hire (call or quote request)"
+}

@@ -1,17 +1,18 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 const steps = [
   {
     title: "Zgłoś problem",
-    text: "Opisz usterkę w formularzu albo zadzwoń.",
+    text: "Opisz usterkę w formularzu albo zadzwoń. Dzięki temu łatwiej przygotujemy przyjęcie sprzętu.",
   },
   {
     title: "Dostarcz urządzenie",
-    text: "Przywieź sprzęt do serwisu w Ostrzeszowie. Z dalszej okolicy możesz zapytać o wysyłkę.",
+    text: "Przywieź sprzęt do serwisu w Ostrzeszowie. Z dalszej okolicy możesz zapytać o wysyłkę po wcześniejszym kontakcie.",
   },
   {
     title: "Diagnostyka i wycena",
-    text: "Sprawdzimy urządzenie, ustalimy możliwą przyczynę i podamy przewidywany koszt.",
+    text: "Sprawdzimy urządzenie, ustalimy możliwą przyczynę problemu i podamy przewidywany koszt naprawy.",
   },
   {
     title: "Naprawa",
@@ -32,19 +33,23 @@ export function Process({ showHeading = true }: ProcessProps) {
     >
       <div className="container-page">
         {showHeading ? (
-          <SectionHeading
-            id="proces-title"
-            label="Proces"
-            title="Jak wygląda naprawa"
-            subtitle="Cztery kroki. Bez dojazdu do klienta. Sprzęt dostarczasz do serwisu."
-          />
+          <ScrollReveal>
+            <SectionHeading
+              id="proces-title"
+              label="Metodologia"
+              title="Jak pracujemy"
+              subtitle="Od zgłoszenia do naprawy. Bez dojazdu do klienta. Sprzęt dostarczasz do serwisu."
+            />
+          </ScrollReveal>
         ) : null}
 
         <ol className="grid gap-0 border border-border bg-white md:grid-cols-2 xl:grid-cols-4">
           {steps.map((step, index) => (
-            <li
+            <ScrollReveal
               key={step.title}
-              className="border-border p-6 md:border-r md:[&:nth-child(2n)]:border-r-0 xl:[&:nth-child(2n)]:border-r xl:[&:nth-child(4n)]:border-r-0 border-b last:border-b-0 md:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b-0"
+              as="li"
+              delay={index * 90}
+              className="border-b border-border p-6 last:border-b-0 md:border-r md:[&:nth-child(2n)]:border-r-0 md:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b-0 xl:[&:nth-child(2n)]:border-r xl:[&:nth-child(4n)]:border-r-0"
             >
               <p className="font-display text-3xl font-semibold tabular-nums text-steel">
                 {String(index + 1).padStart(2, "0")}
@@ -55,7 +60,7 @@ export function Process({ showHeading = true }: ProcessProps) {
               <p className="mt-2 text-sm leading-relaxed text-muted">
                 {step.text}
               </p>
-            </li>
+            </ScrollReveal>
           ))}
         </ol>
       </div>

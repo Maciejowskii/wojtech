@@ -8,6 +8,13 @@ type ContactProps = {
 };
 
 export function Contact({ showHeading = true }: ContactProps) {
+  const hours =
+    siteConfig.openingHours.length > 0
+      ? siteConfig.openingHours
+          .map((row) => `${row.days}: ${row.hours}`)
+          .join(". ")
+      : "Przed wizytą zadzwoń.";
+
   return (
     <section
       id="kontakt"
@@ -19,53 +26,45 @@ export function Contact({ showHeading = true }: ContactProps) {
           <SectionHeading
             id="kontakt-title"
             label="Kontakt"
-            title="Zadzwoń albo napisz"
-            subtitle={`Telefon ${siteConfig.phone.display}. Adres: ${siteConfig.address.full}.`}
+            title="Zapytaj o wycenę naprawy"
+            subtitle="Opisz urządzenie i usterkę. Oddzwonimy z informacją o dalszych krokach."
           />
         ) : null}
 
-        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="card-surface p-6 md:p-8">
-            <dl className="space-y-5 text-sm">
+        <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+          <div>
+            <dl className="space-y-3 text-[0.95rem] leading-relaxed text-navy">
               <div>
-                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-                  Telefon
-                </dt>
-                <dd className="mt-1">
+                <dt className="inline font-semibold">Telefon: </dt>
+                <dd className="inline">
                   <a
                     href={siteConfig.phone.href}
-                    className="text-lg font-semibold text-navy underline-offset-2 hover:text-accent hover:underline"
+                    className="underline-offset-2 hover:text-accent hover:underline"
                   >
                     {siteConfig.phone.display}
                   </a>
                 </dd>
               </div>
+              {siteConfig.email.display ? (
+                <div>
+                  <dt className="inline font-semibold">E-mail: </dt>
+                  <dd className="inline">
+                    <a
+                      href={siteConfig.email.href}
+                      className="underline-offset-2 hover:text-accent hover:underline"
+                    >
+                      {siteConfig.email.display}
+                    </a>
+                  </dd>
+                </div>
+              ) : null}
               <div>
-                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-                  E-mail
-                </dt>
-                <dd className="mt-1 text-navy">
-                  {siteConfig.email.display ||
-                    "Adres e-mail — uzupełnij w konfiguracji"}
-                </dd>
+                <dt className="inline font-semibold">Adres: </dt>
+                <dd className="inline">{siteConfig.address.full}</dd>
               </div>
               <div>
-                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-                  Adres
-                </dt>
-                <dd className="mt-1 text-navy">{siteConfig.address.full}</dd>
-              </div>
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-                  Godziny
-                </dt>
-                <dd className="mt-1 text-muted">
-                  {siteConfig.openingHours.length > 0
-                    ? siteConfig.openingHours
-                        .map((row) => `${row.days}: ${row.hours}`)
-                        .join(". ")
-                    : "Uzupełnij w konfiguracji. Przed wizytą zadzwoń."}
-                </dd>
+                <dt className="inline font-semibold">Godziny: </dt>
+                <dd className="inline text-muted">{hours}</dd>
               </div>
             </dl>
 
@@ -84,23 +83,18 @@ export function Contact({ showHeading = true }: ContactProps) {
               >
                 Trasa
               </a>
-              <Link
-                href="/kontakt#wycena"
-                className="btn btn-ghost w-full sm:w-auto"
-              >
-                Formularz wyceny
-              </Link>
             </div>
+
+            <Link
+              href="/kontakt"
+              className="mt-6 inline-block text-sm font-semibold text-navy underline-offset-2 hover:text-accent hover:underline"
+            >
+              Pełna strona kontaktu
+            </Link>
           </div>
 
-          <div className="card-surface p-6 md:p-8">
-            <h3 className="text-xl font-semibold text-navy">
-              Wyślij wiadomość
-            </h3>
-            <p className="mt-2 text-sm text-muted">
-              Opisz urządzenie i problem. Oddzwonimy lub odpiszemy.
-            </p>
-            <div className="mt-6">
+          <div className="card-surface p-6 md:p-8" id="wycena">
+            <div className="mt-0">
               <ContactForm />
             </div>
           </div>

@@ -25,22 +25,47 @@ export async function Realizations() {
       <div className="container-page">
         <SectionHeading
           id="realizacje-title"
-          label="Realizacje"
-          title="Wybrane naprawy"
-          subtitle="Zdjęcia i opisy z serwisu WOJ-TECH w Ostrzeszowie."
+          label="Portfolio"
+          title="Wybrane realizacje"
+          subtitle="Naprawy wykonane w serwisie WOJ-TECH w Ostrzeszowie."
         />
 
         {items.length === 0 ? (
-          <div className="card-surface px-6 py-14 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
-              Portfolio
-            </p>
-            <h3 className="mt-3 text-xl font-semibold text-navy">
-              Realizacje w przygotowaniu
-            </h3>
-            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted">
-              Wkrótce pojawią się tutaj zdjęcia i opisy wykonanych napraw.
-            </p>
+          <div className="card-surface grid gap-5 p-6 sm:grid-cols-2 md:p-8">
+            <div className="overflow-hidden rounded-[var(--radius-md)] border border-border bg-card">
+              <div className="relative aspect-[4/3]">
+                <Image
+                  src="/brand/stanowisko.jpg"
+                  alt="Wejście do serwisu WOJ-TECH"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                />
+              </div>
+              <div className="bg-white p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
+                  Serwis
+                </p>
+                <h3 className="mt-2 font-semibold text-navy">
+                  Stanowisko w Ostrzeszowie
+                </h3>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
+                Portfolio
+              </p>
+              <h3 className="mt-2 text-xl font-semibold text-navy">
+                Realizacje w przygotowaniu
+              </h3>
+              <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
+                Wkrótce pojawią się tu zdjęcia i opisy wykonanych napraw.
+                Zapytaj o wycenę albo zadzwoń.
+              </p>
+              <Link href="/realizacje" className="btn btn-secondary mt-6 w-fit">
+                Pełne portfolio
+              </Link>
+            </div>
           </div>
         ) : (
           <>
@@ -67,7 +92,7 @@ export async function Realizations() {
                       ) : null}
                     </div>
                     <div className="p-5">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
                         {categoryLabel(item.category)}
                       </p>
                       <h3 className="mt-2 font-semibold text-navy">
@@ -85,7 +110,7 @@ export async function Realizations() {
             </div>
             <div className="mt-8">
               <Link href="/realizacje" className="btn btn-secondary">
-                Wszystkie realizacje
+                Pełne portfolio
               </Link>
             </div>
           </>

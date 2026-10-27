@@ -1,0 +1,22 @@
+[
+  {
+    "mode": "redesign",
+    "depth": "full",
+    "scope": "site",
+    "shape": "Catalogue",
+    "theme": "brand",
+    "axes": "light/grotesk-sans/cool",
+    "hero": "Settled",
+    "nav": "edge-wordmark",
+    "footer": "mast",
+    "imagery": "words",
+    "photos": [],
+    "entry": "/",
+    "fingerprint": "wojtech-ink-brand",
+    "sections": ["Hero", "Services", "Quote", "Process", "Shipping", "Realizations", "Reviews", "Location", "Faq", "Contact"],
+    "signature": "ruled service catalogue",
+    "waived": [],
+    "prompt": "local electronics repair Ostrzeszow keep brand palette",
+    "at": "2026-10-27"
+  }
+]
