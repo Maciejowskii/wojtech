@@ -20,8 +20,8 @@ export async function BlogTeaser() {
         <SectionHeading
           id="blog-title"
           label="Blog"
-          title="Najnowsze wpisy"
-          subtitle="Porady i informacje z serwisu."
+          title="Wpisy z serwisu"
+          subtitle="Porady o naprawach i utrzymaniu sprzętu."
         />
 
         <div className="grid gap-5 md:grid-cols-3">

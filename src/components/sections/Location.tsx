@@ -12,8 +12,8 @@ export function Location() {
         <SectionHeading
           id="lokalizacja-title"
           label="Lokalizacja"
-          title="Odwiedź nasz serwis w Ostrzeszowie"
-          subtitle="Urządzenie możesz dostarczyć osobiście. Brak dojazdu do klienta."
+          title="Serwis w Ostrzeszowie"
+          subtitle="Urządzenie dostarczasz osobiście. Brak dojazdu do klienta."
         />
 
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
@@ -56,7 +56,7 @@ export function Location() {
                       ))}
                     </ul>
                   ) : (
-                    "Godziny otwarcia zostaną uzupełnione. Przed wizytą zadzwoń, aby potwierdzić dostępność."
+                    "Godziny otwarcia zostaną uzupełnione. Przed wizytą zadzwoń."
                   )}
                 </dd>
               </div>

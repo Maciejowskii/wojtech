@@ -15,7 +15,10 @@ export function MobileCta() {
           <Phone className="size-4 shrink-0" aria-hidden />
           Zadzwoń
         </a>
-        <Link href="/#wycena" className="btn btn-primary min-h-12 flex-1 text-sm">
+        <Link
+          href="/kontakt#wycena"
+          className="btn btn-primary min-h-12 flex-1 text-sm"
+        >
           Wycena
         </Link>
       </div>

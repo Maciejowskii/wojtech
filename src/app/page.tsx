@@ -17,7 +17,7 @@ import { faqJsonLd } from "@/lib/schema";
 export const metadata: Metadata = {
   title: "WOJ-TECH Elektroserwis Ostrzeszów | Naprawa elektroniki i AGD",
   description:
-    "Serwis elektroniki Ostrzeszów: naprawa ekspresów do kawy, AGD, RTV, elektronika samochodowa, rowery i hulajnogi elektryczne. Olszyna 84C · tel. 606 582 606.",
+    "Naprawa ekspresów do kawy, AGD, RTV, elektroniki samochodowej, rowerów i hulajnóg w Ostrzeszowie. Olszyna 84C · tel. 606 582 606.",
   alternates: { canonical: "/" },
 };
 

@@ -3,20 +3,26 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { googleRatingSummary, reviews } from "@/data/reviews";
 import { siteConfig } from "@/lib/site.config";
 
-export function Reviews() {
+type ReviewsProps = {
+  showHeading?: boolean;
+};
+
+export function Reviews({ showHeading = true }: ReviewsProps) {
   return (
     <section
       id="opinie"
       className="section-pad bg-white"
-      aria-labelledby="opinie-title"
+      aria-labelledby={showHeading ? "opinie-title" : undefined}
     >
       <div className="container-page">
-        <SectionHeading
-          id="opinie-title"
-          label="Opinie"
-          title="Co mówią nasi klienci?"
-          subtitle="Opinie z wizytówki Google Maps."
-        />
+        {showHeading ? (
+          <SectionHeading
+            id="opinie-title"
+            label="Opinie"
+            title="Opinie klientów"
+            subtitle="Z wizytówki Google Maps."
+          />
+        ) : null}
 
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
           <div className="flex items-center gap-2">
@@ -92,7 +98,7 @@ export function Reviews() {
           >
             wizytówki Google
           </a>
-          . Aktualne oceny zobaczysz zawsze w Google Maps.
+          . Aktualne oceny zobaczysz w Google Maps.
         </p>
       </div>
     </section>

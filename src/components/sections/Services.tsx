@@ -3,20 +3,26 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServiceIcon } from "@/components/ui/ServiceIcon";
 import { allOfferCards } from "@/data/services";
 
-export function Services() {
+type ServicesProps = {
+  showHeading?: boolean;
+};
+
+export function Services({ showHeading = true }: ServicesProps) {
   return (
     <section
       id="oferta"
       className="section-pad bg-white"
-      aria-labelledby="oferta-title"
+      aria-labelledby={showHeading ? "oferta-title" : undefined}
     >
       <div className="container-page">
-        <SectionHeading
-          id="oferta-title"
-          label="Oferta"
-          title="Jeden serwis. Wiele możliwości."
-          subtitle="Zajmujemy się diagnostyką, naprawą i serwisowaniem urządzeń elektronicznych oraz sprzętu codziennego użytku."
-        />
+        {showHeading ? (
+          <SectionHeading
+            id="oferta-title"
+            label="Oferta"
+            title="Co naprawiamy w Ostrzeszowie"
+            subtitle="Ekspresy do kawy, AGD, RTV, elektronika samochodowa, rowery, hulajnogi i elektronarzędzia."
+          />
+        ) : null}
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {allOfferCards.map((service, index) => {
@@ -48,7 +54,7 @@ export function Services() {
                       />
                       {featured ? (
                         <span className="text-xs font-semibold uppercase tracking-wide text-steel">
-                          Wyróżniona usługa
+                          Główna specjalizacja
                         </span>
                       ) : null}
                     </div>
@@ -63,12 +69,13 @@ export function Services() {
                   </h3>
                   <p className="mt-3 flex-1 text-[0.95rem] leading-relaxed text-muted">
                     {featured
-                      ? "Twój ekspres znów może działać jak należy. Diagnostyka i naprawa ekspresów oraz innych urządzeń AGD."
+                      ? "Diagnostyka i naprawa ekspresów oraz innych urządzeń AGD."
                       : service.summary}
                   </p>
                   <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                     {service.href.startsWith("/") &&
-                    !service.href.includes("#") ? (
+                    !service.href.includes("#") &&
+                    service.id !== "laptopy" ? (
                       <Link
                         href={service.href}
                         className="btn btn-secondary min-h-11 w-full px-4 py-2 text-sm sm:w-auto"
@@ -77,7 +84,7 @@ export function Services() {
                       </Link>
                     ) : null}
                     <Link
-                      href="/#wycena"
+                      href="/kontakt#wycena"
                       className="btn btn-ghost min-h-11 w-full px-4 py-2 text-sm sm:w-auto"
                     >
                       Zapytaj o naprawę

@@ -14,13 +14,16 @@ export function Hero() {
             {siteConfig.owner}
           </p>
           <p className="mt-4 max-w-[38rem] text-pretty text-base leading-relaxed text-muted sm:mt-5 md:text-lg">
-            Naprawa elektroniki, ekspresów do kawy, sprzętu AGD, elektroniki
-            samochodowej oraz rowerów i hulajnóg elektrycznych w Ostrzeszowie.
-            Sprawdź ofertę i zapytaj o wycenę naprawy.
+            Naprawa ekspresów do kawy, AGD, RTV, elektroniki samochodowej oraz
+            rowerów i hulajnóg elektrycznych w Ostrzeszowie. Zapytaj o wycenę
+            albo zadzwoń.
           </p>
 
           <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
-            <Link href="/#wycena" className="btn btn-primary w-full sm:w-auto">
+            <Link
+              href="/kontakt#wycena"
+              className="btn btn-primary w-full sm:w-auto"
+            >
               Zapytaj o wycenę
             </Link>
             <a
@@ -32,7 +35,8 @@ export function Hero() {
           </div>
 
           <p className="mt-5 text-sm leading-relaxed text-muted sm:mt-6">
-            Serwis w Ostrzeszowie · możliwa wysyłka sprzętu · indywidualna wycena
+            Serwis w Ostrzeszowie · możliwa wysyłka sprzętu · wycena po
+            diagnostyce
           </p>
         </div>
 
@@ -76,7 +80,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Practical info strip — jak na stronie referencyjnej */}
       <div className="border-t border-border bg-white">
         <div className="container-page grid gap-5 py-6 sm:grid-cols-3 sm:gap-6 sm:py-7">
           <div className="border-b border-border pb-5 sm:border-0 sm:pb-0">

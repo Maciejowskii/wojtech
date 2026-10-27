@@ -4,18 +4,28 @@ import { useState } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { faqItems } from "@/data/faq";
 
-export function Faq() {
+type FaqProps = {
+  showHeading?: boolean;
+};
+
+export function Faq({ showHeading = true }: FaqProps) {
   const [openId, setOpenId] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="section-pad bg-white" aria-labelledby="faq-title">
+    <section
+      id="faq"
+      className="section-pad bg-white"
+      aria-labelledby={showHeading ? "faq-title" : undefined}
+    >
       <div className="container-page">
-        <SectionHeading
-          id="faq-title"
-          label="FAQ"
-          title="Najczęściej zadawane pytania"
-          subtitle="Koszty, dostawa i zakres usług — zebrane w jednym miejscu."
-        />
+        {showHeading ? (
+          <SectionHeading
+            id="faq-title"
+            label="FAQ"
+            title="Pytania i odpowiedzi"
+            subtitle="Koszty, dostawa sprzętu i zakres usług."
+          />
+        ) : null}
 
         <div className="mx-auto max-w-3xl divide-y divide-border border border-border bg-white">
           {faqItems.map((item, index) => {

@@ -10,7 +10,7 @@ export const instant = false;
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Porady i informacje o naprawie elektroniki, ekspresów do kawy i sprzętu AGD — WOJ-TECH Ostrzeszów.",
+    "Porady o naprawie elektroniki, ekspresów do kawy i AGD. WOJ-TECH Ostrzeszów.",
   alternates: { canonical: "/blog" },
 };
 
@@ -23,8 +23,8 @@ export default async function BlogIndexPage() {
       <div className="container-page">
         <SectionHeading
           label="Blog"
-          title="Porady i aktualności z serwisu"
-          subtitle="Praktyczne informacje o naprawach i utrzymaniu sprzętu."
+          title="Wpisy z serwisu"
+          subtitle="Porady o naprawach i utrzymaniu sprzętu."
         />
 
         {posts.length === 0 ? (

@@ -3,36 +3,42 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 const steps = [
   {
     title: "Zgłoś problem",
-    text: "Opisz usterkę przez formularz lub skontaktuj się z serwisem telefonicznie.",
+    text: "Opisz usterkę w formularzu albo zadzwoń.",
   },
   {
     title: "Dostarcz urządzenie",
-    text: "Przywieź sprzęt bezpośrednio do serwisu w Ostrzeszowie. Jeśli mieszkasz dalej, możesz zapytać o możliwość wysyłki urządzenia.",
+    text: "Przywieź sprzęt do serwisu w Ostrzeszowie. Z dalszej okolicy możesz zapytać o wysyłkę.",
   },
   {
     title: "Diagnostyka i wycena",
-    text: "Sprawdzimy urządzenie, ustalimy możliwą przyczynę problemu i przedstawimy informacje o przewidywanych kosztach naprawy.",
+    text: "Sprawdzimy urządzenie, ustalimy możliwą przyczynę i podamy przewidywany koszt.",
   },
   {
     title: "Naprawa",
-    text: "Po uzgodnieniu zakresu i kosztów przechodzimy do naprawy, jeśli jest ona możliwa i opłacalna.",
+    text: "Po uzgodnieniu zakresu i kosztów przechodzimy do naprawy, jeśli jest możliwa i opłacalna.",
   },
 ];
 
-export function Process() {
+type ProcessProps = {
+  showHeading?: boolean;
+};
+
+export function Process({ showHeading = true }: ProcessProps) {
   return (
     <section
       id="jak-pracujemy"
       className="section-pad bg-mist"
-      aria-labelledby="proces-title"
+      aria-labelledby={showHeading ? "proces-title" : undefined}
     >
       <div className="container-page">
-        <SectionHeading
-          id="proces-title"
-          label="Proces"
-          title="Naprawa bez niepotrzebnych komplikacji"
-          subtitle="Prosty przebieg od zgłoszenia do naprawy — bez dojazdu do klienta."
-        />
+        {showHeading ? (
+          <SectionHeading
+            id="proces-title"
+            label="Proces"
+            title="Jak wygląda naprawa"
+            subtitle="Cztery kroki. Bez dojazdu do klienta. Sprzęt dostarczasz do serwisu."
+          />
+        ) : null}
 
         <ol className="grid gap-0 border border-border bg-white md:grid-cols-2 xl:grid-cols-4">
           {steps.map((step, index) => (

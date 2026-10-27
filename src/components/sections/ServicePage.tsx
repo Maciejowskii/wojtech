@@ -23,7 +23,10 @@ export function ServicePageContent({ service }: { service: Service }) {
             </div>
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Link href="/#wycena" className="btn btn-primary w-full sm:w-auto">
+            <Link
+              href="/kontakt#wycena"
+              className="btn btn-primary w-full sm:w-auto"
+            >
               Zapytaj o wycenę
             </Link>
             <a
@@ -32,8 +35,8 @@ export function ServicePageContent({ service }: { service: Service }) {
             >
               Zadzwoń: {siteConfig.phone.display}
             </a>
-            <Link href="/#oferta" className="btn btn-ghost w-full sm:w-auto">
-              Sprawdź ofertę
+            <Link href="/oferta" className="btn btn-ghost w-full sm:w-auto">
+              Cała oferta
             </Link>
           </div>
         </div>
@@ -62,13 +65,13 @@ export function ServicePageContent({ service }: { service: Service }) {
             <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-muted">
               <li>Opisz usterkę w formularzu lub zadzwoń.</li>
               <li>Dostarcz urządzenie do serwisu w Ostrzeszowie.</li>
-              <li>Otrzymasz informacje o diagnostyce i wycenie.</li>
+              <li>Po diagnostyce podamy koszt i zakres.</li>
             </ol>
             <p className="mt-4 text-sm text-muted">
-              Adres: {siteConfig.address.full}. Brak dojazdu do klienta —
-              możliwa wysyłka po uzgodnieniu.
+              Adres: {siteConfig.address.full}. Brak dojazdu do klienta.
+              Wysyłka możliwa po uzgodnieniu.
             </p>
-            <Link href="/#wycena" className="btn btn-primary mt-6 w-full">
+            <Link href="/kontakt#wycena" className="btn btn-primary mt-6 w-full">
               Formularz wyceny
             </Link>
           </aside>

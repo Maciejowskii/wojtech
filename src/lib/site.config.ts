@@ -8,7 +8,7 @@ export const siteConfig = {
   owner: "Wojciech Kijewski",
   legalName: "WOJ-TECH Elektroserwis Wojciech Kijewski",
   description:
-    "Serwis elektroniki, ekspresów do kawy, AGD, elektroniki samochodowej oraz rowerów i hulajnóg elektrycznych w Ostrzeszowie.",
+    "Naprawa ekspresów do kawy, AGD, RTV, elektroniki samochodowej, rowerów i hulajnóg elektrycznych w Ostrzeszowie. WOJ-TECH, Olszyna 84C.",
 
   phone: {
     display: "606 582 606",
@@ -50,13 +50,13 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://woj-tech.pl",
 
   nav: [
-    { label: "Strona główna", href: "/#start" },
-    { label: "Oferta", href: "/#oferta" },
-    { label: "Jak pracujemy", href: "/#jak-pracujemy" },
+    { label: "Strona główna", href: "/" },
+    { label: "Oferta", href: "/oferta" },
+    { label: "Jak pracujemy", href: "/jak-pracujemy" },
     { label: "Realizacje", href: "/realizacje" },
     { label: "Blog", href: "/blog" },
-    { label: "Opinie", href: "/#opinie" },
-    { label: "Kontakt", href: "/#kontakt" },
+    { label: "Opinie", href: "/opinie" },
+    { label: "Kontakt", href: "/kontakt" },
   ],
 } as const;
 

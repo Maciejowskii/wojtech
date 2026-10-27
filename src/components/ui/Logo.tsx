@@ -9,7 +9,7 @@ type LogoProps = {
 export function Logo({ className = "", compact = false }: LogoProps) {
   return (
     <Link
-      href="/#start"
+      href="/"
       className={`inline-flex items-center gap-2.5 no-underline ${className}`}
       aria-label="WOJ-TECH Elektroserwis — strona główna"
     >

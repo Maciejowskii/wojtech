@@ -73,7 +73,7 @@ export default async function BlogPostPage({ params }: Props) {
           <Link href="/blog" className="btn btn-secondary">
             Wszystkie wpisy
           </Link>
-          <Link href="/#wycena" className="btn btn-primary">
+          <Link href="/kontakt#wycena" className="btn btn-primary">
             Zapytaj o wycenę
           </Link>
         </div>

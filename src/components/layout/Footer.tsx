@@ -10,8 +10,8 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-            Elektroserwis w Ostrzeszowie. Naprawa elektroniki, ekspresów do
-            kawy, AGD, elektroniki samochodowej oraz rowerów i hulajnóg.
+            Elektroserwis w Ostrzeszowie. Naprawa ekspresów do kawy, AGD, RTV,
+            elektroniki samochodowej, rowerów i hulajnóg.
           </p>
           <p className="mt-3 text-sm text-muted">{siteConfig.owner}</p>
         </div>
@@ -29,8 +29,8 @@ export function Footer() {
               </li>
             ))}
             <li>
-              <Link href="/#wycena" className="hover:text-accent">
-                Formularz wyceny →
+              <Link href="/kontakt#wycena" className="hover:text-accent">
+                Formularz wyceny
               </Link>
             </li>
           </ul>

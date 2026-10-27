@@ -26,8 +26,8 @@ export async function Realizations() {
         <SectionHeading
           id="realizacje-title"
           label="Realizacje"
-          title="Zobacz, co naprawiamy"
-          subtitle="Najnowsze przykłady napraw z naszego serwisu."
+          title="Wybrane naprawy"
+          subtitle="Zdjęcia i opisy z serwisu WOJ-TECH w Ostrzeszowie."
         />
 
         {items.length === 0 ? (

@@ -3,20 +3,26 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { siteConfig } from "@/lib/site.config";
 
-export function Contact() {
+type ContactProps = {
+  showHeading?: boolean;
+};
+
+export function Contact({ showHeading = true }: ContactProps) {
   return (
     <section
       id="kontakt"
       className="section-pad bg-mist"
-      aria-labelledby="kontakt-title"
+      aria-labelledby={showHeading ? "kontakt-title" : undefined}
     >
       <div className="container-page">
-        <SectionHeading
-          id="kontakt-title"
-          label="Kontakt"
-          title="Masz problem ze sprzętem? Porozmawiajmy."
-          subtitle="Napisz o urządzeniu i usterce albo zadzwoń. Najszybszy kontakt to telefon."
-        />
+        {showHeading ? (
+          <SectionHeading
+            id="kontakt-title"
+            label="Kontakt"
+            title="Zadzwoń albo napisz"
+            subtitle={`Telefon ${siteConfig.phone.display}. Adres: ${siteConfig.address.full}.`}
+          />
+        ) : null}
 
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="card-surface p-6 md:p-8">
@@ -64,7 +70,10 @@ export function Contact() {
             </dl>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <a href={siteConfig.phone.href} className="btn btn-primary w-full sm:w-auto">
+              <a
+                href={siteConfig.phone.href}
+                className="btn btn-primary w-full sm:w-auto"
+              >
                 Zadzwoń
               </a>
               <a
@@ -75,8 +84,11 @@ export function Contact() {
               >
                 Trasa
               </a>
-              <Link href="/#wycena" className="btn btn-ghost w-full sm:w-auto">
-                Formularz wyceny →
+              <Link
+                href="/kontakt#wycena"
+                className="btn btn-ghost w-full sm:w-auto"
+              >
+                Formularz wyceny
               </Link>
             </div>
           </div>
@@ -86,7 +98,7 @@ export function Contact() {
               Wyślij wiadomość
             </h3>
             <p className="mt-2 text-sm text-muted">
-              Opisz urządzenie i problem. Odpowiemy tak szybko, jak to możliwe.
+              Opisz urządzenie i problem. Oddzwonimy lub odpiszemy.
             </p>
             <div className="mt-6">
               <ContactForm />

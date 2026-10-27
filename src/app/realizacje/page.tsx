@@ -14,7 +14,7 @@ export const instant = false;
 export const metadata: Metadata = {
   title: "Realizacje",
   description:
-    "Galeria napraw WOJ-TECH Elektroserwis w Ostrzeszowie — ekspresy, elektronika, rowery i hulajnogi.",
+    "Galeria napraw WOJ-TECH Elektroserwis w Ostrzeszowie: ekspresy, elektronika, rowery i hulajnogi.",
   alternates: { canonical: "/realizacje" },
 };
 
@@ -33,9 +33,9 @@ export default async function RealizationsPage({ searchParams }: Props) {
     <div className="section-pad">
       <div className="container-page">
         <SectionHeading
-          label="Portfolio"
+          label="Realizacje"
           title="Wszystkie realizacje"
-          subtitle="Opisy i zdjęcia napraw wykonanych w serwisie WOJ-TECH."
+          subtitle="Zdjęcia i opisy napraw z serwisu WOJ-TECH w Ostrzeszowie."
         />
 
         <div className="-mx-[var(--page-gutter)] overflow-x-auto px-[var(--page-gutter)] pb-1 sm:mx-0 sm:overflow-visible sm:px-0">

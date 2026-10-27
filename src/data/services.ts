@@ -27,9 +27,9 @@ export const services: Service[] = [
     shortTitle: "Ekspresy do kawy i AGD",
     href: "/serwis-ekspresow-do-kawy",
     summary:
-      "Diagnostyka i naprawa ekspresów do kawy oraz innych urządzeń AGD — jeden z głównych obszarów działalności serwisu.",
+      "Diagnostyka i naprawa ekspresów do kawy oraz innych urządzeń AGD w Ostrzeszowie.",
     description:
-      "Zajmujemy się diagnostyką i naprawą ekspresów do kawy oraz innych urządzeń AGD. Jeśli sprzęt nie działa prawidłowo, zgłoś usterkę i zapytaj o możliwość naprawy.",
+      "Naprawiamy ekspresy do kawy i inne urządzenia AGD. Opisz usterkę albo zadzwoń. Po diagnostyce podamy koszt i zakres naprawy.",
     scope: [
       "Diagnostyka usterek ekspresów",
       "Serwis i naprawa ekspresów do kawy",
@@ -38,18 +38,18 @@ export const services: Service[] = [
     featured: true,
     seoTitle: "Naprawa ekspresów do kawy Ostrzeszów | WOJ-TECH Elektroserwis",
     seoDescription:
-      "Serwis i naprawa ekspresów do kawy oraz AGD w Ostrzeszowie. Diagnostyka usterek, indywidualna wycena. WOJ-TECH Elektroserwis, Olszyna 84C.",
+      "Serwis i naprawa ekspresów do kawy oraz AGD w Ostrzeszowie. Diagnostyka, wycena po sprawdzeniu sprzętu. WOJ-TECH, Olszyna 84C.",
     icon: "coffee",
   },
   {
     id: "elektronika-samochodowa",
-    title: "Elektronika samochodowa i nowoczesne wyposażenie",
+    title: "Elektronika samochodowa",
     shortTitle: "Elektronika samochodowa",
     href: "/elektronika-samochodowa",
     summary:
-      "Diagnostyka usterek, kluczyki samochodowe, car audio oraz integracja Apple CarPlay i Android Auto.",
+      "Diagnostyka komputerowa, kluczyki, car audio, Apple CarPlay i Android Auto.",
     description:
-      "Nowoczesna elektronika samochodowa wymaga odpowiedniej diagnostyki i precyzyjnego podejścia. Oferujemy pomoc w zakresie diagnostyki usterek, kluczyków samochodowych oraz dodatkowego wyposażenia.",
+      "Diagnostyka usterek elektroniki samochodowej, dorabianie i kodowanie kluczyków, car audio oraz montaż Apple CarPlay i Android Auto.",
     scope: [
       "Diagnostyka komputerowa usterek",
       "Dorabianie kluczyków samochodowych",
@@ -71,9 +71,9 @@ export const services: Service[] = [
     shortTitle: "RTV i elektronika",
     href: "/naprawa-rtv",
     summary:
-      "Diagnostyka i naprawa telewizorów, sprzętu audio oraz innych urządzeń elektronicznych.",
+      "Naprawa telewizorów, wzmacniaczy, głośników i innego sprzętu elektronicznego.",
     description:
-      "Nie każdy problem oznacza konieczność zakupu nowego sprzętu. Zajmujemy się diagnostyką i naprawą urządzeń elektronicznych. Zakres możliwej naprawy ustalamy po sprawdzeniu konkretnego urządzenia.",
+      "Sprawdzamy telewizory, audio i elektronikę użytkową. Po diagnostyce mówimy, czy naprawa się opłaca, zanim cokolwiek robimy.",
     scope: [
       "Telewizory",
       "Wzmacniacze",
@@ -84,7 +84,7 @@ export const services: Service[] = [
     ],
     seoTitle: "Naprawa sprzętu RTV Ostrzeszów | WOJ-TECH Elektroserwis",
     seoDescription:
-      "Naprawa telewizorów, wzmacniaczy, głośników i elektroniki użytkowej w Ostrzeszowie. Diagnostyka i indywidualna wycena. WOJ-TECH Elektroserwis.",
+      "Naprawa telewizorów, wzmacniaczy, głośników i elektroniki użytkowej w Ostrzeszowie. Diagnostyka i wycena. WOJ-TECH Elektroserwis.",
     icon: "tv",
   },
   {
@@ -93,9 +93,9 @@ export const services: Service[] = [
     shortTitle: "Rowery i hulajnogi",
     href: "/serwis-rowerow-i-hulajnog",
     summary:
-      "Serwis rowerów tradycyjnych i elektrycznych oraz hulajnóg elektrycznych, w tym wymiana opon.",
+      "Rowery tradycyjne i elektryczne, hulajnogi elektryczne, wymiana opon.",
     description:
-      "Od codziennego roweru po hulajnogę elektryczną. Pomagamy w serwisie, diagnostyce i usuwaniu usterek, aby Twój sprzęt mógł znów sprawnie działać.",
+      "Serwisujemy rowery, e-rowery i hulajnogi elektryczne. Diagnostyka, naprawy mechaniczne i elektryczne oraz wymiana opon w hulajnogach.",
     scope: [
       "Serwis rowerów tradycyjnych",
       "Serwis rowerów elektrycznych",
@@ -111,13 +111,13 @@ export const services: Service[] = [
   },
   {
     id: "naprawa-elektronarzedzi",
-    title: "Elektronika, sterowniki i elektronarzędzia",
+    title: "Elektronarzędzia i sterowniki",
     shortTitle: "Elektronarzędzia i sterowniki",
     href: "/naprawa-elektronarzedzi",
     summary:
-      "Diagnostyka i naprawa elektronarzędzi oraz wybranych sterowników i układów elektronicznych.",
+      "Diagnostyka i naprawa elektronarzędzi oraz wybranych sterowników.",
     description:
-      "Zajmujemy się również mniej typowymi problemami z elektroniką. Jeśli masz urządzenie, które przestało działać prawidłowo, skontaktuj się z nami i opisz usterkę.",
+      "Przyjmujemy elektronarzędzia i wybrane sterowniki. Opisz urządzenie i usterkę. Sprawdzimy, czy możemy pomóc.",
     scope: [
       "Diagnostyka sterowników",
       "Naprawa różnego rodzaju układów elektronicznych",
@@ -134,18 +134,18 @@ export const services: Service[] = [
     id: "laptopy",
     title: "Laptopy",
     shortTitle: "Laptopy",
-    href: "/#oferta",
+    href: "/oferta",
     summary:
-      "Pomoc w diagnostyce i ocenie problemów z laptopami. Zakres możliwej naprawy ustalamy po zgłoszeniu usterki.",
+      "Wstępna diagnostyka laptopów. Zakres naprawy ustalimy po rozmowie o usterce.",
     description:
-      "Jeśli laptop przestał działać prawidłowo, skontaktuj się z serwisem i opisz problem. Po wstępnej rozmowie ustalimy, czy i w jakim zakresie możemy pomóc.",
+      "Opisz problem z laptopem. Po rozmowie powiemy, czy i w jakim zakresie możemy pomóc.",
     scope: [
       "Wstępna diagnostyka po zgłoszeniu usterki",
       "Ocena możliwości naprawy w zakresie serwisu",
     ],
     seoTitle: "Serwis laptopów Ostrzeszów | WOJ-TECH Elektroserwis",
     seoDescription:
-      "Diagnostyka i ocena problemów z laptopami w Ostrzeszowie. WOJ-TECH Elektroserwis — zapytaj o możliwość naprawy.",
+      "Diagnostyka i ocena problemów z laptopami w Ostrzeszowie. Zapytaj o możliwość naprawy. WOJ-TECH Elektroserwis.",
     icon: "laptop",
   },
 ];

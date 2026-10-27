@@ -88,7 +88,7 @@ export default async function RealizationDetailPage({ params }: Props) {
         </div>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <Link href="/#wycena" className="btn btn-primary">
+          <Link href="/kontakt#wycena" className="btn btn-primary">
             Zapytaj o wycenę
           </Link>
           <Link href="/realizacje" className="btn btn-secondary">

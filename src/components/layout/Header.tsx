@@ -7,42 +7,15 @@ import { Menu, Phone, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { siteConfig } from "@/lib/site.config";
 
-function isPathNav(href: string) {
-  return href.startsWith("/") && !href.includes("#");
-}
-
-function sectionId(href: string) {
-  if (!href.includes("#")) return null;
-  return href.split("#")[1] || null;
-}
-
-function isNavActive(
-  href: string,
-  pathname: string,
-  activeSection: string | null,
-) {
-  if (isPathNav(href)) {
-    if (href === "/") return pathname === "/";
-    return pathname === href || pathname.startsWith(`${href}/`);
-  }
-
-  if (pathname !== "/") return false;
-
-  const id = sectionId(href);
-  if (!id) return false;
-
-  if (id === "start") {
-    return !activeSection || activeSection === "start";
-  }
-
-  return activeSection === id;
+function isNavActive(href: string, pathname: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>("start");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
@@ -50,49 +23,6 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    if (pathname !== "/") {
-      setActiveSection(null);
-      return;
-    }
-
-    const fromHash = window.location.hash.replace(/^#/, "") || "start";
-    setActiveSection(fromHash);
-
-    const onHash = () => {
-      setActiveSection(window.location.hash.replace(/^#/, "") || "start");
-    };
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (pathname !== "/") return;
-
-    const ids = siteConfig.nav
-      .map((item) => sectionId(item.href))
-      .filter((id): id is string => Boolean(id));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]?.target.id) {
-          setActiveSection(visible[0].target.id);
-        }
-      },
-      { rootMargin: "-20% 0px -55% 0px", threshold: [0.1, 0.35, 0.6] },
-    );
-
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -117,7 +47,7 @@ export function Header() {
         <div className="ml-auto hidden items-center gap-1 lg:flex">
           <nav className="flex items-center gap-0.5" aria-label="Główna nawigacja">
             {siteConfig.nav.map((item) => {
-              const active = isNavActive(item.href, pathname, activeSection);
+              const active = isNavActive(item.href, pathname);
               return (
                 <Link
                   key={item.href}
@@ -168,7 +98,7 @@ export function Header() {
             aria-label="Menu mobilne"
           >
             {siteConfig.nav.map((item) => {
-              const active = isNavActive(item.href, pathname, activeSection);
+              const active = isNavActive(item.href, pathname);
               return (
                 <Link
                   key={item.href}

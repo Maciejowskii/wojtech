@@ -4,9 +4,9 @@ import { siteConfig } from "@/lib/site.config";
 
 const points = [
   { ok: false, text: "Brak dojazdu do klienta" },
-  { ok: true, text: "Możliwość osobistego dostarczenia urządzenia" },
-  { ok: true, text: "Możliwość ustalenia szczegółów wysyłki" },
-  { ok: true, text: "Wstępna konsultacja przed wysłaniem sprzętu" },
+  { ok: true, text: "Osobiste dostarczenie urządzenia" },
+  { ok: true, text: "Wysyłka po wcześniejszym kontakcie" },
+  { ok: true, text: "Rozmowa o usterce przed wysłaniem sprzętu" },
 ];
 
 export function Shipping() {
@@ -19,12 +19,11 @@ export function Shipping() {
               id="wysylka-title"
               label="Wysyłka"
               className="mb-4"
-              title="Nie jesteś z Ostrzeszowa? Możesz wysłać nam sprzęt."
+              title="Sprzęt spoza Ostrzeszowa"
             />
             <p className="max-w-2xl text-base leading-relaxed text-muted">
-              Zajmujemy się również urządzeniami dostarczanymi spoza
-              Ostrzeszowa. Skontaktuj się z nami, opisz problem i zapytaj o
-              możliwość wysyłki sprzętu do serwisu. Nie organizujemy transportu
+              Przyjmujemy też urządzenia z innych miejscowości. Skontaktuj się,
+              opisz problem i zapytaj o wysyłkę. Nie organizujemy transportu
               automatycznie i nie pokrywamy kosztów przesyłki bez osobnego
               ustalenia.
             </p>
@@ -43,14 +42,17 @@ export function Shipping() {
               ))}
             </ul>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link href="/#wycena" className="btn btn-primary w-full sm:w-auto">
+              <Link
+                href="/kontakt#wycena"
+                className="btn btn-primary w-full sm:w-auto"
+              >
                 Zapytaj o wysyłkę
               </Link>
               <a
                 href={siteConfig.phone.href}
                 className="btn btn-phone w-full sm:w-auto"
               >
-                Skontaktuj się z serwisem
+                Zadzwoń: {siteConfig.phone.display}
               </a>
             </div>
           </div>
