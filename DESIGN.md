@@ -25,7 +25,7 @@ Spokojny, uporządkowany lokalny serwis — kompozycja i rytm inspirowane stylem
 - CTA min. 48px wysokości
 
 ## Composition
-- Hero: nazwa marki → właściciel → opis → CTA → pasek adres/miasto/kontakt
+- Hero: asymetryczny split navy/mist (bez zdjęcia) — marka + zakres usług + CTA; prawy blok lead + opis + adres/godziny/opinie; sekwencja wejścia (pole navy, brand, usługi, panel)
 - Oferta: ponumerowane karty (01…)
 - Proces: siatka etapów z numerami
 - FAQ: accordion z +/−
