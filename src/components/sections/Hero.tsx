@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { Phone } from "lucide-react";
+import { Phone, Star } from "lucide-react";
 import { googleRatingSummary } from "@/data/reviews";
 import { offerServices } from "@/data/services";
 import { siteConfig } from "@/lib/site.config";
@@ -12,7 +12,6 @@ const heroServices = offerServices.map((s) => ({
 
 export function Hero() {
   const rating = googleRatingSummary.rating.toFixed(1).replace(".", ",");
-  const reviewCount = googleRatingSummary.count;
   const weekday = siteConfig.openingHours[0];
   const hoursLine =
     weekday?.days === "Poniedziałek - Piątek"
@@ -135,11 +134,44 @@ export function Hero() {
                 </div>
               ) : null}
               <div>
-                <dt className="text-sm font-semibold text-accent">Opinie</dt>
-                <dd className="mt-1.5 text-sm leading-snug text-graphite">
-                  <span className="font-semibold text-navy">{rating}</span>
-                  {" · "}
-                  {reviewCount} Google
+                <dt className="sr-only">Opinie Google</dt>
+                <dd>
+                  <a
+                    href={siteConfig.googleBusinessUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hero-google-rating inline-flex items-center gap-2.5 no-underline transition-opacity hover:opacity-80"
+                    aria-label={`Google ${rating} — Opinie klientów`}
+                  >
+                    <span className="text-sm font-medium text-muted">
+                      Google
+                    </span>
+                    <span className="flex flex-col gap-0.5">
+                      <span className="flex items-center gap-1.5">
+                        <span
+                          className="flex gap-px text-[#f4b400]"
+                          aria-hidden
+                        >
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`size-3.5 ${
+                                i < googleRatingSummary.rating
+                                  ? "fill-current"
+                                  : "opacity-25"
+                              }`}
+                            />
+                          ))}
+                        </span>
+                        <span className="text-sm font-bold leading-none text-graphite">
+                          {rating}
+                        </span>
+                      </span>
+                      <span className="text-xs leading-none text-muted">
+                        Opinie klientów
+                      </span>
+                    </span>
+                  </a>
                 </dd>
               </div>
             </dl>
