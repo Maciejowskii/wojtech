@@ -55,6 +55,15 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_AHREFS_SITE_VERIFICATION
+      ? {
+          "ahrefs-site-verification":
+            process.env.NEXT_PUBLIC_AHREFS_SITE_VERIFICATION,
+        }
+      : undefined,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

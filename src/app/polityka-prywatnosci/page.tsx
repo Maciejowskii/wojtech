@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { siteConfig } from "@/lib/site.config";
 
 export const metadata: Metadata = {
@@ -44,10 +45,26 @@ export default function PrivacyPage() {
           usterki oraz inne informacje przekazane w treści zgłoszenia.
         </p>
 
+        <h2 className="mt-8 text-xl font-bold text-navy">Analityka strony</h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          Po wyrażeniu zgody w banerze cookies możemy korzystać z Google
+          Analytics 4 w celu analizy ruchu na stronie. Dane mogą być
+          przetwarzane przez Google zgodnie z jego polityką. Zgodę możesz
+          wycofać w każdej chwili (strona{" "}
+          <Link
+            href="/cookies"
+            className="font-semibold text-accent underline-offset-2 hover:underline"
+          >
+            Pliki cookies
+          </Link>
+          ). Bez zgody skrypt analityczny się nie ładuje.
+        </p>
+
         <h2 className="mt-8 text-xl font-bold text-navy">Okres przechowywania</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted">
           Dane przechowujemy przez czas potrzebny do obsługi zgłoszenia oraz -
-          gdy to konieczne - przez okres wynikający z przepisów prawa.
+          gdy to konieczne - przez okres wynikający z przepisów prawa. Dane
+          analityczne w GA4 - zgodnie z konfiguracją usługi i Twoją zgodą.
         </p>
 
         <h2 className="mt-8 text-xl font-bold text-navy">Prawa osób</h2>

@@ -63,7 +63,7 @@ export async function Realizations() {
                 Zapytaj o wycenę albo zadzwoń.
               </p>
               <Link href="/realizacje" className="btn btn-secondary mt-6 w-fit">
-                Pełne portfolio
+                Nasze realizacje
               </Link>
             </div>
           </div>
@@ -110,7 +110,7 @@ export async function Realizations() {
             </div>
             <div className="mt-8">
               <Link href="/realizacje" className="btn btn-secondary">
-                Pełne portfolio
+                Nasze realizacje
               </Link>
             </div>
           </>

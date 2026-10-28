@@ -59,6 +59,14 @@ Lokalne SQLite **nie działa** na Vercel (brak trwałego dysku). Strona publiczn
 W Vercel → Settings → Environment Variables ustaw m.in.:
 - `NEXT_PUBLIC_SITE_URL=https://twoja-domena.vercel.app`
 - `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `ADMIN_SESSION_SECRET`
+- opcjonalnie: `NEXT_PUBLIC_GA_MEASUREMENT_ID`, `NEXT_PUBLIC_GSC_VERIFICATION`, `NEXT_PUBLIC_AHREFS_SITE_VERIFICATION`
+
+## Cookies / GA4 / GSC / Ahrefs
+
+- Baner: akceptacja wszystkich albo tylko niezbędnych (`CookieBanner`)
+- GA4 ładuje się **tylko po zgodzie** (`NEXT_PUBLIC_GA_MEASUREMENT_ID=G-...`)
+- GSC / Ahrefs: meta weryfikacji z env (bez cookies u odwiedzającego)
+- Zmiana decyzji: `/cookies` → „Zmień ustawienia cookies”
 
 ## Opinie Google
 

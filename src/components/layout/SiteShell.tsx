@@ -1,6 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { MobileCta } from "@/components/layout/MobileCta";
@@ -24,6 +26,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         <Footer />
       </div>
       <MobileCta />
+      <CookieBanner />
+      <GoogleAnalytics />
     </>
   );
 }

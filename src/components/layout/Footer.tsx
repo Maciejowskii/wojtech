@@ -87,6 +87,11 @@ export function Footer() {
                 Polityka prywatności
               </Link>
             </li>
+            <li>
+              <Link href="/cookies" className="hover:text-accent">
+                Pliki cookies
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
