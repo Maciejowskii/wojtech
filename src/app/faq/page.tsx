@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Faq } from "@/components/sections/Faq";
+import { PageIntro } from "@/components/ui/PageIntro";
 import { siteConfig } from "@/lib/site.config";
 
 export const metadata: Metadata = {
@@ -13,32 +14,18 @@ export const metadata: Metadata = {
 export default function FaqPage() {
   return (
     <>
-      <section className="border-b border-border bg-mist">
-        <div className="container-page py-12 md:py-16">
-          <h1 className="max-w-3xl text-[clamp(2rem,4vw,3rem)] font-semibold tracking-tight text-navy">
-            Pytania i odpowiedzi
-          </h1>
-          <p className="mt-4 max-w-[65ch] text-lg leading-relaxed text-muted">
-            Wszystko o diagnostyce, wycenie i oddaniu sprzętu do serwisu w
-            Ostrzeszowie. Nie znalazłeś odpowiedzi? Zadzwoń:{" "}
-            {siteConfig.phone.display}.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <a
-              href={siteConfig.phone.href}
-              className="btn btn-primary w-full sm:w-auto"
-            >
-              Zadzwoń: {siteConfig.phone.display}
-            </a>
-            <Link
-              href="/kontakt#wycena"
-              className="btn btn-secondary w-full sm:w-auto"
-            >
-              Formularz wyceny
-            </Link>
-          </div>
-        </div>
-      </section>
+      <PageIntro
+        label="Pytania"
+        title="Pytania i odpowiedzi"
+        lead={`Diagnostyka, wycena, dostawa sprzętu i zakres usług. Nie znalazłeś odpowiedzi? Zadzwoń: ${siteConfig.phone.display}.`}
+      >
+        <a href={siteConfig.phone.href} className="btn btn-primary">
+          Zadzwoń: {siteConfig.phone.display}
+        </a>
+        <Link href="/kontakt#wycena" className="btn btn-secondary">
+          Formularz wyceny
+        </Link>
+      </PageIntro>
       <Faq variant="full" showHeading={false} />
     </>
   );

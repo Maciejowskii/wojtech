@@ -1,8 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
+import { useIsClient } from "@/hooks/useIsClient";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
-type RevealVariant = "up" | "fade" | "left" | "right" | "scale";
+export type RevealVariant =
+  | "up"
+  | "fade"
+  | "left"
+  | "right"
+  | "scale"
+  | "blur"
+  | "clip";
 
 type ScrollRevealProps = {
   children: ReactNode;
@@ -10,7 +25,7 @@ type ScrollRevealProps = {
   variant?: RevealVariant;
   delay?: number;
   once?: boolean;
-  as?: "div" | "section" | "article" | "li";
+  as?: "div" | "section" | "article" | "li" | "figure" | "ul" | "header";
 };
 
 export function ScrollReveal({
@@ -23,21 +38,13 @@ export function ScrollReveal({
 }: ScrollRevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(false);
+  const mounted = useIsClient();
+  const reduceMotion = usePrefersReducedMotion();
+  // Po hydracji: reduced-motion od razu pokazuje treść. Przed hydracją zawsze ukryte (SSR match).
+  const shown = mounted && (reduceMotion || visible);
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReduceMotion(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setVisible(true);
-      return;
-    }
+    if (!mounted || reduceMotion) return;
 
     const el = ref.current;
     if (!el) return;
@@ -51,12 +58,12 @@ export function ScrollReveal({
           setVisible(false);
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.1, rootMargin: "0px 0px -6% 0px" },
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [once, reduceMotion]);
+  }, [mounted, once, reduceMotion]);
 
   const style = {
     "--reveal-delay": `${delay}ms`,
@@ -65,7 +72,7 @@ export function ScrollReveal({
   return (
     <Tag
       ref={ref as never}
-      className={`reveal reveal-${variant} ${visible ? "reveal-in" : ""} ${className}`}
+      className={`reveal reveal-${variant} ${shown ? "reveal-in" : ""} ${className}`}
       style={style}
     >
       {children}

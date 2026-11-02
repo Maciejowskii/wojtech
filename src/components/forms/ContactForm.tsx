@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ContactFormFields } from "@/components/forms/ContactFormFields";
 import { siteConfig } from "@/lib/site.config";
 
 type FormState = {
@@ -82,144 +83,32 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-xl bg-mist p-6 text-center" role="status">
-        <p className="font-semibold text-navy">Dziękujemy za wiadomość</p>
-        <p className="mt-2 text-sm text-muted">{message}</p>
+      <output className="block border-y border-border py-8">
+        <p className="font-display text-2xl font-semibold uppercase tracking-[0.02em] text-navy">
+          Wiadomość wysłana
+        </p>
+        <p className="mt-3 max-w-[48ch] text-base leading-relaxed text-muted">
+          {message}
+        </p>
         <button
           type="button"
-          className="btn btn-secondary mt-4"
+          className="btn btn-secondary mt-6"
           onClick={() => setStatus("idle")}
         >
           Wyślij kolejną
         </button>
-      </div>
+      </output>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4" noValidate>
-      <div className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
-        <label>
-          Strona
-          <input
-            tabIndex={-1}
-            autoComplete="off"
-            value={form.website}
-            onChange={(e) => update("website", e.target.value)}
-          />
-        </label>
-      </div>
-
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-semibold text-navy">
-          Imię *
-        </span>
-        <input
-          className="field"
-          value={form.name}
-          onChange={(e) => update("name", e.target.value)}
-          autoComplete="name"
-        />
-        {errors.name ? (
-          <span className="mt-1 block text-sm text-red-700">{errors.name}</span>
-        ) : null}
-      </label>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-semibold text-navy">
-            Telefon
-          </span>
-          <input
-            className="field"
-            value={form.phone}
-            onChange={(e) => update("phone", e.target.value)}
-            autoComplete="tel"
-          />
-          {errors.phone ? (
-            <span className="mt-1 block text-sm text-red-700">
-              {errors.phone}
-            </span>
-          ) : null}
-        </label>
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-semibold text-navy">
-            E-mail
-          </span>
-          <input
-            className="field"
-            type="email"
-            value={form.email}
-            onChange={(e) => update("email", e.target.value)}
-            autoComplete="email"
-          />
-        </label>
-      </div>
-
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-semibold text-navy">
-          Temat *
-        </span>
-        <input
-          className="field"
-          value={form.subject}
-          onChange={(e) => update("subject", e.target.value)}
-        />
-        {errors.subject ? (
-          <span className="mt-1 block text-sm text-red-700">
-            {errors.subject}
-          </span>
-        ) : null}
-      </label>
-
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-semibold text-navy">
-          Treść wiadomości *
-        </span>
-        <textarea
-          className="field min-h-32"
-          value={form.message}
-          onChange={(e) => update("message", e.target.value)}
-        />
-        {errors.message ? (
-          <span className="mt-1 block text-sm text-red-700">
-            {errors.message}
-          </span>
-        ) : null}
-      </label>
-
-      <label className="flex items-start gap-3 text-sm text-navy">
-        <input
-          type="checkbox"
-          className="mt-1 size-4 accent-[var(--color-accent)]"
-          checked={form.consent}
-          onChange={(e) => update("consent", e.target.checked)}
-        />
-        <span>
-          Wyrażam zgodę na przetwarzanie danych w celu odpowiedzi na
-          wiadomość.
-        </span>
-      </label>
-      {errors.consent ? (
-        <p className="text-sm text-red-700">{errors.consent}</p>
-      ) : null}
-
-      {status === "error" ? (
-        <div
-          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
-          role="alert"
-        >
-          {message}
-        </div>
-      ) : null}
-
-      <button
-        type="submit"
-        className="btn btn-primary"
-        disabled={status === "loading"}
-      >
-        {status === "loading" ? "Wysyłanie…" : "Wyślij wiadomość"}
-      </button>
-    </form>
+    <ContactFormFields
+      form={form}
+      errors={errors}
+      status={status}
+      message={message}
+      update={update}
+      onSubmit={onSubmit}
+    />
   );
 }

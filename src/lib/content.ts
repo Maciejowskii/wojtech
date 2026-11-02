@@ -1,3 +1,5 @@
+import DOMPurify from "isomorphic-dompurify";
+
 /** Prosty renderer: akapity oddzielone pustą linią → HTML (legacy plain text) */
 export function renderPlainContent(content: string) {
   return content
@@ -15,13 +17,36 @@ export function renderPlainContent(content: string) {
     .join("\n");
 }
 
-/** Minimalna sanitizacja HTML z panelu admina (zaufane źródło). */
+const ALLOWED_TAGS = [
+  "p",
+  "br",
+  "strong",
+  "b",
+  "em",
+  "i",
+  "u",
+  "s",
+  "ul",
+  "ol",
+  "li",
+  "a",
+  "h2",
+  "h3",
+  "h4",
+  "blockquote",
+  "code",
+  "pre",
+  "span",
+  "div",
+];
+
+/** Sanitizacja HTML z panelu admina przed renderem na stronie publicznej. */
 export function sanitizeBlogHtml(html: string) {
-  return html
-    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
-    .replace(/<iframe[\s\S]*?>[\s\S]*?<\/iframe>/gi, "")
-    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
-    .replace(/javascript:/gi, "");
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS,
+    ALLOWED_ATTR: ["href", "title", "target", "rel", "class"],
+    ALLOW_DATA_ATTR: false,
+  });
 }
 
 export function looksLikeHtml(content: string) {

@@ -12,8 +12,8 @@ export function Quote() {
         <SectionHeading
           id="wycena-title"
           label="Wycena"
-          title="Zapytaj o koszt naprawy"
-          subtitle="Opisz urządzenie i usterkę. Oddzwonimy z informacją o dalszych krokach."
+          title="Formularz wyceny"
+          subtitle="Opisz sprzęt i usterkę. Oddzwonię albo odpiszę z informacją, co dalej."
         />
         <div className="mx-auto max-w-3xl">
           <QuoteForm />

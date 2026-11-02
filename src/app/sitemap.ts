@@ -87,5 +87,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    {
+      url: `${siteConfig.url}/mapa-strony`,
+      changeFrequency: "monthly",
+      priority: 0.4,
+    },
   ];
 }

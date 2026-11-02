@@ -21,10 +21,10 @@ export function Shipping() {
               title="Sprzęt spoza Ostrzeszowa"
             />
             <p className="max-w-2xl text-base leading-relaxed text-muted">
-              Przyjmujemy też urządzenia z innych miejscowości. Skontaktuj się,
-              opisz problem i zapytaj o wysyłkę. Nie organizujemy transportu
-              automatycznie i nie pokrywamy kosztów przesyłki bez osobnego
-              ustalenia.
+              Mogę przyjąć urządzenie też z innej miejscowości. Najpierw
+              zadzwoń albo napisz, opisz problem i zapytaj o wysyłkę. Nie
+              organizuję transportu sam z siebie i nie pokrywam kosztów
+              przesyłki bez osobnego ustalenia.
             </p>
             <ul className="mt-6 grid gap-2 sm:grid-cols-2">
               {points.map((p) => (
@@ -66,7 +66,8 @@ export function Shipping() {
               {siteConfig.address.postalCode} {siteConfig.address.city}
             </p>
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Urządzenia przyjmujemy w serwisie.
+              Sprzęt oddajesz osobiście w warsztacie albo, po uzgodnieniu,
+              przesyłasz.
             </p>
           </aside>
         </div>

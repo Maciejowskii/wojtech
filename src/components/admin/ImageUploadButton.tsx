@@ -1,7 +1,7 @@
 "use client";
 
 import { ImagePlus, Loader2 } from "lucide-react";
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 type Props = {
   label?: string;
@@ -17,6 +17,7 @@ export function ImageUploadButton({
   onFiles,
 }: Props) {
   const inputId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [dragOver, setDragOver] = useState(false);
 
@@ -32,8 +33,7 @@ export function ImageUploadButton({
 
   return (
     <div>
-      <label
-        htmlFor={inputId}
+      <div
         onDragOver={(e) => {
           e.preventDefault();
           setDragOver(true);
@@ -44,7 +44,7 @@ export function ImageUploadButton({
           setDragOver(false);
           handleFiles(e.dataTransfer.files).catch(() => undefined);
         }}
-        className={`flex cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-lg)] border-2 border-dashed px-6 py-10 text-center transition-colors ${
+        className={`flex flex-col items-center justify-center gap-3 rounded-[var(--radius-lg)] border-2 border-dashed px-6 py-10 text-center transition-colors ${
           dragOver
             ? "border-accent bg-accent/10"
             : "border-accent/50 bg-accent/5 hover:border-accent hover:bg-accent/10"
@@ -57,17 +57,23 @@ export function ImageUploadButton({
             <ImagePlus className="h-7 w-7" aria-hidden />
           )}
         </span>
-        <span className="text-base font-semibold text-navy">
+        <p className="text-base font-semibold text-navy">
           {busy ? "Przesyłanie…" : label}
-        </span>
-        <span className="max-w-xs text-sm text-muted">
+        </p>
+        <p className="max-w-xs text-sm text-muted">
           Kliknij lub przeciągnij pliki tutaj · {hint}
-        </span>
-        <span className="btn btn-primary pointer-events-none mt-1">
+        </p>
+        <button
+          type="button"
+          className="btn btn-primary mt-1"
+          disabled={busy}
+          onClick={() => inputRef.current?.click()}
+        >
           Wybierz pliki
-        </span>
-      </label>
+        </button>
+      </div>
       <input
+        ref={inputRef}
         id={inputId}
         type="file"
         accept="image/*"

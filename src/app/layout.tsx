@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Source_Sans_3 } from "next/font/google";
+import { Barlow_Condensed, Source_Sans_3 } from "next/font/google";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { localBusinessJsonLd } from "@/lib/schema";
 import { siteConfig } from "@/lib/site.config";
@@ -9,12 +9,13 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f3f6f9",
+  themeColor: "#20354b",
 };
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const display = Barlow_Condensed({
+  variable: "--font-barlow",
   subsets: ["latin", "latin-ext"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -36,10 +37,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico", sizes: "32x32" },
-      { url: "/brand/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/brand/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/brand/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
-    apple: [{ url: "/brand/icon.png", sizes: "180x180" }],
+    apple: [{ url: "/brand/icon.png", sizes: "180x180", type: "image/png" }],
     shortcut: ["/favicon.ico"],
   },
   openGraph: {
@@ -51,6 +55,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [{ url: "/brand/icon-512.png", width: 512, height: 512 }],
   },
+
   robots: {
     index: true,
     follow: true,
@@ -72,7 +77,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pl"
-      className={`${archivo.variable} ${sourceSans.variable} h-full antialiased`}
+      className={`${display.variable} ${sourceSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col overflow-x-clip bg-mist font-sans text-graphite">
         <script

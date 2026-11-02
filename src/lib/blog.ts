@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { seedBlogPosts } from "@/data/blog-seed";
 import {
   getDb,
   tryGetDb,
@@ -7,6 +8,16 @@ import {
   type BlogStatus,
 } from "@/lib/db";
 import { slugify } from "@/lib/slug";
+
+function mergePublicPosts(fromDb: BlogPost[]): BlogPost[] {
+  const slugs = new Set(fromDb.map((p) => p.slug));
+  const seeds = seedBlogPosts.filter((p) => !slugs.has(p.slug)) as BlogPost[];
+  return [...fromDb, ...seeds].sort((a, b) => {
+    const da = a.published_at ?? a.created_at;
+    const db = b.published_at ?? b.created_at;
+    return db.localeCompare(da);
+  });
+}
 
 function rowToBlog(row: Record<string, unknown>): BlogPost {
   const format = String(row.content_format || "visual");
@@ -35,10 +46,10 @@ export function listAllBlogPosts(): BlogPost[] {
   return rows.map(rowToBlog);
 }
 
-/** Opublikowane + zaplanowane, których data już minęła */
+/** Opublikowane + zaplanowane, których data już minęła (+ seed gdy brak treści) */
 export function listPublicBlogPosts(): BlogPost[] {
   const db = tryGetDb();
-  if (!db) return [];
+  if (!db) return mergePublicPosts([]);
   try {
     const now = new Date().toISOString();
     const rows = db
@@ -49,9 +60,9 @@ export function listPublicBlogPosts(): BlogPost[] {
          ORDER BY datetime(published_at) DESC`,
       )
       .all(now) as Record<string, unknown>[];
-    return rows.map(rowToBlog);
+    return mergePublicPosts(rows.map(rowToBlog));
   } catch {
-    return [];
+    return mergePublicPosts([]);
   }
 }
 
@@ -65,23 +76,26 @@ export function getBlogById(id: string): BlogPost | null {
 
 export function getPublicBlogBySlug(slug: string): BlogPost | null {
   const db = tryGetDb();
-  if (!db) return null;
-  try {
-    const now = new Date().toISOString();
-    const row = db
-      .prepare(
-        `SELECT * FROM blog_posts
-         WHERE slug = ?
-           AND (
-             status = 'published'
-             OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
-           )`,
-      )
-      .get(slug, now) as Record<string, unknown> | undefined;
-    return row ? rowToBlog(row) : null;
-  } catch {
-    return null;
+  if (db) {
+    try {
+      const now = new Date().toISOString();
+      const row = db
+        .prepare(
+          `SELECT * FROM blog_posts
+           WHERE slug = ?
+             AND (
+               status = 'published'
+               OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
+             )`,
+        )
+        .get(slug, now) as Record<string, unknown> | undefined;
+      if (row) return rowToBlog(row);
+    } catch {
+      /* fallback to seed */
+    }
   }
+  const seed = seedBlogPosts.find((p) => p.slug === slug);
+  return seed ? (seed as BlogPost) : null;
 }
 
 export function uniqueBlogSlug(base: string, excludeId?: string) {

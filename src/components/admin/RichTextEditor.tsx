@@ -9,7 +9,8 @@ import {
   ListOrdered,
   Underline,
 } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
+import DOMPurify from "isomorphic-dompurify";
 
 type Props = {
   value: string;
@@ -39,21 +40,34 @@ function ToolbarButton({
   );
 }
 
+function setEditorHtml(el: HTMLElement, html: string) {
+  const safe = DOMPurify.sanitize(html || "");
+  const parsed = new DOMParser().parseFromString(safe, "text/html");
+  el.replaceChildren(...Array.from(parsed.body.childNodes));
+}
+
 export function RichTextEditor({ value, onChange }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const lastEmitted = useRef(value);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (el.innerHTML !== value) {
-      el.innerHTML = value || "";
-    }
+    if (value === lastEmitted.current) return;
+    setEditorHtml(el, value);
+    lastEmitted.current = value;
   }, [value]);
+
+  function emit() {
+    const html = ref.current?.innerHTML || "";
+    lastEmitted.current = html;
+    onChange(html);
+  }
 
   function run(command: string, arg?: string) {
     ref.current?.focus();
     document.execCommand(command, false, arg);
-    onChange(ref.current?.innerHTML || "");
+    emit();
   }
 
   function addLink() {
@@ -95,7 +109,7 @@ export function RichTextEditor({ value, onChange }: Props) {
         className="rich-editor min-h-64 px-4 py-3 text-base leading-relaxed text-navy outline-none"
         contentEditable
         suppressContentEditableWarning
-        onInput={() => onChange(ref.current?.innerHTML || "")}
+        onInput={emit}
         data-placeholder="Zacznij pisać wpis…"
       />
     </div>

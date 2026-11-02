@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listAllBlogPosts } from "@/lib/blog";
+import { listAllBlogPosts, listPublicBlogPosts } from "@/lib/blog";
 import { requireDynamic } from "@/lib/dynamic";
 import { listAllRealizations } from "@/lib/realizations-db";
 
@@ -9,13 +9,7 @@ export default async function AdminDashboardPage() {
   await requireDynamic();
   const posts = listAllBlogPosts();
   const realizations = listAllRealizations();
-  const publishedPosts = posts.filter(
-    (p) =>
-      p.status === "published" ||
-      (p.status === "scheduled" &&
-        p.published_at &&
-        p.published_at <= new Date().toISOString()),
-  );
+  const publishedCount = listPublicBlogPosts().length;
 
   return (
     <div>
@@ -31,7 +25,7 @@ export default async function AdminDashboardPage() {
             {posts.length}
           </p>
           <p className="mt-1 text-sm text-muted">
-            Opublikowane / widoczne: {publishedPosts.length}
+            Opublikowane / widoczne: {publishedCount}
           </p>
           <Link href="/admin/blog" className="btn btn-secondary mt-4">
             Przejdź do bloga

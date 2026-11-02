@@ -12,28 +12,24 @@ export function Location() {
         <SectionHeading
           id="lokalizacja-title"
           label="Lokalizacja"
-          title="Serwis w Ostrzeszowie"
-          subtitle="Urządzenie dostarczasz osobiście do serwisu."
+          title="Warsztat w Ostrzeszowie"
+          subtitle="Sprzęt oddajesz osobiście na Olszynie 84C."
         />
 
-        <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="card-surface p-6 md:p-8">
-            <dl className="space-y-5">
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-                  Adres
-                </dt>
-                <dd className="mt-2 text-navy">
+        <div className="grid gap-8 border-y border-border lg:grid-cols-[0.85fr_1.15fr] lg:gap-0">
+          <div className="py-8 lg:border-r lg:border-border lg:pr-10">
+            <dl className="divide-y divide-border">
+              <div className="grid gap-1 py-5 sm:grid-cols-[7rem_1fr] sm:gap-6">
+                <dt className="text-sm font-semibold text-accent">Adres</dt>
+                <dd className="text-[1.02rem] leading-snug text-graphite">
                   {siteConfig.address.street}
                   <br />
                   {siteConfig.address.postalCode} {siteConfig.address.city}
                 </dd>
               </div>
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-                  Telefon
-                </dt>
-                <dd className="mt-2">
+              <div className="grid gap-1 py-5 sm:grid-cols-[7rem_1fr] sm:gap-6">
+                <dt className="text-sm font-semibold text-accent">Telefon</dt>
+                <dd className="text-[1.02rem]">
                   <a
                     href={siteConfig.phone.href}
                     className="font-semibold text-navy underline-offset-2 hover:text-accent hover:underline"
@@ -42,11 +38,9 @@ export function Location() {
                   </a>
                 </dd>
               </div>
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-                  Godziny otwarcia
-                </dt>
-                <dd className="mt-2 text-sm text-muted">
+              <div className="grid gap-1 py-5 sm:grid-cols-[7rem_1fr] sm:gap-6">
+                <dt className="text-sm font-semibold text-accent">Godziny</dt>
+                <dd className="text-[1.02rem] leading-snug text-graphite">
                   {siteConfig.openingHours.length > 0 ? (
                     <ul className="space-y-1">
                       {siteConfig.openingHours.map((row) => (
@@ -72,7 +66,7 @@ export function Location() {
             </a>
           </div>
 
-          <div className="card-surface overflow-hidden">
+          <div className="overflow-hidden border border-border bg-white lg:border-0 lg:border-l lg:border-border">
             <iframe
               title="Mapa - WOJ-TECH Elektroserwis, Ostrzeszów"
               src={siteConfig.address.mapsEmbed}

@@ -5,17 +5,17 @@ import { Contact } from "@/components/sections/Contact";
 import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
 import { Process } from "@/components/sections/Process";
-import { Realizations } from "@/components/sections/Realizations";
 import { Reviews } from "@/components/sections/Reviews";
+import { ServiceMarquee } from "@/components/sections/ServiceMarquee";
 import { Services } from "@/components/sections/Services";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { faqItems } from "@/data/faq";
 import { faqJsonLd } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "WOJ-TECH Elektroserwis Ostrzeszów | Naprawa elektroniki i AGD",
+  title: "WOJ-TECH Elektroserwis Ostrzeszów | Naprawa ekspresów, AGD i RTV",
   description:
-    "Naprawa ekspresów do kawy, AGD, RTV, elektroniki samochodowej, rowerów i hulajnóg w Ostrzeszowie. Olszyna 84C · tel. 606 582 606.",
+    "Warsztat w Ostrzeszowie: ekspresy do kawy, AGD, RTV, elektronika samochodowa, rowery i hulajnogi. Olszyna 84C, tel. 606 582 606.",
   alternates: { canonical: "/" },
 };
 
@@ -29,27 +29,17 @@ export default function HomePage() {
         }}
       />
       <Hero />
-      <Process />
+      <ScrollReveal variant="fade" delay={40}>
+        <ServiceMarquee />
+      </ScrollReveal>
       <Services />
-      <ScrollReveal>
-        <Suspense fallback={null}>
-          <Realizations />
-        </Suspense>
-      </ScrollReveal>
-      <ScrollReveal delay={40}>
-        <Reviews />
-      </ScrollReveal>
-      <ScrollReveal delay={60}>
-        <Suspense fallback={null}>
-          <BlogTeaser />
-        </Suspense>
-      </ScrollReveal>
-      <ScrollReveal delay={80}>
-        <Faq />
-      </ScrollReveal>
-      <ScrollReveal delay={100}>
-        <Contact />
-      </ScrollReveal>
+      <Process />
+      <Reviews />
+      <Suspense fallback={null}>
+        <BlogTeaser />
+      </Suspense>
+      <Faq />
+      <Contact />
     </>
   );
 }

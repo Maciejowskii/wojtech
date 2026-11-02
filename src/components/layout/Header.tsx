@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Menu, Phone, X } from "lucide-react";
+import { useEffect, useId, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
+import { MobileNavDrawer } from "@/components/layout/MobileNavDrawer";
 import { Logo } from "@/components/ui/Logo";
+import { useIsClient } from "@/hooks/useIsClient";
 import { siteConfig } from "@/lib/site.config";
 
 function isNavActive(href: string, pathname: string) {
@@ -12,120 +14,131 @@ function isNavActive(href: string, pathname: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function IconMenu({ open }: { open: boolean }) {
+  return (
+    <span className="relative block h-4 w-5" aria-hidden>
+      <span
+        className={`absolute left-0 block h-0.5 w-5 bg-navy transition-transform duration-200 ${
+          open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
+        }`}
+      />
+      <span
+        className={`absolute left-0 top-1/2 block h-0.5 w-5 -translate-y-1/2 bg-navy transition-opacity duration-200 ${
+          open ? "opacity-0" : "opacity-100"
+        }`}
+      />
+      <span
+        className={`absolute left-0 block h-0.5 w-5 bg-navy transition-transform duration-200 ${
+          open ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0"
+        }`}
+      />
+    </span>
+  );
+}
+
+function subscribeScroll(onChange: () => void) {
+  window.addEventListener("scroll", onChange, { passive: true });
+  return () => window.removeEventListener("scroll", onChange);
+}
+
+function getScrollSnapshot() {
+  return window.scrollY > 4;
+}
+
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+  const panelId = useId();
+  const mounted = useIsClient();
+  const scrolled = useSyncExternalStore(
+    subscribeScroll,
+    getScrollSnapshot,
+    () => false,
+  );
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  const drawer =
+    mounted &&
+    createPortal(
+      <MobileNavDrawer
+        open={open}
+        pathname={pathname}
+        panelId={panelId}
+        onClose={() => setOpen(false)}
+      />,
+      document.body,
+    );
+
   return (
-    <header
-      className={`sticky top-0 z-50 border-b bg-mist/95 backdrop-blur-sm transition-colors ${
-        scrolled ? "border-border" : "border-border/60"
-      }`}
-    >
-      <div className="container-page flex h-[var(--header-h)] items-center gap-4 sm:gap-8">
-        <Logo className="min-w-0" />
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-[60] border-b bg-mist/95 pt-[var(--safe-top)] backdrop-blur-sm transition-colors ${
+          scrolled ? "border-border" : "border-border/60"
+        }`}
+      >
+        <div className="container-page flex h-[var(--header-h)] items-center gap-3 sm:gap-6">
+          <Logo className="min-w-0" />
 
-        <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <nav className="flex items-center gap-1" aria-label="Główna nawigacja">
-            {siteConfig.nav.map((item) => {
-              const active = isNavActive(item.href, pathname);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={
-                    active ? "nav-link nav-link-active text-accent" : "nav-link"
-                  }
-                  aria-current={active ? "page" : undefined}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <a href={siteConfig.phone.href} className="btn-nav-phone ml-3">
-            <Phone className="size-3.5" aria-hidden strokeWidth={2} />
-            {siteConfig.phone.display}
-          </a>
-        </div>
-
-        <div className="ml-auto flex items-center gap-2 lg:hidden">
-          <a
-            href={siteConfig.phone.href}
-            className="touch-target inline-flex items-center justify-center rounded-[var(--radius-sm)] border border-graphite/25 text-navy"
-            aria-label={`Zadzwoń: ${siteConfig.phone.display}`}
-          >
-            <Phone className="size-5" aria-hidden strokeWidth={2} />
-          </a>
-          <button
-            type="button"
-            className="touch-target inline-flex items-center justify-center rounded-[var(--radius-sm)] border border-graphite/25 bg-transparent text-navy"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            aria-label={open ? "Zamknij menu" : "Otwórz menu"}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
-      </div>
-
-      {open ? (
-        <div
-          id="mobile-nav"
-          className="max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-border bg-mist lg:hidden"
-        >
-          <nav
-            className="container-page flex flex-col pb-[calc(var(--mobile-cta-h)+var(--safe-bottom)+1rem)] pt-2"
-            aria-label="Menu mobilne"
-          >
-            {siteConfig.nav.map((item) => {
-              const active = isNavActive(item.href, pathname);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`min-h-12 px-3 py-3 text-[0.95rem] font-bold uppercase tracking-[0.1em] ${
-                    active ? "text-accent" : "text-navy"
-                  }`}
-                  aria-current={active ? "page" : undefined}
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-            <a
-              href={siteConfig.phone.href}
-              className="btn btn-primary mt-4 w-full"
-              onClick={() => setOpen(false)}
+          <div className="ml-auto hidden items-center gap-2 lg:flex">
+            <nav
+              className="flex items-center gap-1"
+              aria-label="Główna nawigacja"
             >
-              <Phone className="size-4" aria-hidden />
+              {siteConfig.nav.map((item) => {
+                const active = isNavActive(item.href, pathname);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={
+                      active
+                        ? "nav-link nav-link-active text-accent"
+                        : "nav-link"
+                    }
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <a href={siteConfig.phone.href} className="btn-nav-phone ml-3">
               {siteConfig.phone.display}
             </a>
-          </nav>
+          </div>
+
+          <button
+            type="button"
+            className="touch-target ml-auto inline-flex items-center justify-center rounded-[var(--radius-sm)] border border-graphite/25 bg-white text-navy lg:hidden"
+            aria-expanded={open}
+            aria-controls={panelId}
+            aria-label={open ? "Zamknij menu" : "Otwórz menu"}
+            onClick={() => setOpen((value) => !value)}
+          >
+            <IconMenu open={open} />
+          </button>
         </div>
-      ) : null}
-    </header>
+      </header>
+
+      {drawer}
+    </>
   );
 }

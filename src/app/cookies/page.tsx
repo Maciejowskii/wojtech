@@ -1,76 +1,154 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CookieSettingsButton } from "@/components/layout/CookieSettingsButton";
+import { LegalDoc, LegalSection } from "@/components/ui/LegalDoc";
+import { PageIntro } from "@/components/ui/PageIntro";
+import { siteConfig } from "@/lib/site.config";
 
 export const metadata: Metadata = {
   title: "Pliki cookies",
-  description: "Informacje o plikach cookies na stronie WOJ-TECH Elektroserwis.",
+  description:
+    "Informacje o plikach cookies i zgodzie na analitykę na stronie WOJ-TECH Elektroserwis.",
   alternates: { canonical: "/cookies" },
+  robots: { index: true, follow: true },
 };
 
 export default function CookiesPage() {
   return (
-    <div className="section-pad">
-      <div className="container-page max-w-3xl">
-        <h1 className="text-3xl font-bold text-navy md:text-4xl">
-          Pliki cookies
-        </h1>
+    <>
+      <PageIntro
+        label="Dokumenty"
+        title="Pliki cookies"
+        lead="Jak działają cookies i podobne technologie na stronie warsztatu WOJ-TECH w Ostrzeszowie."
+      >
+        <CookieSettingsButton />
+        <Link href="/polityka-prywatnosci" className="btn btn-primary">
+          Polityka prywatności
+        </Link>
+      </PageIntro>
 
-        <p className="mt-4 text-sm leading-relaxed text-muted">
-          Na stronie WOJ-TECH Elektroserwis stosujemy pliki cookies i podobne
-          technologie w zakresie opisanym poniżej.
-        </p>
+      <LegalDoc updated="2 listopada 2026">
+        <LegalSection title="Co stosujemy">
+          <p>
+            Na stronie {siteConfig.name} używamy niezbędnych mechanizmów
+            technicznych oraz opcjonalnej analityki Google Analytics 4. Decyzję
+            o analityce zapisujemy w pamięci lokalnej przeglądarki
+            (localStorage), a nie w klasycznym pliku cookie.
+          </p>
+        </LegalSection>
 
-        <h2 className="mt-10 text-xl font-bold text-navy">
-          Cookies niezbędne
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
-          Są wymagane do prawidłowego działania witryny (np. zapamiętanie Twojej
-          decyzji o cookies, bezpieczeństwo panelu administracyjnego). Działają
-          bez dodatkowej zgody.
-        </p>
+        <LegalSection title="Niezbędne">
+          <p>
+            Są potrzebne, żeby strona działała poprawnie. Nie wymagają osobnej
+            zgody.
+          </p>
+          <div className="legal-table-wrap">
+            <table className="legal-table">
+              <thead>
+                <tr>
+                  <th>Nazwa</th>
+                  <th>Cel</th>
+                  <th>Czas</th>
+                  <th>Typ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <code>wojtech-cookie-consent</code>
+                  </td>
+                  <td>Zapamiętanie Twojej decyzji o cookies / analityce</td>
+                  <td>Do zmiany ustawień lub wyczyszczenia danych</td>
+                  <td>localStorage</td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>wojtech_admin_session</code>
+                  </td>
+                  <td>
+                    Sesja panelu administracyjnego (tylko dla uprawnionych osób)
+                  </td>
+                  <td>Sesja / wg ustawień serwera</td>
+                  <td>Cookie HTTP</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </LegalSection>
 
-        <h2 className="mt-8 text-xl font-bold text-navy">
-          Cookies analityczne (opcjonalne)
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
-          Po wyrażeniu zgody możemy uruchomić Google Analytics 4 (GA4), żeby
-          mierzyć ruch na stronie (np. odwiedziny, źródła ruchu). Skrypt GA4
-          ładuje się dopiero po akceptacji. Możesz w każdej chwili wybrać tylko
-          cookies niezbędne.
-        </p>
+        <LegalSection title="Analityczne (opcjonalne)">
+          <p>
+            Po kliknięciu „Akceptuję wszystkie” w banerze możemy uruchomić Google
+            Analytics 4. Bez zgody skrypt GA4 się nie ładuje. GA4 może ustawiać
+            własne cookies (np. z rodziny{" "}
+            <code>_ga</code>
+            ), żeby mierzyć ruch, źródła wejść i zachowanie na stronie.
+          </p>
+          <div className="legal-table-wrap">
+            <table className="legal-table">
+              <thead>
+                <tr>
+                  <th>Nazwa (przykład)</th>
+                  <th>Cel</th>
+                  <th>Warunek</th>
+                  <th>Dostawca</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <code>_ga</code>, <code>_ga_*</code>
+                  </td>
+                  <td>Statystyki odwiedzin i sesji</td>
+                  <td>Tylko po zgodzie</td>
+                  <td>Google Analytics 4</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Więcej o przetwarzaniu danych:{" "}
+            <Link href="/polityka-prywatnosci">Polityka prywatności</Link>.
+          </p>
+        </LegalSection>
 
-        <h2 className="mt-8 text-xl font-bold text-navy">
-          Google Search Console i Ahrefs
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
-          Narzędzia SEO takie jak Google Search Console oraz Ahrefs (audyt,
-          pozycje, Webmaster Tools) nie wymagają umieszczania cookies
-          śledzących w przeglądarce odwiedzającego. Służą właścicielowi strony
-          do analizy widoczności w wyszukiwarkach.
-        </p>
+        <LegalSection title="Narzędzia SEO właściciela">
+          <p>
+            Google Search Console oraz narzędzia typu Ahrefs służą właścicielowi
+            strony do analizy widoczności w wyszukiwarkach. Nie wymagają
+            umieszczania cookies śledzących w przeglądarce odwiedzającego.
+          </p>
+        </LegalSection>
 
-        <h2 className="mt-8 text-xl font-bold text-navy">
-          Zmiana ustawień
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
-          Możesz ponownie otworzyć baner i zmienić decyzję:
-        </p>
-        <div className="mt-4">
-          <CookieSettingsButton />
-        </div>
+        <LegalSection title="Jak zmienić decyzję">
+          <p>
+            W każdej chwili możesz otworzyć ustawienia i wybrać tylko cookies
+            niezbędne albo zgodzić się na analitykę ponownie.
+          </p>
+          <div className="pt-2">
+            <CookieSettingsButton />
+          </div>
+          <p>
+            Możesz też wyczyścić dane witryny w ustawieniach przeglądarki. Po
+            odwołaniu zgody na analitykę strona przeładowuje się, żeby wyłączyć
+            GA4.
+          </p>
+        </LegalSection>
 
-        <p className="mt-8 text-sm leading-relaxed text-muted">
-          Więcej o przetwarzaniu danych:{" "}
-          <Link
-            href="/polityka-prywatnosci"
-            className="font-semibold text-accent underline-offset-2 hover:underline"
-          >
-            Polityka prywatności
-          </Link>
-          .
-        </p>
-      </div>
-    </div>
+        <LegalSection title="Kontakt">
+          <p>
+            Pytania o cookies i dane osobowe: tel.{" "}
+            <a href={siteConfig.phone.href}>{siteConfig.phone.display}</a>
+            {siteConfig.email.display ? (
+              <>
+                {" "}
+                lub <a href={siteConfig.email.href}>{siteConfig.email.display}</a>
+              </>
+            ) : null}
+            .
+          </p>
+        </LegalSection>
+      </LegalDoc>
+    </>
   );
 }

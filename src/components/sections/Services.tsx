@@ -1,17 +1,18 @@
 import Link from "next/link";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ServiceIcon } from "@/components/ui/ServiceIcon";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { offerServices } from "@/data/services";
 
 type ServicesProps = {
   showHeading?: boolean;
+  /** Na /oferta pokazujemy pełne body; na landingu skrót */
+  dense?: boolean;
 };
 
-const landingServices = offerServices.slice(0, 3);
-
-export function Services({ showHeading = true }: ServicesProps) {
-  const items = showHeading ? landingServices : offerServices;
+export function Services({
+  showHeading = true,
+  dense = false,
+}: ServicesProps) {
+  const items = dense ? offerServices : offerServices;
 
   return (
     <section
@@ -21,65 +22,91 @@ export function Services({ showHeading = true }: ServicesProps) {
     >
       <div className="container-page">
         {showHeading ? (
-          <ScrollReveal>
-            <SectionHeading
-              id="oferta-title"
-              label="Specjalizacje"
-              title="Kompleksowy serwis elektroniki"
-              subtitle="Od diagnostyki, przez naprawę, aż do oddania sprawnego sprzętu."
-            />
+          <ScrollReveal variant="blur">
+            <div className="mb-8 max-w-3xl md:mb-16">
+              <p className="section-label">Oferta</p>
+              <h2
+                id="oferta-title"
+                className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold uppercase tracking-[0.02em] text-navy"
+              >
+                Co naprawiam
+              </h2>
+              <p className="mt-4 max-w-[60ch] text-pretty text-base leading-relaxed text-muted md:text-lg">
+                Najwięcej robię przy ekspresach do kawy. Oprócz tego biorę AGD,
+                RTV, elektronikę samochodową, rowery, hulajnogi i
+                elektronarzędzia. Po obejrzeniu sprzętu mówię, co da się zrobić
+                i ile to będzie kosztować.
+              </p>
+            </div>
           </ScrollReveal>
         ) : null}
 
-        <div
-          className={`grid gap-5 ${
-            items.length <= 3
-              ? "md:grid-cols-3"
-              : "md:grid-cols-2 xl:grid-cols-3"
-          }`}
-        >
+        <div className="divide-y divide-border border-y border-border">
           {items.map((service, index) => (
             <ScrollReveal
               key={service.id}
               as="article"
-              delay={index * 100}
-              className="card-surface flex h-full flex-col overflow-hidden"
+              variant={index % 2 === 0 ? "left" : "right"}
+              delay={Math.min(index * 50, 150)}
+              className="grid gap-4 py-7 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)] md:gap-12 md:py-14"
             >
-              <div className="flex min-h-[160px] items-end bg-card p-5 text-navy">
-                <div>
-                  <ServiceIcon
-                    name={service.icon}
-                    className="size-8 text-accent"
-                  />
-                  <p className="mt-4 font-display text-3xl font-semibold tabular-nums text-steel">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="text-xl font-semibold text-navy">
-                  {String(index + 1).padStart(2, "0")}. {service.shortTitle}
+              <div>
+                <p className="font-display text-sm font-semibold uppercase tracking-[0.14em] text-accent">
+                  {service.featured ? "Specjalizacja" : "Usługa"}
+                </p>
+                <h3 className="mt-2 text-[clamp(1.65rem,3vw,2.35rem)] font-semibold uppercase tracking-[0.02em] text-navy">
+                  {service.shortTitle}
                 </h3>
-                <p className="mt-3 flex-1 text-[0.95rem] leading-relaxed text-muted">
+                <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">
                   {service.summary}
                 </p>
-                <div className="mt-5">
-                  <Link
-                    href={service.href}
-                    className="btn btn-secondary min-h-11 w-full px-4 py-2 text-sm"
-                  >
-                    Sprawdź szczegóły
-                  </Link>
-                </div>
+                <Link
+                  href={service.href}
+                  className="mt-6 inline-flex min-h-11 items-center font-semibold text-navy underline-offset-4 hover:text-accent hover:underline"
+                >
+                  Szczegóły usługi
+                </Link>
+              </div>
+
+              <div className="space-y-4 text-[1.02rem] leading-[1.7] text-graphite">
+                {(dense ? service.body : service.body.slice(0, 2)).map(
+                  (paragraph, i) => (
+                    <p key={`${service.id}-${i}`}>{paragraph}</p>
+                  ),
+                )}
+                {!dense && service.body.length > 2 ? (
+                  <p className="text-[0.95rem] text-muted">
+                    Więcej o typowych usterkach i zakresie jest na stronie
+                    usługi.
+                  </p>
+                ) : null}
+
+                {dense ? (
+                  <div className="pt-2">
+                    <p className="text-sm font-semibold text-navy">
+                      Typowe zgłoszenia
+                    </p>
+                    <ul className="mt-3 space-y-2 text-[0.95rem] text-muted">
+                      {service.commonIssues.map((issue) => (
+                        <li
+                          key={issue}
+                          className="border-l-2 border-accent/40 pl-3"
+                        >
+                          {issue}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             </ScrollReveal>
           ))}
         </div>
 
         {showHeading ? (
-          <ScrollReveal delay={220} className="mt-8">
+          <ScrollReveal variant="scale" delay={120} className="mt-10">
             <Link href="/oferta" className="btn btn-secondary">
-              Cała oferta
+              Pełna oferta
             </Link>
           </ScrollReveal>
         ) : null}

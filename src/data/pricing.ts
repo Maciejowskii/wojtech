@@ -75,4 +75,4 @@ export function formatPrice(entry: PriceEntry): string {
 }
 
 export const pricingFallbackMessage =
-  "Koszt naprawy zależy od rodzaju usterki, modelu urządzenia i dostępności części. Prześlij zgłoszenie, a skontaktujemy się z Tobą w sprawie wstępnej wyceny.";
+  "Koszt zależy od usterki, modelu i dostępności części. Napisz albo zadzwoń, a po rozmowie albo diagnostyce podam wycenę.";

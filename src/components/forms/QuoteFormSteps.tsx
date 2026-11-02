@@ -1,0 +1,440 @@
+"use client";
+
+import {
+  formatPrice,
+  getPricesForCategory,
+  pricingFallbackMessage,
+  quoteCategories,
+} from "@/data/pricing";
+import { siteConfig } from "@/lib/site.config";
+import type { QuoteFormState } from "@/components/forms/quote-form-types";
+
+type Props = {
+  step: number;
+  form: QuoteFormState;
+  errors: Record<string, string>;
+  status: "idle" | "loading" | "success" | "error";
+  serverMessage: string;
+  categoryLabel: string;
+  update: <K extends keyof QuoteFormState>(key: K, value: QuoteFormState[K]) => void;
+  next: () => void;
+  back: () => void;
+  submit: () => void;
+  stepCount: number;
+};
+
+export function QuoteFormSteps({
+  step,
+  form,
+  errors,
+  status,
+  serverMessage,
+  categoryLabel,
+  update,
+  next,
+  back,
+  submit,
+  stepCount,
+}: Props) {
+  const prices = form.category ? getPricesForCategory(form.category) : [];
+
+  return (
+    <div className="p-5 md:p-8">
+        {/* honeypot - ukryty przed użytkownikami */}
+        <div className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
+          <label>
+            Strona WWW
+            <input
+              tabIndex={-1}
+              autoComplete="off"
+              value={form.website}
+              onChange={(e) => update("website", e.target.value)}
+            />
+          </label>
+        </div>
+
+        {step === 0 && (
+          <fieldset>
+            <legend className="text-lg font-bold text-navy">
+              Jakie urządzenie chcesz zgłosić?
+            </legend>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {quoteCategories.map((cat) => {
+                const selected = form.category === cat.id;
+                return (
+                  <label
+                    key={cat.id}
+                    className={`flex min-h-12 cursor-pointer items-center rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
+                      selected
+                        ? "border-accent bg-accent/10 text-navy"
+                        : "border-border bg-white text-navy hover:border-accent/50"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      className="sr-only"
+                      name="category"
+                      value={cat.id}
+                      checked={selected}
+                      onChange={() => update("category", cat.id)}
+                    />
+                    {cat.label}
+                  </label>
+                );
+              })}
+            </div>
+            {errors.category ? (
+              <p className="mt-3 text-sm text-red-700" role="alert">
+                {errors.category}
+              </p>
+            ) : null}
+          </fieldset>
+        )}
+
+        {step === 1 && (
+          <div className="grid gap-4">
+            <Field
+              label="Producent"
+              error={errors.brand}
+              required
+            >
+              <input
+                className="field"
+                value={form.brand}
+                onChange={(e) => update("brand", e.target.value)}
+                placeholder="np. marka urządzenia"
+              />
+            </Field>
+            <Field label="Model (jeśli znany)">
+              <input
+                className="field"
+                value={form.model}
+                onChange={(e) => update("model", e.target.value)}
+              />
+            </Field>
+            <Field label="Wiek urządzenia (opcjonalnie)">
+              <input
+                className="field"
+                value={form.age}
+                onChange={(e) => update("age", e.target.value)}
+                placeholder="np. ok. 3 lata"
+              />
+            </Field>
+            <Field label="Rodzaj usterki" error={errors.issueType} required>
+              <input
+                className="field"
+                value={form.issueType}
+                onChange={(e) => update("issueType", e.target.value)}
+                placeholder="np. nie grzeje wody / nie odpala"
+              />
+            </Field>
+          </div>
+        )}
+
+        {step === 2 && (
+          <Field label="Opis problemu" error={errors.description} required>
+            <textarea
+              className="field min-h-36"
+              value={form.description}
+              onChange={(e) => update("description", e.target.value)}
+              placeholder="Co się dzieje, kiedy problem występuje, czy sprzęt w ogóle się włącza"
+            />
+          </Field>
+        )}
+
+        {step === 3 && (
+          <div className="grid gap-4">
+            <Field label="Orientacyjny budżet (opcjonalnie)">
+              <input
+                className="field"
+                value={form.budget}
+                onChange={(e) => update("budget", e.target.value)}
+                placeholder="np. do 300 zł"
+              />
+            </Field>
+            <Field label="Dodatkowe uwagi">
+              <textarea
+                className="field min-h-28"
+                value={form.notes}
+                onChange={(e) => update("notes", e.target.value)}
+              />
+            </Field>
+            <p className="rounded-xl bg-mist px-4 py-3 text-sm text-muted">
+              Przesyłanie zdjęć będzie dostępne po konfiguracji przechowywania
+              plików. Na razie możesz opisać uszkodzenie lub wysłać zdjęcie
+              SMS-em / e-mailem po kontakcie.
+            </p>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="grid gap-4">
+            <Field label="Imię" error={errors.name} required>
+              <input
+                className="field"
+                value={form.name}
+                onChange={(e) => update("name", e.target.value)}
+                autoComplete="name"
+              />
+            </Field>
+            <Field label="Numer telefonu" error={errors.phone} required>
+              <input
+                className="field"
+                value={form.phone}
+                onChange={(e) => update("phone", e.target.value)}
+                autoComplete="tel"
+                inputMode="tel"
+              />
+            </Field>
+            <Field label="E-mail (opcjonalnie)" error={errors.email}>
+              <input
+                className="field"
+                type="email"
+                value={form.email}
+                onChange={(e) => update("email", e.target.value)}
+                autoComplete="email"
+              />
+            </Field>
+            <fieldset>
+              <legend className="mb-2 text-sm font-semibold text-navy">
+                Preferowany sposób kontaktu
+              </legend>
+              <div className="flex flex-wrap gap-2">
+                {(
+                  [
+                    ["phone", "Telefon"],
+                    ["email", "E-mail"],
+                    ["either", "Obojętnie"],
+                  ] as const
+                ).map(([value, label]) => (
+                  <label
+                    key={value}
+                    className={`inline-flex min-h-11 cursor-pointer items-center rounded-xl border px-4 py-2 text-sm ${
+                      form.contactPreference === value
+                        ? "border-accent bg-accent/10"
+                        : "border-border"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      className="sr-only"
+                      name="contactPreference"
+                      checked={form.contactPreference === value}
+                      onChange={() => update("contactPreference", value)}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+              {errors.contactPreference ? (
+                <p className="mt-2 text-sm text-red-700" role="alert">
+                  {errors.contactPreference}
+                </p>
+              ) : null}
+            </fieldset>
+          </div>
+        )}
+
+        {step === 5 && (
+          <fieldset>
+            <legend className="text-lg font-bold text-navy">
+              Jak dostarczysz sprzęt?
+            </legend>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {(
+                [
+                  [
+                    "in_person",
+                    "Osobiste dostarczenie do serwisu",
+                    "Przywieź urządzenie do Olszyna 84C, Ostrzeszów.",
+                  ],
+                  [
+                    "shipping",
+                    "Wysyłka z innej miejscowości",
+                    "Po zgłoszeniu ustalimy szczegóły przesyłki.",
+                  ],
+                ] as const
+              ).map(([value, title, desc]) => (
+                <label
+                  key={value}
+                  className={`cursor-pointer rounded-xl border p-4 ${
+                    form.delivery === value
+                      ? "border-accent bg-accent/10"
+                      : "border-border"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    className="sr-only"
+                    name="delivery"
+                    checked={form.delivery === value}
+                    onChange={() => update("delivery", value)}
+                  />
+                  <span className="block font-semibold text-navy">{title}</span>
+                  <span className="mt-1 block text-sm text-muted">{desc}</span>
+                </label>
+              ))}
+            </div>
+            {errors.delivery ? (
+              <p className="mt-3 text-sm text-red-700" role="alert">
+                {errors.delivery}
+              </p>
+            ) : null}
+          </fieldset>
+        )}
+
+        {step === 6 && (
+          <div className="space-y-5">
+            <div className="rounded-xl bg-mist p-5 text-sm text-navy">
+              <h3 className="font-display text-lg font-bold">Podsumowanie</h3>
+              <dl className="mt-3 grid gap-2 sm:grid-cols-2">
+                <Item label="Kategoria" value={categoryLabel} />
+                <Item label="Producent" value={form.brand} />
+                <Item label="Model" value={form.model || "-"} />
+                <Item label="Usterka" value={form.issueType} />
+                <Item label="Imię" value={form.name} />
+                <Item label="Telefon" value={form.phone} />
+                <Item
+                  label="Dostawa"
+                  value={
+                    form.delivery === "shipping"
+                      ? "Wysyłka"
+                      : "Osobiście w serwisie"
+                  }
+                />
+              </dl>
+              <p className="mt-3 text-muted">{form.description}</p>
+            </div>
+
+            <div className="rounded-xl border border-border p-5">
+              <h4 className="font-semibold text-navy">Orientacyjna wycena</h4>
+              {prices.length === 0 ? (
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  {pricingFallbackMessage}
+                </p>
+              ) : (
+                <ul className="mt-3 space-y-2 text-sm">
+                  {prices.map((p) => (
+                    <li
+                      key={p.id}
+                      className="flex items-start justify-between gap-3"
+                    >
+                      <span>
+                        {p.label}
+                        {p.kind !== "fixed" ? (
+                          <span className="mt-0.5 block text-xs text-muted">
+                            {p.kind === "range"
+                              ? "Orientacyjny przedział - nie gwarantowana cena końcowa"
+                              : "Wymaga indywidualnej diagnostyki"}
+                          </span>
+                        ) : null}
+                      </span>
+                      <span className="font-semibold">{formatPrice(p)}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <label className="flex items-start gap-3 text-sm text-navy">
+              <input
+                type="checkbox"
+                className="mt-1 size-4 accent-[var(--color-accent)]"
+                checked={form.consent}
+                onChange={(e) => update("consent", e.target.checked)}
+              />
+              <span>
+                Wyrażam zgodę na przetwarzanie podanych danych w celu obsługi
+                zgłoszenia serwisowego.
+              </span>
+            </label>
+            {errors.consent ? (
+              <p className="text-sm text-red-700" role="alert">
+                {errors.consent}
+              </p>
+            ) : null}
+
+            {status === "error" ? (
+              <div
+                className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+                role="alert"
+              >
+                <p>{serverMessage}</p>
+                <a
+                  href={siteConfig.phone.href}
+                  className="mt-2 inline-flex font-semibold underline"
+                >
+                  Zadzwoń: {siteConfig.phone.display}
+                </a>
+              </div>
+            ) : null}
+          </div>
+        )}
+
+        <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <button
+            type="button"
+            className="btn btn-secondary w-full sm:w-auto"
+            onClick={back}
+            disabled={step === 0 || status === "loading"}
+          >
+            Wstecz
+          </button>
+          {step < stepCount - 1 ? (
+            <button
+              type="button"
+              className="btn btn-primary w-full sm:w-auto"
+              onClick={next}
+            >
+              Dalej
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-primary w-full sm:w-auto"
+              onClick={submit}
+              disabled={status === "loading"}
+            >
+              {status === "loading" ? "Wysyłanie…" : "Wyślij zgłoszenie"}
+            </button>
+          )}
+        </div>
+      </div>
+  );
+}
+
+function Field({
+  label,
+  children,
+  error,
+  required,
+}: {
+  label: string;
+  children: React.ReactNode;
+  error?: string;
+  required?: boolean;
+}) {
+  return (
+    <label className="block">
+      <span className="mb-1.5 block text-sm font-semibold text-navy">
+        {label}
+        {required ? <span className="text-accent"> *</span> : null}
+      </span>
+      {children}
+      {error ? (
+        <span className="mt-1.5 block text-sm text-red-700" role="alert">
+          {error}
+        </span>
+      ) : null}
+    </label>
+  );
+}
+
+function Item({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-xs uppercase tracking-wide text-muted">{label}</dt>
+      <dd className="font-medium">{value}</dd>
+    </div>
+  );
+}

@@ -13,19 +13,17 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-            Elektroserwis w Ostrzeszowie. Naprawa ekspresów do kawy, AGD, RTV,
-            elektroniki samochodowej, rowerów i hulajnóg.
+            Warsztat w Ostrzeszowie. Ekspresy do kawy, AGD, RTV, elektronika
+            samochodowa, rowery i hulajnogi.
           </p>
           <p className="mt-3 text-sm text-muted">
-            {rating} · {googleRatingSummary.count} opinie Google
+            {rating} / {googleRatingSummary.count} opinie Google
           </p>
           <p className="mt-1 text-sm text-muted">{siteConfig.owner}</p>
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-            Nawigacja
-          </h3>
+          <h3 className="text-sm font-semibold text-navy">Nawigacja</h3>
           <ul className="mt-4 space-y-2 text-sm">
             {siteConfig.footerNav.map((item) => (
               <li key={item.href}>
@@ -38,11 +36,9 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-            Specjalizacje
-          </h3>
+          <h3 className="text-sm font-semibold text-navy">Usługi</h3>
           <ul className="mt-4 space-y-2 text-sm">
-            {offerServices.slice(0, 3).map((s) => (
+            {offerServices.map((s) => (
               <li key={s.id}>
                 <Link href={s.href} className="hover:text-accent">
                   {s.shortTitle}
@@ -53,9 +49,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-            Kontakt
-          </h3>
+          <h3 className="text-sm font-semibold text-navy">Kontakt</h3>
           <ul className="mt-4 space-y-2 text-sm text-muted">
             <li>
               <a
@@ -82,31 +76,22 @@ export function Footer() {
                 Formularz kontaktowy
               </Link>
             </li>
-            <li>
-              <Link href="/polityka-prywatnosci" className="hover:text-accent">
-                Polityka prywatności
-              </Link>
-            </li>
-            <li>
-              <Link href="/cookies" className="hover:text-accent">
-                Pliki cookies
-              </Link>
-            </li>
+            {siteConfig.legalNav.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="hover:text-accent">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
 
       <div className="border-t border-border">
         <div className="container-page flex flex-col gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © 2026 {siteConfig.legalName}
-          </p>
+          <p>© 2026 {siteConfig.legalName}</p>
           <p className="sm:text-right">
-            Serwis elektroniki Ostrzeszów
-            <span className="mx-2 text-border" aria-hidden>
-              ·
-            </span>
-            Wykonano przez{" "}
+            Serwis elektroniki Ostrzeszów. Wykonano przez{" "}
             <a
               href="https://synthit.pl/"
               target="_blank"

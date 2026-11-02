@@ -26,20 +26,20 @@ export function SectionHeading({
     >
       {label ? (
         <p
-          className={`section-label ${align === "center" ? "mx-auto" : ""} ${tone === "onDark" ? "text-steel before:bg-steel" : ""}`}
+          className={`section-label ${align === "center" ? "mx-auto" : ""} ${tone === "onDark" ? "text-steel" : ""}`}
         >
           {label}
         </p>
       ) : null}
       <h2
         id={id}
-        className={`text-balance text-[clamp(1.85rem,3.5vw,2.65rem)] font-semibold tracking-tight ${titleColor}`}
+        className={`text-balance text-[clamp(2rem,4.5vw,3.25rem)] font-semibold uppercase tracking-[0.02em] ${titleColor}`}
       >
         {title}
       </h2>
       {subtitle ? (
         <p
-          className={`mt-3 max-w-[65ch] text-pretty text-base leading-relaxed md:text-lg ${subColor}`}
+          className={`mt-4 max-w-[62ch] text-pretty text-base leading-relaxed md:text-lg ${subColor}`}
         >
           {subtitle}
         </p>

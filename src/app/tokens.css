@@ -36,7 +36,7 @@
   --color-error: oklch(52% 0.19 27);
   --color-success: oklch(50% 0.12 150);
 
-  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-barlow), "Arial Narrow", ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-source), ui-sans-serif, system-ui, sans-serif;
   --font-outlier: var(--font-body);
   --radius-card: 10px;
@@ -96,7 +96,6 @@
   --content-width: var(--container);
   --page-gutter: var(--gutter);
   --header-h: 3.75rem;
-  --mobile-cta-h: 4.5rem;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --space-1: var(--space-2xs);
   --space-2: var(--space-xs);

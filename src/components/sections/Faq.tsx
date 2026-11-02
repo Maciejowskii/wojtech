@@ -17,9 +17,7 @@ export function Faq({ variant = "preview", showHeading = true }: FaqProps) {
   const [openId, setOpenId] = useState<number | null>(0);
 
   const title =
-    variant === "preview"
-      ? "Pytania przed oddaniem sprzętu"
-      : "Pytania i odpowiedzi";
+    variant === "preview" ? "Częste pytania" : "Pytania i odpowiedzi";
 
   const accordion = (
     <div className="divide-y divide-border border border-border bg-white">
@@ -52,9 +50,8 @@ export function Faq({ variant = "preview", showHeading = true }: FaqProps) {
                 </span>
               </button>
             </h3>
-            <div
+            <section
               id={panelId}
-              role="region"
               aria-labelledby={buttonId}
               className={`grid transition-[grid-template-rows] duration-300 ease-out ${
                 open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
@@ -69,7 +66,7 @@ export function Faq({ variant = "preview", showHeading = true }: FaqProps) {
                   {item.answer}
                 </p>
               </div>
-            </div>
+            </section>
           </div>
         );
       })}
@@ -89,16 +86,16 @@ export function Faq({ variant = "preview", showHeading = true }: FaqProps) {
       <div className="container-page">
         {showHeading ? (
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <ScrollReveal>
-              <p className="section-label">FAQ</p>
+            <ScrollReveal variant="left">
+              <p className="section-label">Pytania</p>
               <h2
                 id="faq-title"
-                className="text-balance text-[clamp(1.85rem,3.5vw,2.65rem)] font-semibold tracking-tight text-navy"
+                className="text-balance text-[clamp(2rem,4.5vw,3.25rem)] font-semibold uppercase tracking-[0.02em] text-navy"
               >
                 {title}
               </h2>
               <p className="mt-3 max-w-[65ch] text-pretty text-base leading-relaxed text-muted md:text-lg">
-                Koszty, dostawa i zakres usług, zebrane w jednym miejscu.
+                Wycena, dostawa sprzętu i to, co warto wiedzieć przed wizytą.
               </p>
               {variant === "preview" ? (
                 <Link
@@ -110,10 +107,12 @@ export function Faq({ variant = "preview", showHeading = true }: FaqProps) {
               ) : null}
             </ScrollReveal>
 
-            <ScrollReveal delay={80}>{accordion}</ScrollReveal>
+            <ScrollReveal variant="right" delay={100}>
+              {accordion}
+            </ScrollReveal>
           </div>
         ) : (
-          <ScrollReveal>{accordion}</ScrollReveal>
+          <ScrollReveal variant="up">{accordion}</ScrollReveal>
         )}
       </div>
     </section>

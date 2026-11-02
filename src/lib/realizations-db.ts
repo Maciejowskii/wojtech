@@ -134,6 +134,31 @@ export type RealizationInput = {
   }>;
 };
 
+function replaceRealizationImages(
+  realizationId: string,
+  images: NonNullable<RealizationInput["images"]>,
+) {
+  const db = getDb();
+  db.prepare(`DELETE FROM realization_images WHERE realization_id = ?`).run(
+    realizationId,
+  );
+  const stmt = db.prepare(
+    `INSERT INTO realization_images
+     (id, realization_id, url, alt, kind, sort_order)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+  );
+  images.forEach((img, index) => {
+    stmt.run(
+      nanoid(),
+      realizationId,
+      img.url,
+      img.alt || "",
+      img.kind || "gallery",
+      img.sort_order ?? index,
+    );
+  });
+}
+
 export function createRealization(
   input: RealizationInput,
 ): RealizationWithImages {
@@ -160,21 +185,7 @@ export function createRealization(
   );
 
   if (input.images?.length) {
-    const stmt = db.prepare(
-      `INSERT INTO realization_images
-       (id, realization_id, url, alt, kind, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-    );
-    input.images.forEach((img, index) => {
-      stmt.run(
-        nanoid(),
-        id,
-        img.url,
-        img.alt || "",
-        img.kind || "gallery",
-        img.sort_order ?? index,
-      );
-    });
+    replaceRealizationImages(id, input.images);
   }
 
   return getRealizationById(id)!;
@@ -209,24 +220,7 @@ export function updateRealization(
   );
 
   if (input.images) {
-    db.prepare(`DELETE FROM realization_images WHERE realization_id = ?`).run(
-      id,
-    );
-    const stmt = db.prepare(
-      `INSERT INTO realization_images
-       (id, realization_id, url, alt, kind, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-    );
-    input.images.forEach((img, index) => {
-      stmt.run(
-        nanoid(),
-        id,
-        img.url,
-        img.alt || "",
-        img.kind || "gallery",
-        img.sort_order ?? index,
-      );
-    });
+    replaceRealizationImages(id, input.images);
   }
 
   return getRealizationById(id);

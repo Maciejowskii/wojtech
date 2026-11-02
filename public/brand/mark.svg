@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="WOJ-TECH">
+  <rect width="64" height="64" fill="#f3f6f9"/>
+  <path fill="#20354b" d="M6 12h8.2l5.1 24.4L24.6 12H33l5.1 24.4L43.2 12H51.4L42.4 52H33.4L28.8 26.2 24.2 52h-9L6 12z"/>
+  <rect x="6" y="55" width="52" height="3" fill="#267a9b"/>
+</svg>
