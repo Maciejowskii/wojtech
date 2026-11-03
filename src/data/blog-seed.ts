@@ -127,7 +127,7 @@ export const seedBlogPosts: SeedBlogPost[] = [
 <p>Problemy z elektroniką w aucie bywają szersze niż sam kluczyk: radio, wzmacniacz, brak CarPlay, błędy przy diagnostyce. To też jest w zakresie <a href="/elektronika-samochodowa">elektroniki samochodowej</a>. Jeśli natomiast padł ekspres albo sprzęt domowy, zobacz poradnik o tym, gdy <a href="/blog/ekspres-nie-grzeje-wody">ekspres nie grzeje wody</a>.</p>
 <p>Chcesz dorobić albo zakodować kluczyk? Zadzwoń pod <a href="tel:+48606582606">606 582 606</a> albo napisz przez <a href="/kontakt#wycena">formularz wyceny</a>. Po rozmowie ustalimy, co brać ze sobą i jak wygląda kolejny krok.</p>`,
     content_format: "html",
-    cover_image: "/media/tech-board.jpg",
+    cover_image: "/media/car-keys.jpg",
     status: "published",
     published_at: "2026-02-20T10:00:00.000Z",
     created_at: "2026-02-20T10:00:00.000Z",
@@ -237,7 +237,7 @@ export const seedBlogPosts: SeedBlogPost[] = [
 <p>Telewizor nie wstaje albo gaśnie po sekundzie? Zadzwoń pod <a href="tel:+48606582606">606 582 606</a> albo wyślij opis przez <a href="/kontakt#wycena">formularz wyceny</a>. Po diagnostyce dostaniesz konkretną wycenę.</p>
 <p>Więcej porad z warsztatu znajdziesz w <a href="/blog">blogu</a>, między innymi o tym, gdy <a href="/blog/ekspres-nie-grzeje-wody">ekspres nie grzeje wody</a> albo gdy <a href="/blog/hulajnoga-elektryczna-traci-moc">hulajnoga traci moc</a>.</p>`,
     content_format: "html",
-    cover_image: "/media/circuit.jpg",
+    cover_image: "/media/television.jpg",
     status: "published",
     published_at: "2026-01-05T10:00:00.000Z",
     created_at: "2026-01-05T10:00:00.000Z",

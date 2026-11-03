@@ -1,18 +1,22 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { offerServices } from "@/data/services";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { serviceImages } from "@/data/media";
+import { featuredService, offerServices } from "@/data/services";
 
 type ServicesProps = {
   showHeading?: boolean;
-  /** Na /oferta pokazujemy pełne body; na landingu skrót */
-  dense?: boolean;
 };
 
-export function Services({
-  showHeading = true,
-  dense = false,
-}: ServicesProps) {
-  const items = dense ? offerServices : offerServices;
+function serviceImage(id: string) {
+  return serviceImages[id as keyof typeof serviceImages];
+}
+
+export function Services({ showHeading = true }: ServicesProps) {
+  const featured = featuredService;
+  const others = offerServices.filter((s) => s.id !== featured.id);
+  const featuredImage = serviceImage(featured.id);
 
   return (
     <section
@@ -23,93 +27,98 @@ export function Services({
       <div className="container-page">
         {showHeading ? (
           <ScrollReveal variant="blur">
-            <div className="mb-8 max-w-3xl md:mb-16">
-              <p className="section-label">Oferta</p>
-              <h2
-                id="oferta-title"
-                className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold uppercase tracking-[0.02em] text-navy"
-              >
-                Co naprawiam
-              </h2>
-              <p className="mt-4 max-w-[60ch] text-pretty text-base leading-relaxed text-muted md:text-lg">
-                Najwięcej robię przy ekspresach do kawy. Oprócz tego biorę AGD,
-                RTV, elektronikę samochodową, rowery, hulajnogi i
-                elektronarzędzia. Po obejrzeniu sprzętu mówię, co da się zrobić
-                i ile to będzie kosztować.
-              </p>
-            </div>
+            <SectionHeader
+              label="Oferta"
+              title="Co naprawiam"
+              titleId="oferta-title"
+              lead="Ekspresy, AGD, RTV, elektronika, rowery i hulajnogi. Najpierw wycena."
+              action={
+                <Link href="/oferta" className="btn btn-secondary">
+                  Pełna oferta
+                </Link>
+              }
+            />
           </ScrollReveal>
         ) : null}
 
-        <div className="divide-y divide-border border-y border-border">
-          {items.map((service, index) => (
-            <ScrollReveal
-              key={service.id}
-              as="article"
-              variant={index % 2 === 0 ? "left" : "right"}
-              delay={Math.min(index * 50, 150)}
-              className="grid gap-4 py-7 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)] md:gap-12 md:py-14"
-            >
-              <div>
-                <p className="font-display text-sm font-semibold uppercase tracking-[0.14em] text-accent">
-                  {service.featured ? "Specjalizacja" : "Usługa"}
-                </p>
-                <h3 className="mt-2 text-[clamp(1.65rem,3vw,2.35rem)] font-semibold uppercase tracking-[0.02em] text-navy">
-                  {service.shortTitle}
-                </h3>
-                <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">
-                  {service.summary}
-                </p>
+        <ScrollReveal variant="left" className="mb-5 md:mb-6">
+          <Link
+            href={featured.href}
+            className="group grid overflow-hidden border border-border no-underline lg:grid-cols-12"
+          >
+            <div className="relative aspect-[16/11] bg-mist sm:aspect-[2/1] lg:col-span-7 lg:aspect-auto lg:min-h-[22rem]">
+              {featuredImage ? (
+                <Image
+                  src={featuredImage.src}
+                  alt={featuredImage.alt}
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                />
+              ) : null}
+            </div>
+            <div className="flex flex-col justify-center bg-mist px-5 py-6 sm:px-8 sm:py-8 lg:col-span-5 lg:px-10">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+                Specjalizacja
+              </p>
+              <h3 className="mt-2 text-[clamp(1.55rem,3vw,2.15rem)] font-semibold uppercase tracking-[0.02em] text-navy transition-colors group-hover:text-accent">
+                {featured.shortTitle}
+              </h3>
+              <p className="mt-3 max-w-[34ch] text-[0.98rem] leading-relaxed text-muted">
+                {featured.summary}
+              </p>
+              <span className="mt-6 text-sm font-semibold text-navy underline-offset-4 group-hover:text-accent group-hover:underline">
+                Szczegóły usługi
+              </span>
+            </div>
+          </Link>
+        </ScrollReveal>
+
+        <ul className="grid gap-5 sm:grid-cols-2 lg:gap-6">
+          {others.map((service, index) => {
+            const image = serviceImage(service.id);
+
+            return (
+              <ScrollReveal
+                key={service.id}
+                as="li"
+                variant="up"
+                delay={Math.min(index * 70, 210)}
+              >
                 <Link
                   href={service.href}
-                  className="mt-6 inline-flex min-h-11 items-center font-semibold text-navy underline-offset-4 hover:text-accent hover:underline"
+                  className="group grid h-full overflow-hidden border border-border no-underline sm:grid-rows-[auto_1fr]"
                 >
-                  Szczegóły usługi
-                </Link>
-              </div>
-
-              <div className="space-y-4 text-[1.02rem] leading-[1.7] text-graphite">
-                {(dense ? service.body : service.body.slice(0, 2)).map(
-                  (paragraph, i) => (
-                    <p key={`${service.id}-${i}`}>{paragraph}</p>
-                  ),
-                )}
-                {!dense && service.body.length > 2 ? (
-                  <p className="text-[0.95rem] text-muted">
-                    Więcej o typowych usterkach i zakresie jest na stronie
-                    usługi.
-                  </p>
-                ) : null}
-
-                {dense ? (
-                  <div className="pt-2">
-                    <p className="text-sm font-semibold text-navy">
-                      Typowe zgłoszenia
-                    </p>
-                    <ul className="mt-3 space-y-2 text-[0.95rem] text-muted">
-                      {service.commonIssues.map((issue) => (
-                        <li
-                          key={issue}
-                          className="border-l-2 border-accent/40 pl-3"
-                        >
-                          {issue}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="relative aspect-[16/10] overflow-hidden bg-mist">
+                    {image ? (
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                        sizes="(max-width: 640px) 100vw, 50vw"
+                      />
+                    ) : null}
                   </div>
-                ) : null}
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-
-        {showHeading ? (
-          <ScrollReveal variant="scale" delay={120} className="mt-10">
-            <Link href="/oferta" className="btn btn-secondary">
-              Pełna oferta
-            </Link>
-          </ScrollReveal>
-        ) : null}
+                  <div className="flex flex-col px-4 py-4 sm:px-5 sm:py-5">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+                      Usługa
+                    </p>
+                    <h3 className="mt-1.5 text-[clamp(1.15rem,2vw,1.4rem)] font-semibold uppercase tracking-[0.02em] text-navy transition-colors group-hover:text-accent">
+                      {service.shortTitle}
+                    </h3>
+                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">
+                      {service.summary}
+                    </p>
+                    <span className="mt-auto pt-4 text-sm font-semibold text-navy underline-offset-4 group-hover:text-accent group-hover:underline">
+                      Szczegóły
+                    </span>
+                  </div>
+                </Link>
+              </ScrollReveal>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );

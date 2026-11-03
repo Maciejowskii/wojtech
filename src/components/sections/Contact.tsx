@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { siteConfig } from "@/lib/site.config";
 
 type ContactProps = {
@@ -14,75 +15,61 @@ export function Contact({ showHeading = true }: ContactProps) {
   return (
     <section
       id="kontakt"
-      className="section-pad border-t border-border bg-mist"
+      className="section-pad bg-mist"
       aria-labelledby={showHeading ? "kontakt-title" : undefined}
     >
       <div className="container-page">
-        <div className="flex flex-col gap-8 border-b border-border pb-10 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
-          <ScrollReveal variant="blur" className="max-w-xl">
-            {showHeading ? (
-              <>
-                <p className="section-label">Kontakt</p>
-                <h2
-                  id="kontakt-title"
-                  className="text-[clamp(2rem,4.5vw,3.25rem)] font-semibold uppercase tracking-[0.02em] text-navy"
-                >
-                  Napisz albo zadzwoń
-                </h2>
-                <p className="mt-4 max-w-[52ch] text-base leading-relaxed text-muted md:text-lg">
-                  Napisz, co masz za sprzęt i co się z nim dzieje. Oddzwonię albo
-                  odpiszę. Najszybciej załatwisz sprawę telefonicznie.
-                </p>
-              </>
-            ) : (
-              <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] font-semibold uppercase tracking-[0.02em] text-navy">
-                Dane warsztatu
-              </h2>
-            )}
-          </ScrollReveal>
+        <ScrollReveal variant="blur">
+          {showHeading ? (
+            <SectionHeader
+              label="Kontakt"
+              title="Napisz albo zadzwoń"
+              titleId="kontakt-title"
+              lead="Napisz, co się dzieje ze sprzętem — albo zadzwoń."
+              action={
+                <div className="flex flex-col gap-3 sm:items-end">
+                  <a
+                    href={siteConfig.phone.href}
+                    className="font-display text-[clamp(1.85rem,4vw,2.75rem)] font-bold leading-none tracking-[0.02em] text-navy underline-offset-4 hover:text-accent hover:underline"
+                  >
+                    {siteConfig.phone.display}
+                  </a>
+                  <div className="flex flex-wrap gap-3">
+                    <a href={siteConfig.phone.href} className="btn btn-primary">
+                      Zadzwoń
+                    </a>
+                    <a
+                      href={siteConfig.address.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-secondary"
+                    >
+                      Trasa
+                    </a>
+                  </div>
+                </div>
+              }
+            />
+          ) : (
+            <SectionHeader label="Kontakt" title="Dane warsztatu" />
+          )}
+        </ScrollReveal>
 
-          <ScrollReveal
-            variant="scale"
-            delay={120}
-            className="flex shrink-0 flex-col gap-4 lg:items-end"
-          >
-            <a
-              href={siteConfig.phone.href}
-              className="font-display text-[clamp(2.25rem,5vw,3.25rem)] font-bold leading-none tracking-[0.02em] text-navy underline-offset-4 hover:text-accent hover:underline"
-            >
-              {siteConfig.phone.display}
-            </a>
-            <div className="flex flex-wrap gap-3">
-              <a href={siteConfig.phone.href} className="btn btn-primary">
-                Zadzwoń
-              </a>
-              <a
-                href={siteConfig.address.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-secondary"
-              >
-                Trasa
-              </a>
-            </div>
-          </ScrollReveal>
-        </div>
-
-        <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)] lg:gap-16">
-          <ScrollReveal variant="left" delay={60}>
-            <dl className="divide-y divide-border border-y border-border">
-              <div className="grid gap-1 py-5 sm:grid-cols-[7.5rem_1fr] sm:gap-6">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+          <ScrollReveal variant="left" delay={60} className="lg:col-span-5">
+            <dl className="divide-y divide-border border border-border bg-white">
+              <div className="grid gap-1 px-5 py-4 sm:grid-cols-[6.5rem_1fr] sm:gap-4 sm:px-6 sm:py-5">
                 <dt className="text-sm font-semibold text-accent">Adres</dt>
-                <dd className="text-[1.02rem] leading-snug text-graphite">
+                <dd className="text-[0.98rem] leading-snug text-graphite">
                   {siteConfig.address.street}
                   <br />
                   {siteConfig.address.postalCode} {siteConfig.address.city}
                 </dd>
               </div>
               {weekday ? (
-                <div className="grid gap-1 py-5 sm:grid-cols-[7.5rem_1fr] sm:gap-6">
+                <div className="grid gap-1 px-5 py-4 sm:grid-cols-[6.5rem_1fr] sm:gap-4 sm:px-6 sm:py-5">
                   <dt className="text-sm font-semibold text-accent">Godziny</dt>
-                  <dd className="text-[1.02rem] leading-snug text-graphite">
+                  <dd className="text-[0.98rem] leading-snug text-graphite">
                     <span className="block">
                       {weekday.days === "Poniedziałek - Piątek"
                         ? "Pon-Pt"
@@ -101,9 +88,9 @@ export function Contact({ showHeading = true }: ContactProps) {
                 </div>
               ) : null}
               {siteConfig.email.display ? (
-                <div className="grid gap-1 py-5 sm:grid-cols-[7.5rem_1fr] sm:gap-6">
+                <div className="grid gap-1 px-5 py-4 sm:grid-cols-[6.5rem_1fr] sm:gap-4 sm:px-6 sm:py-5">
                   <dt className="text-sm font-semibold text-accent">E-mail</dt>
-                  <dd className="text-[1.02rem] leading-snug">
+                  <dd className="text-[0.98rem] leading-snug">
                     <a
                       href={siteConfig.email.href}
                       className="font-medium text-graphite underline-offset-2 hover:text-accent hover:underline"
@@ -113,35 +100,39 @@ export function Contact({ showHeading = true }: ContactProps) {
                   </dd>
                 </div>
               ) : null}
-              <div className="grid gap-1 py-5 sm:grid-cols-[7.5rem_1fr] sm:gap-6">
+              <div className="grid gap-1 px-5 py-4 sm:grid-cols-[6.5rem_1fr] sm:gap-4 sm:px-6 sm:py-5">
                 <dt className="text-sm font-semibold text-accent">Właściciel</dt>
-                <dd className="text-[1.02rem] leading-snug text-graphite">
+                <dd className="text-[0.98rem] leading-snug text-graphite">
                   {siteConfig.owner}
                 </dd>
               </div>
             </dl>
           </ScrollReveal>
 
-          <ScrollReveal variant="right" delay={140}>
+          <ScrollReveal
+            variant="right"
+            delay={120}
+            className="border border-border bg-white px-5 py-6 sm:px-7 sm:py-8 lg:col-span-7"
+          >
             <div id="wycena">
               <p className="section-label">Formularz</p>
-              <h3 className="mt-2 text-[clamp(1.35rem,2.5vw,1.75rem)] font-semibold uppercase tracking-[0.02em] text-navy">
-                Formularz zgłoszenia
+              <h3 className="mt-1 text-[clamp(1.25rem,2.2vw,1.55rem)] font-semibold uppercase tracking-[0.02em] text-navy">
+                Zgłoszenie
               </h3>
-              <p className="mt-2 max-w-[48ch] text-sm leading-relaxed text-muted">
-                Model, objawy i od kiedy jest problem. To wystarczy na start.
+              <p className="mt-2 max-w-[40ch] text-sm leading-relaxed text-muted">
+                Model, objawy i od kiedy jest problem.
               </p>
-              <div className="mt-8">
+              <div className="mt-6">
                 <ContactForm />
               </div>
               {showHeading ? (
-                <p className="mt-6 text-sm text-muted">
-                  Chcesz więcej pól i pełniejszy opis?{" "}
+                <p className="mt-5 text-sm text-muted">
+                  Pełniejszy formularz?{" "}
                   <Link
                     href="/kontakt"
                     className="font-semibold text-navy underline-offset-2 hover:text-accent hover:underline"
                   >
-                    Przejdź do strony kontaktu
+                    Strona kontaktu
                   </Link>
                 </p>
               ) : null}

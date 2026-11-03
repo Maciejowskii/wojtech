@@ -1,6 +1,6 @@
 /**
- * Lokalne zdjęcia stock (Unsplash / Wikimedia Commons).
- * Używane w blogu i w sekcji realizacji, gdy brak własnych zdjęć z warsztatu.
+ * Lokalne zdjęcia stock (Unsplash / Pexels / Wikimedia).
+ * Mapowanie usług = tematycznie do zakresu naprawy.
  */
 export const media = {
   espressoClose: {
@@ -13,34 +13,61 @@ export const media = {
   },
   coffeeCups: {
     src: "/media/coffee-cups.jpg",
-    alt: "Ekspres do kawy w warsztacie / kawiarni",
+    alt: "Ekspres do kawy na stanowisku baristy",
   },
-  circuit: {
-    src: "/media/circuit.jpg",
-    alt: "Lutowanie płytki elektronicznej",
+  carInfotainment: {
+    src: "/media/car-infotainment.jpg",
+    alt: "Ekran CarPlay w samochodzie — elektronika samochodowa",
   },
-  techBoard: {
-    src: "/media/tech-board.jpg",
-    alt: "Praca przy płytce drukowanej",
+  carKeys: {
+    src: "/media/car-keys.jpg",
+    alt: "Kluczyk samochodowy na konsoli auta",
   },
-  breadboard: {
-    src: "/media/breadboard.jpg",
-    alt: "Stanowisko z elektroniką i narzędziami",
+  television: {
+    src: "/media/television.jpg",
+    alt: "Telewizor na ścianie — sprzęt RTV",
   },
-  bicycle: {
-    src: "/media/bicycle.jpg",
-    alt: "Rower przygotowany do serwisu",
+  electronicsRepair: {
+    src: "/media/soldering-iron.jpg",
+    alt: "Naprawa elektroniki — praca przy płytce",
   },
   eScooter: {
     src: "/media/e-scooter.jpg",
     alt: "Hulajnoga elektryczna",
   },
+  bicycle: {
+    src: "/media/bicycle.jpg",
+    alt: "Rower przygotowany do serwisu",
+  },
+  powerDrill: {
+    src: "/media/power-drill.jpg",
+    alt: "Wiertarka akumulatorowa — elektronarzędzie",
+  },
+  cordlessTools: {
+    src: "/media/cordless-tools.jpg",
+    alt: "Elektronarzędzie akumulatorowe",
+  },
+  circuit: {
+    src: "/media/circuit.jpg",
+    alt: "Płytka elektroniczna",
+  },
+  techBoard: {
+    src: "/media/tech-board.jpg",
+    alt: "Zbliżenie na elektronikę",
+  },
 } as const;
 
+/** Grafiki usług — 1:1 z tematyką oferty. */
 export const serviceImages = {
   "serwis-ekspresow-do-kawy": media.coffeeCups,
-  "elektronika-samochodowa": media.techBoard,
-  "naprawa-rtv": media.circuit,
+  "elektronika-samochodowa": media.carInfotainment,
+  "naprawa-rtv": media.television,
   "serwis-rowerow-i-hulajnog": media.eScooter,
-  "naprawa-elektronarzedzi": media.breadboard,
+  "naprawa-elektronarzedzi": media.powerDrill,
+} as const;
+
+/** Hero: wejście do warsztatu. */
+export const heroImage = {
+  src: "/brand/stanowisko.jpg",
+  alt: "Wejście do WOJ-TECH Elektroserwis, Olszyna 84C w Ostrzeszowie",
 } as const;

@@ -1,146 +1,109 @@
 import Image from "next/image";
 import Link from "next/link";
 import { googleRatingSummary } from "@/data/reviews";
-import { media } from "@/data/media";
+import { heroImage } from "@/data/media";
 import { siteConfig } from "@/lib/site.config";
 
 export function Hero() {
   const rating = googleRatingSummary.rating.toFixed(1).replace(".", ",");
   const weekday = siteConfig.openingHours[0];
-  const weekend = siteConfig.openingHours[1];
   const hoursLine =
     weekday?.days === "Poniedziałek - Piątek"
-      ? `Pon-Pt ${weekday.hours}`
+      ? `Pon–Pt ${weekday.hours}`
       : weekday
         ? `${weekday.days} ${weekday.hours}`
         : null;
 
   return (
-    <section id="start" className="border-b border-border bg-mist">
-      <div className="container-page grid gap-6 py-6 sm:gap-8 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-12 xl:min-h-[calc(100svh-var(--header-h))]">
-        <div className="flex flex-col gap-5 sm:gap-10 lg:col-span-5 lg:py-4">
-          <div>
-            <p className="hero-enter-meta text-sm font-semibold text-accent">
-              Ostrzeszów · {siteConfig.owner}
-            </p>
-            <h1 className="hero-enter-brand mt-2.5 font-display text-[clamp(2.6rem,11vw,5.25rem)] font-bold uppercase leading-[0.86] tracking-[0.01em] text-navy sm:mt-3">
-              WOJ-TECH
-            </h1>
-
-            <p className="hero-enter-lead mt-3.5 text-[clamp(1.05rem,3.5vw,1.4rem)] font-medium leading-snug text-navy sm:mt-5">
-              Naprawiam ekspresy do kawy, AGD, RTV, elektronikę samochodową,
-              rowery i hulajnogi.
-            </p>
-            <p className="hero-enter-copy mt-3 hidden max-w-[36rem] text-base leading-relaxed text-muted sm:block md:text-lg">
-              Warsztat w Ostrzeszowie. Przywieź sprzęt albo zadzwoń. Po
-              sprawdzeniu dostajesz wycenę, zanim cokolwiek naprawię.
-            </p>
-
-            <div className="hero-enter-cta mt-5 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-              <a
-                href={siteConfig.phone.href}
-                className="btn btn-primary w-full sm:w-auto"
-              >
-                {siteConfig.phone.display}
-              </a>
-              <Link
-                href="/kontakt#wycena"
-                className="btn btn-secondary w-full sm:w-auto"
-              >
-                Zapytaj o wycenę
-              </Link>
-              <Link
-                href="/oferta"
-                className="hidden min-h-11 items-center justify-center text-sm font-semibold text-navy underline-offset-4 hover:text-accent hover:underline sm:inline-flex sm:justify-start"
-              >
-                Pełna oferta
-              </Link>
-            </div>
-          </div>
-
-          <dl className="hero-enter-facts hidden gap-5 border-t-2 border-navy pt-6 sm:grid sm:grid-cols-3 sm:gap-0">
-            <div className="sm:pr-5">
-              <dt className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-                Adres
-              </dt>
-              <dd className="mt-2 text-sm font-semibold leading-snug text-navy md:text-base">
-                {siteConfig.address.street}
-                <span className="mt-0.5 block font-normal text-muted">
-                  {siteConfig.address.postalCode} {siteConfig.address.city}
-                </span>
-              </dd>
-            </div>
-            {hoursLine ? (
-              <div className="border-border sm:border-l sm:px-5">
-                <dt className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-                  Godziny
-                </dt>
-                <dd className="mt-2 text-sm font-semibold leading-snug text-navy md:text-base">
-                  {hoursLine}
-                  {weekend ? (
-                    <span className="mt-0.5 block font-normal text-muted">
-                      {weekend.days}: {weekend.hours}
-                    </span>
-                  ) : null}
-                </dd>
-              </div>
-            ) : null}
-            <div className="border-border sm:border-l sm:pl-5">
-              <dt className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-                Google
-              </dt>
-              <dd className="mt-2 text-sm leading-snug">
-                <a
-                  href={siteConfig.googleBusinessUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-navy underline-offset-2 hover:text-accent hover:underline"
-                >
-                  {rating}/5
-                </a>
-                <span className="mt-0.5 block text-muted">
-                  {googleRatingSummary.count} opinie
-                </span>
-              </dd>
-            </div>
-          </dl>
+    <section id="start" className="border-b border-border bg-white">
+      <div className="container-page py-8 sm:py-10 lg:py-12">
+        <div className="hero-enter-meta flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-navy pb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
+          <span>Naprawa</span>
+          <span className="text-border" aria-hidden>
+            /
+          </span>
+          <span>Ostrzeszów</span>
+          <span className="text-border" aria-hidden>
+            /
+          </span>
+          <a
+            href={siteConfig.googleBusinessUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-navy hover:text-accent"
+          >
+            Google {rating}
+          </a>
         </div>
 
-        <div className="hero-enter-panel w-full lg:col-span-7">
-          <div className="relative aspect-[4/3] w-full overflow-hidden bg-card max-lg:-mx-[var(--page-gutter)] max-lg:w-[calc(100%+2*var(--page-gutter))] sm:aspect-[3/2] lg:mx-0 lg:w-full">
-            <Image
-              src={media.coffeeCups.src}
-              alt={media.coffeeCups.alt}
-              fill
-              priority
-              className="object-cover object-center"
-              sizes="(max-width: 1024px) 100vw, 55vw"
-            />
+        <div className="mt-8 grid items-start gap-8 lg:mt-10 lg:grid-cols-12 lg:gap-10 xl:gap-14">
+          <div className="flex flex-col lg:col-span-5 lg:pt-2">
+            <p className="hero-enter-meta text-sm font-semibold uppercase tracking-[0.22em] text-muted">
+              Elektroserwis
+            </p>
+
+            <h1 className="hero-enter-brand mt-3 font-display text-[clamp(2.8rem,8vw,4.5rem)] font-bold uppercase leading-[0.92] tracking-[0.04em] text-navy">
+              WOJ
+              <span className="text-accent" aria-hidden>
+                |
+              </span>
+              TECH
+            </h1>
+
+            <p className="hero-enter-lead mt-6 max-w-[32ch] text-[1.05rem] leading-relaxed text-graphite sm:text-lg">
+              Ekspresy, AGD, RTV i elektronika. Przywieź sprzęt albo zadzwoń —
+              po diagnostyce dostajesz wycenę.
+            </p>
+
+            <div className="hero-enter-cta mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <a href={siteConfig.phone.href} className="btn btn-primary">
+                {siteConfig.phone.display}
+              </a>
+              <Link href="/kontakt#wycena" className="btn btn-secondary">
+                Zapytaj o wycenę
+              </Link>
+            </div>
+
+            <dl className="hero-enter-facts mt-10 hidden gap-6 border-t border-border pt-6 sm:grid sm:grid-cols-2">
+              <div>
+                <dt className="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+                  Warsztat
+                </dt>
+                <dd className="mt-1.5 text-sm font-semibold text-navy">
+                  {siteConfig.address.street}
+                </dd>
+              </div>
+              {hoursLine ? (
+                <div>
+                  <dt className="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+                    Godziny
+                  </dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-navy">
+                    {hoursLine}
+                  </dd>
+                </div>
+              ) : null}
+            </dl>
           </div>
 
-          <div className="mt-5 sm:hidden">
-            <p className="text-[0.95rem] leading-relaxed text-muted">
-              Warsztat w Ostrzeszowie. Przywieź sprzęt albo zadzwoń. Po
-              sprawdzeniu dostajesz wycenę, zanim cokolwiek naprawię.
-            </p>
-            <p className="mt-3 text-sm leading-snug text-navy">
-              <span className="font-semibold">{siteConfig.address.street}</span>
-              <span className="text-muted">
-                {" "}
-                · {hoursLine ?? siteConfig.address.city}
-              </span>
-              <span className="text-muted">
-                {" "}
-                · {rating}/5 Google
-              </span>
-            </p>
-            <Link
-              href="/oferta"
-              className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-navy underline-offset-4 hover:text-accent hover:underline"
-            >
-              Pełna oferta
-            </Link>
-          </div>
+          <figure className="hero-enter-panel lg:col-span-7">
+            <div className="border border-navy bg-mist p-2 sm:p-3">
+              <div className="relative aspect-[4/3] overflow-hidden bg-card sm:aspect-[5/4]">
+                <Image
+                  src={heroImage.src}
+                  alt={heroImage.alt}
+                  fill
+                  priority
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                />
+              </div>
+            </div>
+            <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
+              <span>Rys. 01 · Wejście warsztatu</span>
+              <span className="text-navy">{siteConfig.address.street}</span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>

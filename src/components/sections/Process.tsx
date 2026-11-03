@@ -1,21 +1,22 @@
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const steps = [
   {
-    title: "Zadzwoń albo napisz",
-    text: "Krótko opisz sprzęt i objawy. Łatwiej wtedy ustalić, czy warto przyjechać od razu.",
+    title: "Kontakt",
+    text: "Opisz sprzęt i objawy. Ustalimy, czy warto przyjechać.",
   },
   {
-    title: "Przywieź sprzęt",
-    text: "Oddajesz urządzenie w warsztacie na Olszynie 84C. Z dalszej okolicy możesz zapytać o wysyłkę.",
+    title: "Oddanie sprzętu",
+    text: "Warsztat na Olszynie 84C. Z dalszej okolicy możliwa wysyłka.",
   },
   {
-    title: "Diagnostyka i wycena",
-    text: "Sprawdzam, co nie działa, i podaję przewidywany koszt. Bez zgody nie zaczynam naprawy.",
+    title: "Wycena",
+    text: "Po diagnostyce mówię koszt. Bez zgody nie naprawiam.",
   },
   {
     title: "Naprawa",
-    text: "Jak ustalimy zakres i cenę, biorę się do roboty. Jeśli naprawa nie ma sensu, mówię to wprost.",
+    text: "Robię ustalony zakres. Jak nie ma sensu — mówię wprost.",
   },
 ];
 
@@ -33,39 +34,33 @@ export function Process({ showHeading = true }: ProcessProps) {
       <div className="container-page">
         {showHeading ? (
           <ScrollReveal variant="clip">
-            <div className="mb-10 max-w-3xl md:mb-12">
-              <p className="section-label">Jak pracujemy</p>
-              <h2
-                id="proces-title"
-                className="text-[clamp(2.1rem,4.5vw,3.25rem)] font-semibold uppercase tracking-[0.02em] text-navy"
-              >
-                Jak wygląda naprawa
-              </h2>
-              <p className="mt-4 max-w-[58ch] text-base leading-relaxed text-muted md:text-lg">
-                Pracuję stacjonarnie w Ostrzeszowie. Nie jeżdżę do klienta. Po
-                diagnostyce dostajesz wycenę i dopiero wtedy decydujesz o
-                naprawie.
-              </p>
-            </div>
+            <SectionHeader
+              label="Jak pracujemy"
+              title="Jak wygląda naprawa"
+              titleId="proces-title"
+              lead="Stacjonarnie w Ostrzeszowie. Najpierw wycena, potem decyzja."
+            />
           </ScrollReveal>
         ) : null}
 
-        <ol className="grid gap-6 md:grid-cols-2 md:gap-8 xl:grid-cols-4 xl:gap-6">
+        <ol className="grid gap-0 border border-border bg-white md:grid-cols-4">
           {steps.map((step, index) => (
             <ScrollReveal
               key={step.title}
               as="li"
-              variant="scale"
-              delay={index * 90}
-              className="relative"
+              variant="up"
+              delay={index * 80}
+              className={`relative border-border px-5 py-6 sm:px-6 sm:py-8 ${
+                index > 0 ? "border-t md:border-t-0 md:border-l" : ""
+              }`}
             >
-              <p className="font-display text-3xl font-semibold tabular-nums text-steel/80 md:text-5xl">
+              <p className="font-display text-3xl font-semibold tabular-nums text-steel/70 sm:text-4xl">
                 {String(index + 1).padStart(2, "0")}
               </p>
-              <h3 className="mt-2 text-lg font-semibold uppercase tracking-[0.02em] text-navy md:mt-3 md:text-xl">
+              <h3 className="mt-3 text-base font-semibold uppercase tracking-[0.02em] text-navy sm:text-lg">
                 {step.title}
               </h3>
-              <p className="mt-2 text-[0.95rem] leading-relaxed text-muted">
+              <p className="mt-2 text-sm leading-relaxed text-muted">
                 {step.text}
               </p>
             </ScrollReveal>

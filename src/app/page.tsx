@@ -8,6 +8,7 @@ import { Process } from "@/components/sections/Process";
 import { Reviews } from "@/components/sections/Reviews";
 import { ServiceMarquee } from "@/components/sections/ServiceMarquee";
 import { Services } from "@/components/sections/Services";
+import { VisualBreak } from "@/components/sections/VisualBreak";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { faqItems } from "@/data/faq";
 import { faqJsonLd } from "@/lib/schema";
@@ -34,11 +35,13 @@ export default function HomePage() {
       </ScrollReveal>
       <Services />
       <Process />
+      <VisualBreak image="espressoClose" tall />
       <Reviews />
       <Suspense fallback={null}>
         <BlogTeaser />
       </Suspense>
       <Faq />
+      <VisualBreak image="electronicsRepair" />
       <Contact />
     </>
   );

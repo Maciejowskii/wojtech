@@ -4,16 +4,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { faqItems } from "@/data/faq";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 type FaqProps = {
-  /** Na landingu: skrócona lista + link do /faq. Na /faq: pełna lista. */
   variant?: "preview" | "full";
-  /** Ukryj nagłówek sekcji (np. gdy strona /faq ma własny hero). */
   showHeading?: boolean;
 };
 
 export function Faq({ variant = "preview", showHeading = true }: FaqProps) {
-  const items = variant === "preview" ? faqItems.slice(0, 5) : faqItems;
+  const items = variant === "preview" ? faqItems.slice(0, 3) : faqItems;
   const [openId, setOpenId] = useState<number | null>(0);
 
   const title =
@@ -77,37 +76,35 @@ export function Faq({ variant = "preview", showHeading = true }: FaqProps) {
     <section
       id="faq"
       className={`${
-        showHeading
-          ? "section-pad border-t border-border"
-          : "pb-[clamp(2.75rem,6vw,5.75rem)] pt-2"
+        showHeading ? "section-pad" : "pb-[clamp(2.75rem,6vw,5.75rem)] pt-2"
       } bg-white`}
       aria-labelledby={showHeading ? "faq-title" : undefined}
     >
       <div className="container-page">
         {showHeading ? (
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <ScrollReveal variant="left">
-              <p className="section-label">Pytania</p>
-              <h2
-                id="faq-title"
-                className="text-balance text-[clamp(2rem,4.5vw,3.25rem)] font-semibold uppercase tracking-[0.02em] text-navy"
-              >
-                {title}
-              </h2>
-              <p className="mt-3 max-w-[65ch] text-pretty text-base leading-relaxed text-muted md:text-lg">
-                Wycena, dostawa sprzętu i to, co warto wiedzieć przed wizytą.
-              </p>
-              {variant === "preview" ? (
-                <Link
-                  href="/faq"
-                  className="btn btn-secondary mt-8 inline-flex text-sm"
-                >
-                  Wszystkie pytania
-                </Link>
-              ) : null}
+          <div className="grid gap-8 lg:grid-cols-12 lg:gap-12 lg:items-start">
+            <ScrollReveal variant="left" className="lg:col-span-5">
+              <SectionHeader
+                label="Pytania"
+                title={title}
+                titleId="faq-title"
+                lead="Wycena, dostawa i wizyta w warsztacie."
+                className="mb-0 border-b-0 pb-0 md:mb-0 md:pb-0"
+                action={
+                  variant === "preview" ? (
+                    <Link href="/faq" className="btn btn-secondary">
+                      Wszystkie pytania
+                    </Link>
+                  ) : undefined
+                }
+              />
             </ScrollReveal>
 
-            <ScrollReveal variant="right" delay={100}>
+            <ScrollReveal
+              variant="right"
+              delay={100}
+              className="lg:col-span-7"
+            >
               {accordion}
             </ScrollReveal>
           </div>
