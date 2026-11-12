@@ -1,5 +1,3 @@
-import DOMPurify from "isomorphic-dompurify";
-
 /** Prosty renderer: akapity oddzielone pustą linią → HTML (legacy plain text) */
 export function renderPlainContent(content: string) {
   return content
@@ -17,7 +15,7 @@ export function renderPlainContent(content: string) {
     .join("\n");
 }
 
-const ALLOWED_TAGS = [
+const ALLOWED_TAGS = new Set([
   "p",
   "br",
   "strong",
@@ -38,15 +36,59 @@ const ALLOWED_TAGS = [
   "pre",
   "span",
   "div",
-];
+]);
 
-/** Sanitizacja HTML z panelu admina przed renderem na stronie publicznej. */
+const ALLOWED_ATTRS = new Set(["href", "title", "target", "rel", "class"]);
+
+/**
+ * Sanitizacja HTML bez jsdom/DOMPurify — isomorphic-dompurify potrafi
+ * zwracać puste odpowiedzi na Vercel (serverless).
+ */
 export function sanitizeBlogHtml(html: string) {
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS,
-    ALLOWED_ATTR: ["href", "title", "target", "rel", "class"],
-    ALLOW_DATA_ATTR: false,
+  let out = String(html || "");
+
+  // Wyrzuć niebezpieczne bloki i protokoły.
+  out = out
+    .replace(/<(script|style|iframe|object|embed|link|meta|form|svg|math)[\s\S]*?<\/\1>/gi, "")
+    .replace(/<(script|style|iframe|object|embed|link|meta|form|svg|math)\b[^>]*\/?>/gi, "")
+    .replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    .replace(
+      /\s(href|src|xlink:href)\s*=\s*(["'])\s*(javascript|data|vbscript):[\s\S]*?\2/gi,
+      "",
+    );
+
+  out = out.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^>]*)>/g, (match, rawTag, rawAttrs) => {
+    const tag = String(rawTag).toLowerCase();
+    const closing = match.startsWith("</");
+    if (!ALLOWED_TAGS.has(tag)) return "";
+    if (closing) return `</${tag}>`;
+    if (tag === "br") return "<br />";
+
+    const attrs: string[] = [];
+    const attrRe =
+      /([a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g;
+    let m: RegExpExecArray | null;
+    while ((m = attrRe.exec(String(rawAttrs || "")))) {
+      const name = m[1].toLowerCase();
+      if (!ALLOWED_ATTRS.has(name)) continue;
+      const value = m[2] ?? m[3] ?? m[4] ?? "";
+      if (name === "href" && /^\s*(javascript|data|vbscript):/i.test(value)) {
+        continue;
+      }
+      if (name === "target" && value !== "_blank" && value !== "_self") continue;
+      attrs.push(`${name}="${value.replace(/"/g, "&quot;")}"`);
+    }
+
+    if (tag === "a" && attrs.some((a) => a.startsWith("target="))) {
+      if (!attrs.some((a) => a.startsWith("rel="))) {
+        attrs.push('rel="noopener noreferrer"');
+      }
+    }
+
+    return attrs.length ? `<${tag} ${attrs.join(" ")}>` : `<${tag}>`;
   });
+
+  return out;
 }
 
 export function looksLikeHtml(content: string) {

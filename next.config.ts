@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         hostname: "*.blob.vercel-storage.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "*.vercel-storage.com",
+        pathname: "/**",
+      },
     ],
   },
   turbopack: {
