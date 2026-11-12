@@ -35,6 +35,19 @@ export default async function RealizationDetailPage({ params }: Props) {
     categoryLabel(item.category),
   ]);
 
+  const beforeAfter = item.images.filter(
+    (img) => img.kind === "before" || img.kind === "after",
+  );
+  const gallery = item.images.filter(
+    (img) => img.kind !== "before" && img.kind !== "after",
+  );
+
+  function imageCaption(kind: string, alt: string) {
+    if (kind === "before") return "Przed";
+    if (kind === "after") return "Po";
+    return alt || "Zdjęcie";
+  }
+
   return (
     <article className="section-pad">
       <div className="container-page max-w-4xl">
@@ -43,10 +56,13 @@ export default async function RealizationDetailPage({ params }: Props) {
           {item.title}
         </h1>
 
-        {item.images.length > 0 ? (
+        {beforeAfter.length > 0 ? (
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {item.images.map((img) => (
-              <figure key={img.id} className="overflow-hidden rounded-[var(--radius-lg)] border border-border">
+            {beforeAfter.map((img) => (
+              <figure
+                key={img.id}
+                className="overflow-hidden rounded-[var(--radius-lg)] border border-border"
+              >
                 <div className="relative aspect-[4/3]">
                   <Image
                     src={img.url}
@@ -57,11 +73,7 @@ export default async function RealizationDetailPage({ params }: Props) {
                   />
                 </div>
                 <figcaption className="bg-white px-3 py-2 text-xs uppercase tracking-wide text-muted">
-                  {img.kind === "before"
-                    ? "Przed"
-                    : img.kind === "after"
-                      ? "Po"
-                      : img.alt || "Zdjęcie"}
+                  {imageCaption(img.kind, img.alt)}
                 </figcaption>
               </figure>
             ))}
@@ -88,6 +100,33 @@ export default async function RealizationDetailPage({ params }: Props) {
             </section>
           ) : null}
         </div>
+
+        {gallery.length > 0 ? (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-navy">Galeria</h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {gallery.map((img) => (
+                <figure
+                  key={img.id}
+                  className="overflow-hidden rounded-[var(--radius-lg)] border border-border"
+                >
+                  <div className="relative aspect-[4/3]">
+                    <Image
+                      src={img.url}
+                      alt={img.alt || item.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                  <figcaption className="bg-white px-3 py-2 text-xs uppercase tracking-wide text-muted">
+                    {imageCaption(img.kind, img.alt)}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link href="/kontakt#wycena" className="btn btn-primary">
