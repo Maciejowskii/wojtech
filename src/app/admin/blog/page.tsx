@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { AdminDbMissing } from "@/components/admin/AdminDbMissing";
 import { DeleteBlogButton } from "@/components/admin/DeleteBlogButton";
 import { listAllBlogPosts } from "@/lib/blog";
+import { tryGetDb } from "@/lib/db";
 import { requireDynamic } from "@/lib/dynamic";
 
 export const instant = false;
@@ -13,6 +15,8 @@ const statusLabel: Record<string, string> = {
 
 export default async function AdminBlogListPage() {
   await requireDynamic();
+  const db = await tryGetDb();
+  if (!db) return <AdminDbMissing />;
   const posts = await listAllBlogPosts();
 
   return (

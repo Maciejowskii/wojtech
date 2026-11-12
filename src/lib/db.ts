@@ -28,8 +28,34 @@ const dbPath = path.join(dataDir, "wojtech.db");
 let dbPromise: Promise<Db> | null = null;
 let dbFailed = false;
 
+/** Turso / libSQL — obsługa kilku nazw z integracji Vercel. */
+export function getTursoConfig() {
+  const url = (
+    process.env.TURSO_DATABASE_URL ||
+    process.env.LIBSQL_URL ||
+    process.env.DATABASE_URL ||
+    ""
+  ).trim();
+  const authToken = (
+    process.env.TURSO_AUTH_TOKEN ||
+    // Integracja Turso z prefixem TURSO_DATABASE potrafi wygenerować tę nazwę
+    process.env.TURSO_DATABASE_TURSO_AUTH_TOKEN ||
+    process.env.LIBSQL_AUTH_TOKEN ||
+    process.env.DATABASE_AUTH_TOKEN ||
+    ""
+  ).trim();
+  return {
+    url: url || null,
+    authToken: authToken || undefined,
+  };
+}
+
 function tursoConfigured() {
-  return Boolean(process.env.TURSO_DATABASE_URL?.trim());
+  return Boolean(getTursoConfig().url);
+}
+
+export function isTursoReady() {
+  return tursoConfigured();
 }
 
 /** Lokalne SQLite jest wyłączone na Vercel / w buildu, chyba że jest Turso. */
@@ -172,10 +198,11 @@ async function seedCategories(db: Db) {
 }
 
 async function createDb(): Promise<Db> {
-  if (tursoConfigured()) {
+  const turso = getTursoConfig();
+  if (turso.url) {
     const client = createClient({
-      url: process.env.TURSO_DATABASE_URL!,
-      authToken: process.env.TURSO_AUTH_TOKEN,
+      url: turso.url,
+      authToken: turso.authToken,
     });
     const db = wrapTurso(client);
     await migrate(db);

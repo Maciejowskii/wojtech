@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { AdminDbMissing } from "@/components/admin/AdminDbMissing";
 import { DeleteRealizationButton } from "@/components/admin/DeleteRealizationButton";
+import { tryGetDb } from "@/lib/db";
 import { requireDynamic } from "@/lib/dynamic";
 import {
   categoryLabel,
@@ -10,6 +12,8 @@ export const instant = false;
 
 export default async function AdminRealizationsPage() {
   await requireDynamic();
+  const db = await tryGetDb();
+  if (!db) return <AdminDbMissing />;
   const items = await listAllRealizations();
   const labels = Object.fromEntries(
     await Promise.all(
