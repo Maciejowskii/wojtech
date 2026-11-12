@@ -25,7 +25,7 @@ function formatDate(value: string | null | undefined) {
 
 export default async function BlogIndexPage() {
   await requireDynamic();
-  const posts = listPublicBlogPosts();
+  const posts = await listPublicBlogPosts();
 
   return (
     <>

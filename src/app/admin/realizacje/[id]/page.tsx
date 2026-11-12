@@ -10,7 +10,7 @@ type Props = { params: Promise<{ id: string }> };
 export default async function EditRealizationPage({ params }: Props) {
   await requireDynamic();
   const { id } = await params;
-  const item = getRealizationById(id);
+  const item = await getRealizationById(id);
   if (!item) notFound();
 
   return (

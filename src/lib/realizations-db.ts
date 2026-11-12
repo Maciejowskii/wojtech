@@ -11,7 +11,7 @@ import { slugify } from "@/lib/slug";
 
 export { categoryLabel };
 
-export function realizationFilters() {
+export async function realizationFilters() {
   return publicCategoryFilters();
 }
 
@@ -41,15 +41,16 @@ function rowToImage(row: Record<string, unknown>): RealizationImage {
   };
 }
 
-function withImages(row: RealizationRow): RealizationWithImages {
-  const db = getDb();
-  const images = db
-    .prepare(
-      `SELECT * FROM realization_images
-       WHERE realization_id = ?
-       ORDER BY sort_order ASC`,
-    )
-    .all(row.id) as Record<string, unknown>[];
+async function withImages(
+  row: RealizationRow,
+): Promise<RealizationWithImages> {
+  const db = await getDb();
+  const images = await db.all(
+    `SELECT * FROM realization_images
+     WHERE realization_id = ?
+     ORDER BY sort_order ASC`,
+    [row.id],
+  );
 
   return {
     ...row,
@@ -57,63 +58,68 @@ function withImages(row: RealizationRow): RealizationWithImages {
   };
 }
 
-export function listAllRealizations(): RealizationWithImages[] {
-  const db = getDb();
-  const rows = db
-    .prepare(`SELECT * FROM realizations ORDER BY datetime(created_at) DESC`)
-    .all() as Record<string, unknown>[];
-  return rows.map((r) => withImages(rowToRealization(r)));
+export async function listAllRealizations(): Promise<RealizationWithImages[]> {
+  const db = await getDb();
+  const rows = await db.all(
+    `SELECT * FROM realizations ORDER BY datetime(created_at) DESC`,
+  );
+  return Promise.all(rows.map((r) => withImages(rowToRealization(r))));
 }
 
-export function listPublicRealizations(limit?: number): RealizationWithImages[] {
-  const db = tryGetDb();
+export async function listPublicRealizations(
+  limit?: number,
+): Promise<RealizationWithImages[]> {
+  const db = await tryGetDb();
   if (!db) return [];
   try {
-    const sql = limit
-      ? `SELECT * FROM realizations WHERE published = 1 ORDER BY datetime(created_at) DESC LIMIT ?`
-      : `SELECT * FROM realizations WHERE published = 1 ORDER BY datetime(created_at) DESC`;
-    const rows = (
-      limit ? db.prepare(sql).all(limit) : db.prepare(sql).all()
-    ) as Record<string, unknown>[];
-    return rows.map((r) => withImages(rowToRealization(r)));
+    const rows = limit
+      ? await db.all(
+          `SELECT * FROM realizations WHERE published = 1 ORDER BY datetime(created_at) DESC LIMIT ?`,
+          [limit],
+        )
+      : await db.all(
+          `SELECT * FROM realizations WHERE published = 1 ORDER BY datetime(created_at) DESC`,
+        );
+    return Promise.all(rows.map((r) => withImages(rowToRealization(r))));
   } catch {
     return [];
   }
 }
 
-export function getRealizationById(id: string): RealizationWithImages | null {
-  const db = getDb();
-  const row = db
-    .prepare(`SELECT * FROM realizations WHERE id = ?`)
-    .get(id) as Record<string, unknown> | undefined;
+export async function getRealizationById(
+  id: string,
+): Promise<RealizationWithImages | null> {
+  const db = await getDb();
+  const row = await db.get(`SELECT * FROM realizations WHERE id = ?`, [id]);
   return row ? withImages(rowToRealization(row)) : null;
 }
 
-export function getPublicRealizationBySlug(
+export async function getPublicRealizationBySlug(
   slug: string,
-): RealizationWithImages | null {
-  const db = tryGetDb();
+): Promise<RealizationWithImages | null> {
+  const db = await tryGetDb();
   if (!db) return null;
   try {
-    const row = db
-      .prepare(`SELECT * FROM realizations WHERE slug = ? AND published = 1`)
-      .get(slug) as Record<string, unknown> | undefined;
+    const row = await db.get(
+      `SELECT * FROM realizations WHERE slug = ? AND published = 1`,
+      [slug],
+    );
     return row ? withImages(rowToRealization(row)) : null;
   } catch {
     return null;
   }
 }
 
-export function uniqueRealizationSlug(base: string, excludeId?: string) {
-  const db = getDb();
+export async function uniqueRealizationSlug(base: string, excludeId?: string) {
+  const db = await getDb();
   let slug = slugify(base) || "realizacja";
   let i = 0;
   while (true) {
     const candidate = i === 0 ? slug : `${slug}-${i}`;
-    const row = db
-      .prepare(`SELECT id FROM realizations WHERE slug = ?`)
-      .get(candidate) as { id: string } | undefined;
-    if (!row || row.id === excludeId) return candidate;
+    const row = await db.get(`SELECT id FROM realizations WHERE slug = ?`, [
+      candidate,
+    ]);
+    if (!row || String(row.id) === excludeId) return candidate;
     i += 1;
   }
 }
@@ -134,100 +140,102 @@ export type RealizationInput = {
   }>;
 };
 
-function replaceRealizationImages(
+async function replaceRealizationImages(
   realizationId: string,
   images: NonNullable<RealizationInput["images"]>,
 ) {
-  const db = getDb();
-  db.prepare(`DELETE FROM realization_images WHERE realization_id = ?`).run(
+  const db = await getDb();
+  await db.run(`DELETE FROM realization_images WHERE realization_id = ?`, [
     realizationId,
-  );
-  const stmt = db.prepare(
-    `INSERT INTO realization_images
-     (id, realization_id, url, alt, kind, sort_order)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-  );
-  images.forEach((img, index) => {
-    stmt.run(
-      nanoid(),
-      realizationId,
-      img.url,
-      img.alt || "",
-      img.kind || "gallery",
-      img.sort_order ?? index,
+  ]);
+  for (const [index, img] of images.entries()) {
+    await db.run(
+      `INSERT INTO realization_images
+       (id, realization_id, url, alt, kind, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        nanoid(),
+        realizationId,
+        img.url,
+        img.alt || "",
+        img.kind || "gallery",
+        img.sort_order ?? index,
+      ],
     );
-  });
+  }
 }
 
-export function createRealization(
+export async function createRealization(
   input: RealizationInput,
-): RealizationWithImages {
-  const db = getDb();
+): Promise<RealizationWithImages> {
+  const db = await getDb();
   const now = new Date().toISOString();
   const id = nanoid();
-  const slug = uniqueRealizationSlug(input.slug || input.title);
+  const slug = await uniqueRealizationSlug(input.slug || input.title);
 
-  db.prepare(
+  await db.run(
     `INSERT INTO realizations
      (id, title, slug, category, problem, work, description, published, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).run(
-    id,
-    input.title.trim(),
-    slug,
-    input.category,
-    input.problem?.trim() || "",
-    input.work?.trim() || "",
-    input.description?.trim() || "",
-    input.published === false ? 0 : 1,
-    now,
-    now,
+    [
+      id,
+      input.title.trim(),
+      slug,
+      input.category,
+      input.problem?.trim() || "",
+      input.work?.trim() || "",
+      input.description?.trim() || "",
+      input.published === false ? 0 : 1,
+      now,
+      now,
+    ],
   );
 
   if (input.images?.length) {
-    replaceRealizationImages(id, input.images);
+    await replaceRealizationImages(id, input.images);
   }
 
-  return getRealizationById(id)!;
+  return (await getRealizationById(id))!;
 }
 
-export function updateRealization(
+export async function updateRealization(
   id: string,
   input: RealizationInput,
-): RealizationWithImages | null {
-  const existing = getRealizationById(id);
+): Promise<RealizationWithImages | null> {
+  const existing = await getRealizationById(id);
   if (!existing) return null;
 
-  const db = getDb();
+  const db = await getDb();
   const now = new Date().toISOString();
-  const slug = uniqueRealizationSlug(input.slug || input.title, id);
+  const slug = await uniqueRealizationSlug(input.slug || input.title, id);
 
-  db.prepare(
+  await db.run(
     `UPDATE realizations SET
       title = ?, slug = ?, category = ?, problem = ?, work = ?,
       description = ?, published = ?, updated_at = ?
      WHERE id = ?`,
-  ).run(
-    input.title.trim(),
-    slug,
-    input.category,
-    input.problem?.trim() || "",
-    input.work?.trim() || "",
-    input.description?.trim() || "",
-    input.published === false ? 0 : 1,
-    now,
-    id,
+    [
+      input.title.trim(),
+      slug,
+      input.category,
+      input.problem?.trim() || "",
+      input.work?.trim() || "",
+      input.description?.trim() || "",
+      input.published === false ? 0 : 1,
+      now,
+      id,
+    ],
   );
 
   if (input.images) {
-    replaceRealizationImages(id, input.images);
+    await replaceRealizationImages(id, input.images);
   }
 
   return getRealizationById(id);
 }
 
-export function deleteRealization(id: string) {
-  const db = getDb();
-  db.prepare(`DELETE FROM realization_images WHERE realization_id = ?`).run(id);
-  db.prepare(`DELETE FROM realizations WHERE id = ?`).run(id);
+export async function deleteRealization(id: string) {
+  const db = await getDb();
+  await db.run(`DELETE FROM realization_images WHERE realization_id = ?`, [id]);
+  await db.run(`DELETE FROM realizations WHERE id = ?`, [id]);
 }

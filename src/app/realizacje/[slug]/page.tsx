@@ -16,7 +16,7 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   await requireDynamic();
   const { slug } = await params;
-  const item = getPublicRealizationBySlug(slug);
+  const item = await getPublicRealizationBySlug(slug);
   if (!item) return { title: "Realizacja" };
   return {
     title: item.title,
@@ -28,15 +28,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function RealizationDetailPage({ params }: Props) {
   await requireDynamic();
   const { slug } = await params;
-  const item = getPublicRealizationBySlug(slug);
+  const item = await getPublicRealizationBySlug(slug);
   if (!item) notFound();
 
-  const related = listPublicRealizations(4).filter((r) => r.id !== item.id).slice(0, 3);
+  const [related, label] = await Promise.all([
+    listPublicRealizations(4).then((items) =>
+      items.filter((r) => r.id !== item.id).slice(0, 3),
+    ),
+    categoryLabel(item.category),
+  ]);
 
   return (
     <article className="section-pad">
       <div className="container-page max-w-4xl">
-        <p className="section-label">{categoryLabel(item.category)}</p>
+        <p className="section-label">{label}</p>
         <h1 className="mt-2 text-[clamp(1.8rem,4vw,2.75rem)] font-semibold text-navy">
           {item.title}
         </h1>

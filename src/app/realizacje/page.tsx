@@ -24,11 +24,22 @@ type Props = { searchParams: Promise<{ kategoria?: string }> };
 export default async function RealizationsPage({ searchParams }: Props) {
   await requireDynamic();
   const { kategoria } = await searchParams;
-  const all = listPublicRealizations();
+  const [all, filters] = await Promise.all([
+    listPublicRealizations(),
+    realizationFilters(),
+  ]);
   const items =
     kategoria && kategoria !== "all"
       ? all.filter((item) => item.category === kategoria)
       : all;
+  const labels = Object.fromEntries(
+    await Promise.all(
+      [...new Set(items.map((item) => item.category))].map(async (id) => [
+        id,
+        await categoryLabel(id),
+      ]),
+    ),
+  ) as Record<string, string>;
 
   return (
     <>
@@ -49,7 +60,7 @@ export default async function RealizationsPage({ searchParams }: Props) {
         <div className="container-page">
           <div className="-mx-[var(--page-gutter)] overflow-x-auto px-[var(--page-gutter)] pb-1 sm:mx-0 sm:overflow-visible sm:px-0">
             <div className="flex w-max min-w-full flex-nowrap gap-2 sm:w-auto sm:flex-wrap">
-              {realizationFilters().map((f) => {
+              {filters.map((f) => {
                 const active =
                   (f.id === "all" && !kategoria) || kategoria === f.id;
                 const href =
@@ -109,7 +120,7 @@ export default async function RealizationsPage({ searchParams }: Props) {
                     </div>
                     <div className="flex flex-1 flex-col border-x border-b border-border px-4 py-5 sm:px-5">
                       <p className="text-sm font-semibold text-accent">
-                        {categoryLabel(item.category)}
+                        {labels[item.category] || item.category}
                       </p>
                       <h2 className="mt-2 text-lg font-semibold uppercase tracking-[0.02em] text-navy transition-colors group-hover:text-accent">
                         {item.title}

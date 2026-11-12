@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 const COOKIE = "wojtech_admin_session";
@@ -48,6 +49,8 @@ export async function destroySession() {
 }
 
 export async function isAuthenticated() {
+  // Session expiry uses Date.now() — must run at request time (Cache Components).
+  await connection();
   const jar = await cookies();
   const token = jar.get(COOKIE)?.value;
   if (!token) return false;

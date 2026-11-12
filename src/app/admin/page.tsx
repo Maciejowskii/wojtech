@@ -7,9 +7,9 @@ export const instant = false;
 
 export default async function AdminDashboardPage() {
   await requireDynamic();
-  const posts = listAllBlogPosts();
-  const realizations = listAllRealizations();
-  const publishedCount = listPublicBlogPosts().length;
+  const posts = await listAllBlogPosts();
+  const realizations = await listAllRealizations();
+  const publishedCount = (await listPublicBlogPosts()).length;
 
   return (
     <div>

@@ -12,7 +12,7 @@ export async function GET() {
   } catch {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
-  return NextResponse.json({ ok: true, items: listAllRealizations() });
+  return NextResponse.json({ ok: true, items: await listAllRealizations() });
 }
 
 export async function POST(request: Request) {
@@ -30,6 +30,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const item = createRealization(body);
+  const item = await createRealization(body);
   return NextResponse.json({ ok: true, item });
 }

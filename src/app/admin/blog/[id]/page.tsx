@@ -10,7 +10,7 @@ type Props = { params: Promise<{ id: string }> };
 export default async function EditBlogPage({ params }: Props) {
   await requireDynamic();
   const { id } = await params;
-  const post = getBlogById(id);
+  const post = await getBlogById(id);
   if (!post) notFound();
 
   return (

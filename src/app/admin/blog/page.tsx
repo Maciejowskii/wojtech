@@ -13,7 +13,7 @@ const statusLabel: Record<string, string> = {
 
 export default async function AdminBlogListPage() {
   await requireDynamic();
-  const posts = listAllBlogPosts();
+  const posts = await listAllBlogPosts();
 
   return (
     <div>

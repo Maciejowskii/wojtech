@@ -8,7 +8,7 @@ export async function GET() {
   } catch {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
-  return NextResponse.json({ ok: true, categories: listCategories() });
+  return NextResponse.json({ ok: true, categories: await listCategories() });
 }
 
 export async function POST(request: Request) {
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const category = createCategory(body.label);
+    const category = await createCategory(body.label);
     return NextResponse.json({ ok: true, category });
   } catch (err) {
     return NextResponse.json(

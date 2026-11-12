@@ -14,8 +14,8 @@ function mergePublicPosts(fromDb: BlogPost[]): BlogPost[] {
   const seeds = seedBlogPosts.filter((p) => !slugs.has(p.slug)) as BlogPost[];
   return [...fromDb, ...seeds].sort((a, b) => {
     const da = a.published_at ?? a.created_at;
-    const db = b.published_at ?? b.created_at;
-    return db.localeCompare(da);
+    const dbDate = b.published_at ?? b.created_at;
+    return dbDate.localeCompare(da);
   });
 }
 
@@ -36,59 +36,55 @@ function rowToBlog(row: Record<string, unknown>): BlogPost {
   };
 }
 
-export function listAllBlogPosts(): BlogPost[] {
-  const db = getDb();
-  const rows = db
-    .prepare(
-      `SELECT * FROM blog_posts ORDER BY datetime(COALESCE(published_at, created_at)) DESC`,
-    )
-    .all() as Record<string, unknown>[];
+export async function listAllBlogPosts(): Promise<BlogPost[]> {
+  const db = await getDb();
+  const rows = await db.all(
+    `SELECT * FROM blog_posts ORDER BY datetime(COALESCE(published_at, created_at)) DESC`,
+  );
   return rows.map(rowToBlog);
 }
 
 /** Opublikowane + zaplanowane, których data już minęła (+ seed gdy brak treści) */
-export function listPublicBlogPosts(): BlogPost[] {
-  const db = tryGetDb();
+export async function listPublicBlogPosts(): Promise<BlogPost[]> {
+  const db = await tryGetDb();
   if (!db) return mergePublicPosts([]);
   try {
     const now = new Date().toISOString();
-    const rows = db
-      .prepare(
-        `SELECT * FROM blog_posts
-         WHERE status = 'published'
-            OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
-         ORDER BY datetime(published_at) DESC`,
-      )
-      .all(now) as Record<string, unknown>[];
+    const rows = await db.all(
+      `SELECT * FROM blog_posts
+       WHERE status = 'published'
+          OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
+       ORDER BY datetime(published_at) DESC`,
+      [now],
+    );
     return mergePublicPosts(rows.map(rowToBlog));
   } catch {
     return mergePublicPosts([]);
   }
 }
 
-export function getBlogById(id: string): BlogPost | null {
-  const db = getDb();
-  const row = db
-    .prepare(`SELECT * FROM blog_posts WHERE id = ?`)
-    .get(id) as Record<string, unknown> | undefined;
+export async function getBlogById(id: string): Promise<BlogPost | null> {
+  const db = await getDb();
+  const row = await db.get(`SELECT * FROM blog_posts WHERE id = ?`, [id]);
   return row ? rowToBlog(row) : null;
 }
 
-export function getPublicBlogBySlug(slug: string): BlogPost | null {
-  const db = tryGetDb();
+export async function getPublicBlogBySlug(
+  slug: string,
+): Promise<BlogPost | null> {
+  const db = await tryGetDb();
   if (db) {
     try {
       const now = new Date().toISOString();
-      const row = db
-        .prepare(
-          `SELECT * FROM blog_posts
-           WHERE slug = ?
-             AND (
-               status = 'published'
-               OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
-             )`,
-        )
-        .get(slug, now) as Record<string, unknown> | undefined;
+      const row = await db.get(
+        `SELECT * FROM blog_posts
+         WHERE slug = ?
+           AND (
+             status = 'published'
+             OR (status = 'scheduled' AND published_at IS NOT NULL AND published_at <= ?)
+           )`,
+        [slug, now],
+      );
       if (row) return rowToBlog(row);
     } catch {
       /* fallback to seed */
@@ -98,16 +94,16 @@ export function getPublicBlogBySlug(slug: string): BlogPost | null {
   return seed ? (seed as BlogPost) : null;
 }
 
-export function uniqueBlogSlug(base: string, excludeId?: string) {
-  const db = getDb();
+export async function uniqueBlogSlug(base: string, excludeId?: string) {
+  const db = await getDb();
   let slug = slugify(base) || "wpis";
   let i = 0;
   while (true) {
     const candidate = i === 0 ? slug : `${slug}-${i}`;
-    const row = db
-      .prepare(`SELECT id FROM blog_posts WHERE slug = ?`)
-      .get(candidate) as { id: string } | undefined;
-    if (!row || row.id === excludeId) return candidate;
+    const row = await db.get(`SELECT id FROM blog_posts WHERE slug = ?`, [
+      candidate,
+    ]);
+    if (!row || String(row.id) === excludeId) return candidate;
     i += 1;
   }
 }
@@ -123,43 +119,47 @@ export type BlogInput = {
   published_at?: string | null;
 };
 
-export function createBlogPost(input: BlogInput): BlogPost {
-  const db = getDb();
+export async function createBlogPost(input: BlogInput): Promise<BlogPost> {
+  const db = await getDb();
   const now = new Date().toISOString();
   const id = nanoid();
-  const slug = uniqueBlogSlug(input.slug || input.title);
+  const slug = await uniqueBlogSlug(input.slug || input.title);
   const publishedAt =
     input.status === "draft" ? null : input.published_at || now;
   const contentFormat = input.content_format === "html" ? "html" : "visual";
 
-  db.prepare(
+  await db.run(
     `INSERT INTO blog_posts
      (id, title, slug, excerpt, content, content_format, cover_image, status, published_at, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).run(
-    id,
-    input.title.trim(),
-    slug,
-    input.excerpt?.trim() || "",
-    input.content || "",
-    contentFormat,
-    input.cover_image || null,
-    input.status,
-    publishedAt,
-    now,
-    now,
+    [
+      id,
+      input.title.trim(),
+      slug,
+      input.excerpt?.trim() || "",
+      input.content || "",
+      contentFormat,
+      input.cover_image || null,
+      input.status,
+      publishedAt,
+      now,
+      now,
+    ],
   );
 
-  return getBlogById(id)!;
+  return (await getBlogById(id))!;
 }
 
-export function updateBlogPost(id: string, input: BlogInput): BlogPost | null {
-  const existing = getBlogById(id);
+export async function updateBlogPost(
+  id: string,
+  input: BlogInput,
+): Promise<BlogPost | null> {
+  const existing = await getBlogById(id);
   if (!existing) return null;
 
-  const db = getDb();
+  const db = await getDb();
   const now = new Date().toISOString();
-  const slug = uniqueBlogSlug(input.slug || input.title, id);
+  const slug = await uniqueBlogSlug(input.slug || input.title, id);
   let publishedAt = input.published_at ?? existing.published_at;
   const contentFormat =
     input.content_format === "html"
@@ -176,28 +176,29 @@ export function updateBlogPost(id: string, input: BlogInput): BlogPost | null {
     publishedAt = now;
   }
 
-  db.prepare(
+  await db.run(
     `UPDATE blog_posts SET
       title = ?, slug = ?, excerpt = ?, content = ?, content_format = ?, cover_image = ?,
       status = ?, published_at = ?, updated_at = ?
      WHERE id = ?`,
-  ).run(
-    input.title.trim(),
-    slug,
-    input.excerpt?.trim() || "",
-    input.content || "",
-    contentFormat,
-    input.cover_image || null,
-    input.status,
-    publishedAt,
-    now,
-    id,
+    [
+      input.title.trim(),
+      slug,
+      input.excerpt?.trim() || "",
+      input.content || "",
+      contentFormat,
+      input.cover_image || null,
+      input.status,
+      publishedAt,
+      now,
+      id,
+    ],
   );
 
   return getBlogById(id);
 }
 
-export function deleteBlogPost(id: string) {
-  const db = getDb();
-  db.prepare(`DELETE FROM blog_posts WHERE id = ?`).run(id);
+export async function deleteBlogPost(id: string) {
+  const db = await getDb();
+  await db.run(`DELETE FROM blog_posts WHERE id = ?`, [id]);
 }

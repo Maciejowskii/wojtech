@@ -16,7 +16,7 @@ export async function GET(_request: Request, ctx: Ctx) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
   const { id } = await ctx.params;
-  const item = getRealizationById(id);
+  const item = await getRealizationById(id);
   if (!item) {
     return NextResponse.json({ ok: false, message: "Nie znaleziono" }, { status: 404 });
   }
@@ -37,7 +37,7 @@ export async function PUT(request: Request, ctx: Ctx) {
       { status: 400 },
     );
   }
-  const item = updateRealization(id, body);
+  const item = await updateRealization(id, body);
   if (!item) {
     return NextResponse.json({ ok: false, message: "Nie znaleziono" }, { status: 404 });
   }
@@ -51,6 +51,6 @@ export async function DELETE(_request: Request, ctx: Ctx) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
   const { id } = await ctx.params;
-  deleteRealization(id);
+  await deleteRealization(id);
   return NextResponse.json({ ok: true });
 }

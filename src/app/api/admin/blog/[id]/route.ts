@@ -17,7 +17,7 @@ export async function GET(_request: Request, ctx: Ctx) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
   const { id } = await ctx.params;
-  const post = getBlogById(id);
+  const post = await getBlogById(id);
   if (!post) {
     return NextResponse.json({ ok: false, message: "Nie znaleziono" }, { status: 404 });
   }
@@ -38,7 +38,7 @@ export async function PUT(request: Request, ctx: Ctx) {
       { status: 400 },
     );
   }
-  const post = updateBlogPost(id, {
+  const post = await updateBlogPost(id, {
     ...body,
     status: (body.status || "draft") as BlogStatus,
   });
@@ -55,6 +55,6 @@ export async function DELETE(_request: Request, ctx: Ctx) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
   const { id } = await ctx.params;
-  deleteBlogPost(id);
+  await deleteBlogPost(id);
   return NextResponse.json({ ok: true });
 }

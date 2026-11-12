@@ -7,9 +7,9 @@ import { requireDynamic } from "@/lib/dynamic";
 
 export async function BlogTeaser() {
   await requireDynamic();
-  let posts: ReturnType<typeof listPublicBlogPosts> = [];
+  let posts: Awaited<ReturnType<typeof listPublicBlogPosts>> = [];
   try {
-    posts = listPublicBlogPosts().slice(0, 3);
+    posts = (await listPublicBlogPosts()).slice(0, 3);
   } catch {
     posts = [];
   }

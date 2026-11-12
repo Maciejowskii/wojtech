@@ -13,7 +13,7 @@ export async function GET() {
   } catch {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
-  return NextResponse.json({ ok: true, posts: listAllBlogPosts() });
+  return NextResponse.json({ ok: true, posts: await listAllBlogPosts() });
 }
 
 export async function POST(request: Request) {
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
   }
 
   const status = (body.status || "draft") as BlogStatus;
-  const post = createBlogPost({
+  const post = await createBlogPost({
     title: body.title,
     slug: body.slug,
     excerpt: body.excerpt,
