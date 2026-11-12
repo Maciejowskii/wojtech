@@ -121,5 +121,12 @@ export async function saveUpload(
     );
   }
 
+  // Na Vercel lokalny dysk jest read-only — bez Bloba upload musi failować czytelnie.
+  if (process.env.VERCEL) {
+    throw new Error(
+      "Brak BLOB_READ_WRITE_TOKEN. W Vercel → Storage podłącz Blob store do projektu (albo dodaj token ręcznie) i zrób Redeploy.",
+    );
+  }
+
   return saveLocal(folder, prepared.buffer, prepared.ext);
 }
