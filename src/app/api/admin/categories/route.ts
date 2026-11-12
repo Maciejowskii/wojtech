@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
+import { CACHE_TAGS, revalidateContent } from "@/lib/cache-tags";
 import { createCategory, listCategories } from "@/lib/categories";
 
 export async function GET() {
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
 
   try {
     const category = await createCategory(body.label);
+    revalidateContent(CACHE_TAGS.categories, CACHE_TAGS.realizations);
     return NextResponse.json({ ok: true, category });
   } catch (err) {
     return NextResponse.json(

@@ -6,6 +6,7 @@ import {
   updateBlogPost,
   type BlogInput,
 } from "@/lib/blog";
+import { CACHE_TAGS, revalidateContent } from "@/lib/cache-tags";
 import type { BlogStatus } from "@/lib/db";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -45,6 +46,7 @@ export async function PUT(request: Request, ctx: Ctx) {
   if (!post) {
     return NextResponse.json({ ok: false, message: "Nie znaleziono" }, { status: 404 });
   }
+  revalidateContent(CACHE_TAGS.blog);
   return NextResponse.json({ ok: true, post });
 }
 
@@ -56,5 +58,6 @@ export async function DELETE(_request: Request, ctx: Ctx) {
   }
   const { id } = await ctx.params;
   await deleteBlogPost(id);
+  revalidateContent(CACHE_TAGS.blog);
   return NextResponse.json({ ok: true });
 }

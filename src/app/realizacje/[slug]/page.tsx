@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireDynamic } from "@/lib/dynamic";
 import {
   categoryLabel,
   getPublicRealizationBySlug,
@@ -14,7 +13,6 @@ export const instant = false;
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  await requireDynamic();
   const { slug } = await params;
   const item = await getPublicRealizationBySlug(slug);
   if (!item) return { title: "Realizacja" };
@@ -26,7 +24,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function RealizationDetailPage({ params }: Props) {
-  await requireDynamic();
   const { slug } = await params;
   const item = await getPublicRealizationBySlug(slug);
   if (!item) notFound();

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { PageIntro } from "@/components/ui/PageIntro";
-import { requireDynamic } from "@/lib/dynamic";
 import {
   categoryLabel,
   listPublicRealizations,
@@ -22,7 +21,6 @@ export const metadata: Metadata = {
 type Props = { searchParams: Promise<{ kategoria?: string }> };
 
 export default async function RealizationsPage({ searchParams }: Props) {
-  await requireDynamic();
   const { kategoria } = await searchParams;
   const [all, filters] = await Promise.all([
     listPublicRealizations(),

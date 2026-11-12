@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { listPublicBlogPosts } from "@/lib/blog";
-import { requireDynamic } from "@/lib/dynamic";
 import { siteConfig } from "@/lib/site.config";
 
 export const instant = false;
@@ -24,7 +23,6 @@ function formatDate(value: string | null | undefined) {
 }
 
 export default async function BlogIndexPage() {
-  await requireDynamic();
   const posts = await listPublicBlogPosts();
 
   return (

@@ -1,4 +1,6 @@
 import { nanoid } from "nanoid";
+import { cacheLife, cacheTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 import {
   getDb,
   tryGetDb,
@@ -69,6 +71,10 @@ export async function listAllRealizations(): Promise<RealizationWithImages[]> {
 export async function listPublicRealizations(
   limit?: number,
 ): Promise<RealizationWithImages[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.realizations);
+
   const db = await tryGetDb();
   if (!db) return [];
   try {
@@ -97,6 +103,10 @@ export async function getRealizationById(
 export async function getPublicRealizationBySlug(
   slug: string,
 ): Promise<RealizationWithImages | null> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.realizations);
+
   const db = await tryGetDb();
   if (!db) return null;
   try {

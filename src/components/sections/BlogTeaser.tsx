@@ -3,10 +3,8 @@ import Link from "next/link";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { listPublicBlogPosts } from "@/lib/blog";
-import { requireDynamic } from "@/lib/dynamic";
 
 export async function BlogTeaser() {
-  await requireDynamic();
   let posts: Awaited<ReturnType<typeof listPublicBlogPosts>> = [];
   try {
     posts = (await listPublicBlogPosts()).slice(0, 3);

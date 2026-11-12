@@ -5,6 +5,7 @@ import {
   listAllBlogPosts,
   type BlogInput,
 } from "@/lib/blog";
+import { CACHE_TAGS, revalidateContent } from "@/lib/cache-tags";
 import type { BlogStatus } from "@/lib/db";
 
 export async function GET() {
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
     status,
     published_at: body.published_at,
   });
+  revalidateContent(CACHE_TAGS.blog);
 
   return NextResponse.json({ ok: true, post });
 }

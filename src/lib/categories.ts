@@ -1,3 +1,5 @@
+import { cacheLife, cacheTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 import { getDb, tryGetDb, type Category } from "@/lib/db";
 import { slugify } from "@/lib/slug";
 
@@ -44,6 +46,10 @@ function rowToCategory(row: Record<string, unknown>): Category {
 }
 
 export async function listCategories(): Promise<Category[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.categories);
+
   const db = await tryGetDb();
   if (!db) return DEFAULT_CATEGORIES;
   try {
@@ -58,18 +64,8 @@ export async function listCategories(): Promise<Category[]> {
 }
 
 export async function getCategory(id: string): Promise<Category | null> {
-  const db = await tryGetDb();
-  if (!db) {
-    return DEFAULT_CATEGORIES.find((c) => c.id === id) || null;
-  }
-  try {
-    const row = await db.get(`SELECT * FROM categories WHERE id = ?`, [id]);
-    return row
-      ? rowToCategory(row)
-      : DEFAULT_CATEGORIES.find((c) => c.id === id) || null;
-  } catch {
-    return DEFAULT_CATEGORIES.find((c) => c.id === id) || null;
-  }
+  const cats = await listCategories();
+  return cats.find((c) => c.id === id) || null;
 }
 
 export async function categoryLabel(categoryId: string) {

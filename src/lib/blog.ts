@@ -1,5 +1,7 @@
 import { nanoid } from "nanoid";
+import { cacheLife, cacheTag } from "next/cache";
 import { seedBlogPosts } from "@/data/blog-seed";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 import {
   getDb,
   tryGetDb,
@@ -44,8 +46,12 @@ export async function listAllBlogPosts(): Promise<BlogPost[]> {
   return rows.map(rowToBlog);
 }
 
-/** Opublikowane + zaplanowane, których data już minęła (+ seed gdy brak treści) */
+/** Opublikowane + zaplanowane, których data już minęła (+ seed gdy brak treści). Cache chroni Turso przed botami. */
 export async function listPublicBlogPosts(): Promise<BlogPost[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.blog);
+
   const db = await tryGetDb();
   if (!db) return mergePublicPosts([]);
   try {
@@ -72,6 +78,10 @@ export async function getBlogById(id: string): Promise<BlogPost | null> {
 export async function getPublicBlogBySlug(
   slug: string,
 ): Promise<BlogPost | null> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.blog);
+
   const db = await tryGetDb();
   if (db) {
     try {

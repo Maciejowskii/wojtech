@@ -12,7 +12,7 @@ type Props = {
 
 export function ImageUploadButton({
   label = "Dodaj zdjęcia",
-  hint = "JPG, PNG, WEBP lub GIF · max 8 MB",
+  hint = "JPG, PNG, WEBP lub GIF · max 8 MB · automatyczna kompresja",
   multiple = true,
   onFiles,
 }: Props) {

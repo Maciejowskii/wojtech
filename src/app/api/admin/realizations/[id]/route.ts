@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
+import { CACHE_TAGS, revalidateContent } from "@/lib/cache-tags";
 import {
   deleteRealization,
   getRealizationById,
@@ -41,6 +42,7 @@ export async function PUT(request: Request, ctx: Ctx) {
   if (!item) {
     return NextResponse.json({ ok: false, message: "Nie znaleziono" }, { status: 404 });
   }
+  revalidateContent(CACHE_TAGS.realizations);
   return NextResponse.json({ ok: true, item });
 }
 
@@ -52,5 +54,6 @@ export async function DELETE(_request: Request, ctx: Ctx) {
   }
   const { id } = await ctx.params;
   await deleteRealization(id);
+  revalidateContent(CACHE_TAGS.realizations);
   return NextResponse.json({ ok: true });
 }
