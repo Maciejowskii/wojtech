@@ -5,6 +5,7 @@ import {
   listAllBlogPosts,
   type BlogInput,
 } from "@/lib/blog";
+import { CACHE_TAGS, revalidateContent } from "@/lib/cache-tags";
 import type { BlogStatus } from "@/lib/db";
 
 export async function GET() {
@@ -13,7 +14,7 @@ export async function GET() {
   } catch {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
-  return NextResponse.json({ ok: true, posts: listAllBlogPosts() });
+  return NextResponse.json({ ok: true, posts: await listAllBlogPosts() });
 }
 
 export async function POST(request: Request) {
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
   }
 
   const status = (body.status || "draft") as BlogStatus;
-  const post = createBlogPost({
+  const post = await createBlogPost({
     title: body.title,
     slug: body.slug,
     excerpt: body.excerpt,
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
     status,
     published_at: body.published_at,
   });
+  revalidateContent(CACHE_TAGS.blog);
 
   return NextResponse.json({ ok: true, post });
 }

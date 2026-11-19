@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
+import { CACHE_TAGS, revalidateContent } from "@/lib/cache-tags";
 import {
   createRealization,
   listAllRealizations,
@@ -12,7 +13,7 @@ export async function GET() {
   } catch {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
-  return NextResponse.json({ ok: true, items: listAllRealizations() });
+  return NextResponse.json({ ok: true, items: await listAllRealizations() });
 }
 
 export async function POST(request: Request) {
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const item = createRealization(body);
+  const item = await createRealization(body);
+  revalidateContent(CACHE_TAGS.realizations);
   return NextResponse.json({ ok: true, item });
 }

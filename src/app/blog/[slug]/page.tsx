@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { SafeHtml } from "@/components/ui/SafeHtml";
 import { getPublicBlogBySlug, listPublicBlogPosts } from "@/lib/blog";
 import { renderBlogHtml } from "@/lib/content";
-import { requireDynamic } from "@/lib/dynamic";
 import { blogPostJsonLd } from "@/lib/schema";
 import { siteConfig } from "@/lib/site.config";
 
@@ -14,9 +13,8 @@ export const instant = false;
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  await requireDynamic();
   const { slug } = await params;
-  const post = getPublicBlogBySlug(slug);
+  const post = await getPublicBlogBySlug(slug);
   if (!post) return { title: "Blog" };
   return {
     title: post.title,
@@ -35,13 +33,12 @@ function formatDate(value: string | null | undefined) {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  await requireDynamic();
   const { slug } = await params;
-  const post = getPublicBlogBySlug(slug);
+  const post = await getPublicBlogBySlug(slug);
   if (!post) notFound();
 
   const html = renderBlogHtml(post.content, post.content_format);
-  const related = listPublicBlogPosts()
+  const related = (await listPublicBlogPosts())
     .filter((item) => item.id !== post.id)
     .slice(0, 3);
 

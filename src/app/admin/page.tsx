@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { AdminDbMissing } from "@/components/admin/AdminDbMissing";
 import { listAllBlogPosts, listPublicBlogPosts } from "@/lib/blog";
+import { tryGetDb } from "@/lib/db";
 import { requireDynamic } from "@/lib/dynamic";
 import { listAllRealizations } from "@/lib/realizations-db";
 
@@ -7,9 +9,12 @@ export const instant = false;
 
 export default async function AdminDashboardPage() {
   await requireDynamic();
-  const posts = listAllBlogPosts();
-  const realizations = listAllRealizations();
-  const publishedCount = listPublicBlogPosts().length;
+  const db = await tryGetDb();
+  if (!db) return <AdminDbMissing />;
+
+  const posts = await listAllBlogPosts();
+  const realizations = await listAllRealizations();
+  const publishedCount = (await listPublicBlogPosts()).length;
 
   return (
     <div>

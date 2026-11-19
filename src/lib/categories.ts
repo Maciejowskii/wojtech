@@ -1,3 +1,5 @@
+import { cacheLife, cacheTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 import { getDb, tryGetDb, type Category } from "@/lib/db";
 import { slugify } from "@/lib/slug";
 
@@ -43,13 +45,17 @@ function rowToCategory(row: Record<string, unknown>): Category {
   };
 }
 
-export function listCategories(): Category[] {
-  const db = tryGetDb();
+export async function listCategories(): Promise<Category[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.categories);
+
+  const db = await tryGetDb();
   if (!db) return DEFAULT_CATEGORIES;
   try {
-    const rows = db
-      .prepare(`SELECT * FROM categories ORDER BY sort_order ASC, label ASC`)
-      .all() as Record<string, unknown>[];
+    const rows = await db.all(
+      `SELECT * FROM categories ORDER BY sort_order ASC, label ASC`,
+    );
     const cats = rows.map(rowToCategory);
     return cats.length > 0 ? cats : DEFAULT_CATEGORIES;
   } catch {
@@ -57,70 +63,59 @@ export function listCategories(): Category[] {
   }
 }
 
-export function getCategory(id: string): Category | null {
-  const db = tryGetDb();
-  if (!db) {
-    return DEFAULT_CATEGORIES.find((c) => c.id === id) || null;
-  }
-  try {
-    const row = db
-      .prepare(`SELECT * FROM categories WHERE id = ?`)
-      .get(id) as Record<string, unknown> | undefined;
-    return row
-      ? rowToCategory(row)
-      : DEFAULT_CATEGORIES.find((c) => c.id === id) || null;
-  } catch {
-    return DEFAULT_CATEGORIES.find((c) => c.id === id) || null;
-  }
+export async function getCategory(id: string): Promise<Category | null> {
+  const cats = await listCategories();
+  return cats.find((c) => c.id === id) || null;
 }
 
-export function categoryLabel(categoryId: string) {
-  return getCategory(categoryId)?.label || categoryId;
+export async function categoryLabel(categoryId: string) {
+  return (await getCategory(categoryId))?.label || categoryId;
 }
 
-export function uniqueCategoryId(label: string) {
-  const db = getDb();
-  const id = slugify(label) || "kategoria";
+export async function uniqueCategoryId(label: string) {
+  const db = await getDb();
+  let id = slugify(label) || "kategoria";
   let i = 0;
   while (true) {
     const candidate = i === 0 ? id : `${id}-${i}`;
-    const row = db
-      .prepare(`SELECT id FROM categories WHERE id = ?`)
-      .get(candidate) as { id: string } | undefined;
+    const row = await db.get(`SELECT id FROM categories WHERE id = ?`, [
+      candidate,
+    ]);
     if (!row) return candidate;
     i += 1;
   }
 }
 
-export function createCategory(label: string): Category {
-  const db = getDb();
+export async function createCategory(label: string): Promise<Category> {
+  const db = await getDb();
   const trimmed = label.trim();
   if (!trimmed) throw new Error("Nazwa kategorii jest wymagana");
 
-  const existing = db
-    .prepare(
-      `SELECT * FROM categories WHERE lower(label) = lower(?) LIMIT 1`,
-    )
-    .get(trimmed) as Record<string, unknown> | undefined;
+  const existing = await db.get(
+    `SELECT * FROM categories WHERE lower(label) = lower(?) LIMIT 1`,
+    [trimmed],
+  );
   if (existing) return rowToCategory(existing);
 
-  const id = uniqueCategoryId(trimmed);
-  const maxSort = db
-    .prepare(`SELECT COALESCE(MAX(sort_order), 0) as m FROM categories`)
-    .get() as { m: number };
+  const id = await uniqueCategoryId(trimmed);
+  const maxSort = await db.get(
+    `SELECT COALESCE(MAX(sort_order), 0) as m FROM categories`,
+  );
   const now = new Date().toISOString();
 
-  db.prepare(
+  await db.run(
     `INSERT INTO categories (id, label, sort_order, created_at) VALUES (?, ?, ?, ?)`,
-  ).run(id, trimmed, maxSort.m + 1, now);
+    [id, trimmed, Number(maxSort?.m ?? 0) + 1, now],
+  );
 
-  return getCategory(id)!;
+  return (await getCategory(id))!;
 }
 
 /** Filtry na stronie publicznej: Wszystkie + kategorie z bazy */
-export function publicCategoryFilters() {
+export async function publicCategoryFilters() {
+  const categories = await listCategories();
   return [
     { id: "all" as const, label: "Wszystkie" },
-    ...listCategories().map((c) => ({ id: c.id, label: c.label })),
+    ...categories.map((c) => ({ id: c.id, label: c.label })),
   ];
 }

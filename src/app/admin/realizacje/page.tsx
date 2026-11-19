@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { AdminDbMissing } from "@/components/admin/AdminDbMissing";
 import { DeleteRealizationButton } from "@/components/admin/DeleteRealizationButton";
+import { tryGetDb } from "@/lib/db";
 import { requireDynamic } from "@/lib/dynamic";
 import {
   categoryLabel,
@@ -10,7 +12,17 @@ export const instant = false;
 
 export default async function AdminRealizationsPage() {
   await requireDynamic();
-  const items = listAllRealizations();
+  const db = await tryGetDb();
+  if (!db) return <AdminDbMissing />;
+  const items = await listAllRealizations();
+  const labels = Object.fromEntries(
+    await Promise.all(
+      [...new Set(items.map((item) => item.category))].map(async (id) => [
+        id,
+        await categoryLabel(id),
+      ]),
+    ),
+  ) as Record<string, string>;
 
   return (
     <div>
@@ -52,7 +64,7 @@ export default async function AdminRealizationsPage() {
               <div className="min-w-0 flex-1">
                 <h2 className="font-semibold text-navy">{item.title}</h2>
                 <p className="mt-1 text-sm text-muted">
-                  {categoryLabel(item.category)} ·{" "}
+                  {labels[item.category] || item.category} ·{" "}
                   {item.published ? "Opublikowana" : "Ukryta"} ·{" "}
                   {item.images.length} zdjęć
                 </p>

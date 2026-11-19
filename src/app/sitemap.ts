@@ -4,18 +4,18 @@ import { listPublicBlogPosts } from "@/lib/blog";
 import { listPublicRealizations } from "@/lib/realizations-db";
 import { siteConfig } from "@/lib/site.config";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let blogPosts: MetadataRoute.Sitemap = [];
   let realizations: MetadataRoute.Sitemap = [];
 
   try {
-    blogPosts = listPublicBlogPosts().map((post) => ({
+    blogPosts = (await listPublicBlogPosts()).map((post) => ({
       url: `${siteConfig.url}/blog/${post.slug}`,
       lastModified: post.updated_at ? new Date(post.updated_at) : undefined,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     }));
-    realizations = listPublicRealizations().map((item) => ({
+    realizations = (await listPublicRealizations()).map((item) => ({
       url: `${siteConfig.url}/realizacje/${item.slug}`,
       lastModified: item.updated_at ? new Date(item.updated_at) : undefined,
       changeFrequency: "monthly" as const,

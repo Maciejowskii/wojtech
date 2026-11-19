@@ -47,19 +47,32 @@ Uzupełnij wpisy w `src/data/pricing.ts`. Pusta lista = komunikat o indywidualne
 - Adres: `/admin` (logowanie: `/admin/login`)
 - Domyślne dane (zmień w produkcji): `ADMIN_USERNAME=admin`, `ADMIN_PASSWORD=wojtech-admin`
 - Ustaw też `ADMIN_SESSION_SECRET` w `.env.local`
-- SQLite: `data/wojtech.db` (gitignore) — działa lokalnie (`npm run dev`)
-- Uploady: `public/uploads/` (gitignore)
+- Lokalnie: SQLite `data/wojtech.db` + uploady w `public/uploads/` (gitignore)
+- Produkcja: Turso (baza) + Vercel Blob (zdjęcia) — patrz niżej
 
 Funkcje: tworzenie / edycja / usuwanie wpisów (szkic, zaplanowany, opublikowany) oraz realizacji ze zdjęciami. Na landingu widać kilka najnowszych realizacji i wpisów; pełne listy: `/realizacje`, `/blog`.
 
-### Vercel
+### Vercel (Turso + Vercel Blob)
 
-Lokalne SQLite **nie działa** na Vercel (brak trwałego dysku). Strona publiczna uruchamia się bez bazy (puste blog/realizacje). Panel admina wymaga zewnętrznej bazy (np. Turso) i storage na zdjęcia (np. Vercel Blob) — do podłączenia osobno.
+Lokalne SQLite i `public/uploads/` **nie działają** na Vercel (brak trwałego dysku). Na produkcji ustaw:
 
-W Vercel → Settings → Environment Variables ustaw m.in.:
+**1. Turso (baza libSQL)**
+- Utwórz bazę w [Turso](https://turso.tech)
+- Skopiuj URL i token do Vercel env: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`
+- Schemat (blog, realizacje, kategorie) tworzy się automatycznie przy pierwszym dostępie
+
+**2. Vercel Blob (zdjęcia)**
+- Vercel → Storage → Create Blob Store
+- Nazwa: np. `wojtech-uploads`
+- Access: **Public**
+- Podłącz do projektu `wojtech` (Production + Preview) — Vercel doda `BLOB_READ_WRITE_TOKEN`
+
+**3. Pozostałe zmienne Vercel**
 - `NEXT_PUBLIC_SITE_URL=https://twoja-domena.vercel.app`
 - `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `ADMIN_SESSION_SECRET`
 - opcjonalnie: `NEXT_PUBLIC_GA_MEASUREMENT_ID`, `NEXT_PUBLIC_GSC_VERIFICATION`, `NEXT_PUBLIC_AHREFS_SITE_VERIFICATION`
+
+Po deployu: `/admin/login` → dodaj testowy wpis i realizację ze zdjęciem → sprawdź, że URL obrazka wskazuje na `*.blob.vercel-storage.com` i treść zostaje po redeployu.
 
 ## Cookies / GA4 / GSC / Ahrefs
 
