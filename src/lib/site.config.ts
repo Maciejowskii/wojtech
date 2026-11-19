@@ -7,6 +7,9 @@ export const siteConfig = {
   tagline: "ELEKTROSERWIS",
   owner: "Wojciech Kijewski",
   legalName: "WOJ-TECH Elektroserwis Wojciech Kijewski",
+  legalNameUpper: "WOJ-TECH ELEKTROSERWIS WOJCIECH KIJEWSKI",
+  nip: "6581455856",
+  regon: "291059507",
   description:
     "Elektroserwis w Ostrzeszowie: ekspresy do kawy, AGD, RTV, elektronika samochodowa, rowery i hulajnogi. WOJ-TECH, Olszyna 84C.",
 
@@ -46,6 +49,12 @@ export const siteConfig = {
     { days: "Poniedziałek - Piątek", hours: "9:00-17:00" },
     { days: "Sobota - Niedziela", hours: "zamknięte" },
   ],
+
+  /** Uwagi do godzin i wysyłki (z dokumentu klienta) */
+  hoursNote:
+    "Możliwość odbioru i dostarczenia sprzętu w innym terminie po uprzednim uzgodnieniu telefonicznym.",
+  shippingNote:
+    "Dla sprzętów naprawianych wysyłkowo wysyłamy mailem zakres usługi, zabezpieczający roszczenia obu stron.",
 
   /** Profil firmy w Google Maps / opinie */
   googleBusinessUrl:

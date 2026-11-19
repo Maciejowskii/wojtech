@@ -80,7 +80,7 @@ export function categoryLabel(categoryId: string) {
 
 export function uniqueCategoryId(label: string) {
   const db = getDb();
-  let id = slugify(label) || "kategoria";
+  const id = slugify(label) || "kategoria";
   let i = 0;
   while (true) {
     const candidate = i === 0 ? id : `${id}-${i}`;

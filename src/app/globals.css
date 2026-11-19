@@ -848,3 +848,22 @@ h1.hero-brand {
     will-change: auto;
   }
 }
+
+/* Pasek nawigacji na błękitnym tle: kontrast dla stanów hover/aktywny */
+.site-header .nav-link:hover,
+.site-header .nav-link.nav-link-active {
+  color: var(--graphite) !important;
+  box-shadow: inset 0 -2px 0 var(--navy);
+}
+
+.site-header .btn-nav-phone {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: var(--white);
+}
+
+.site-header .btn-nav-phone:hover {
+  background: var(--graphite);
+  border-color: var(--graphite);
+  color: var(--white);
+}

@@ -100,7 +100,7 @@ export function getPublicBlogBySlug(slug: string): BlogPost | null {
 
 export function uniqueBlogSlug(base: string, excludeId?: string) {
   const db = getDb();
-  let slug = slugify(base) || "wpis";
+  const slug = slugify(base) || "wpis";
   let i = 0;
   while (true) {
     const candidate = i === 0 ? slug : `${slug}-${i}`;

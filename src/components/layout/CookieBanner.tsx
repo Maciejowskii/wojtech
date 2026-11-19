@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useIsClient } from "@/hooks/useIsClient";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import {
   CONSENT_EVENT,
@@ -62,13 +63,9 @@ export function CookieBanner() {
   const [forceOpen, setForceOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [analyticsOn, setAnalyticsOn] = useState(false);
-  const [ready, setReady] = useState(false);
+  const ready = useIsClient();
 
   const visible = ready && (forceOpen || consent === null);
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
 
   useEffect(() => {
     const onOpen = () => {

@@ -11,6 +11,18 @@ export function localBusinessJsonLd() {
     description: siteConfig.description,
     url: siteConfig.url,
     telephone: siteConfig.phone.e164,
+    email: siteConfig.email.display,
+    taxID: siteConfig.nip,
+    vatID: `PL${siteConfig.nip}`,
+    legalName: siteConfig.legalNameUpper,
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "09:00",
+        closes: "17:00",
+      },
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: siteConfig.address.street,
@@ -24,7 +36,6 @@ export function localBusinessJsonLd() {
       "@type": "City",
       name: "Ostrzeszów",
     },
-    priceRange: "$$",
     image: `${siteConfig.url}/og.jpg`,
     sameAs: siteConfig.googleBusinessUrl
       ? [siteConfig.googleBusinessUrl]

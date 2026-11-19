@@ -56,9 +56,12 @@ export function Header() {
     () => false,
   );
 
-  useEffect(() => {
+  // Zamknij menu po zmianie strony (bez efektu: reset stanu podczas renderu)
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -89,8 +92,8 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-[60] border-b bg-mist/95 pt-[var(--safe-top)] backdrop-blur-sm transition-colors ${
-          scrolled ? "border-border" : "border-border/60"
+        className={`fixed inset-x-0 top-0 z-[60] border-b site-header bg-steel pt-[var(--safe-top)] backdrop-blur-sm transition-colors ${
+          scrolled ? "border-navy/40" : "border-navy/25"
         }`}
       >
         <div className="container-page flex h-[var(--header-h)] items-center gap-3 sm:gap-6">

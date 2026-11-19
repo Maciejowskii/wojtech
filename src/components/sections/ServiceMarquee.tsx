@@ -1,60 +1,49 @@
 "use client";
 
-import Link from "next/link";
-import { useSyncExternalStore } from "react";
-import { offerServices } from "@/data/services";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
-function subscribeReducedMotion(onChange: () => void) {
-  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-  mq.addEventListener("change", onChange);
-  return () => mq.removeEventListener("change", onChange);
-}
+const messages = [
+  "Ponad 30 lat doświadczenia",
+  "Usługa stacjonarna lub wysyłkowa",
+  "Najpierw diagnoza i wycena, potem naprawa",
+  "Zniżki dla stałych klientów",
+];
 
-function getReducedMotion() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
+/** Ciemnogranatowy pasek z przewijającą się informacją o firmie. */
 export function ServiceMarquee() {
-  const reducedMotion = useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotion,
-    () => true,
-  );
-  const loop = [...offerServices, ...offerServices];
+  const reducedMotion = usePrefersReducedMotion();
+  const loop = [...messages, ...messages];
 
   return (
-    <div className="service-marquee bg-navy" aria-label="Zakres usług">
+    <div
+      className="service-marquee on-dark bg-navy text-white"
+      aria-label="Informacje o usługach"
+    >
       {reducedMotion ? (
-        <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 px-[var(--page-gutter)] py-4 text-sm">
-          {offerServices.map((service) => (
-            <li key={service.id}>
-              <Link
-                href={service.href}
-                className="font-semibold uppercase tracking-[0.1em] text-white/90 hover:text-white"
-              >
-                {service.shortTitle}
-              </Link>
+        <ul className="flex flex-wrap justify-center gap-x-8 gap-y-2 px-[var(--page-gutter)] py-4 text-sm">
+          {messages.map((m) => (
+            <li
+              key={m}
+              className="font-semibold uppercase tracking-[0.1em] text-white"
+            >
+              {m}
             </li>
           ))}
         </ul>
       ) : (
-        <div className="group overflow-hidden py-4 sm:py-5">
-          <ul className="animate-service-marquee flex w-max items-center gap-0 group-hover:[animation-play-state:paused]">
-            {loop.map((service, index) => (
+        <div className="overflow-hidden py-4 sm:py-5">
+          <ul className="animate-service-marquee flex w-max items-center">
+            {loop.map((m, i) => (
               <li
-                key={`${service.id}-${index}`}
+                key={`${m}-${i}`}
                 className="flex items-center"
-                aria-hidden={index >= offerServices.length ? true : undefined}
+                aria-hidden={i >= messages.length ? true : undefined}
               >
-                <Link
-                  href={service.href}
-                  tabIndex={index >= offerServices.length ? -1 : undefined}
-                  className="whitespace-nowrap px-5 text-sm font-semibold uppercase tracking-[0.1em] text-white/90 transition-colors hover:text-white sm:px-8 sm:text-[0.95rem]"
-                >
-                  {service.shortTitle}
-                </Link>
+                <span className="whitespace-nowrap px-5 text-sm font-semibold uppercase tracking-[0.1em] text-white sm:px-8 sm:text-[0.95rem]">
+                  {m}
+                </span>
                 <span
-                  className="h-1 w-1 shrink-0 rounded-full bg-accent"
+                  className="h-1 w-1 shrink-0 rounded-full bg-azure"
                   aria-hidden
                 />
               </li>

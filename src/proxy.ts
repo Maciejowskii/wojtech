@@ -52,7 +52,7 @@ async function isValidSession(token: string | undefined) {
   return Boolean(exp && Date.now() <= exp);
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isAdminPage =

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { serviceImages } from "@/data/media";
 import { offerServices } from "@/data/services";
 import { siteConfig } from "@/lib/site.config";
 
@@ -42,8 +41,7 @@ export function OfferCatalog() {
 
         <div className="space-y-16 md:space-y-20">
           {offerServices.map((service, index) => {
-            const image =
-              serviceImages[service.id as keyof typeof serviceImages];
+            const image = service.banner;
             const reverse = index % 2 === 1;
 
             return (
@@ -72,6 +70,7 @@ export function OfferCatalog() {
                           alt={image.alt}
                           fill
                           className="object-cover transition-transform duration-700 ease-out hover:scale-[1.03]"
+                          style={{ objectPosition: image.position }}
                           sizes="(max-width: 1024px) 100vw, 48vw"
                         />
                       ) : null}
@@ -87,16 +86,13 @@ export function OfferCatalog() {
                       <p className="mt-3 text-[1.02rem] leading-relaxed text-muted">
                         {service.summary}
                       </p>
-                      <p className="mt-4 text-[1.02rem] leading-relaxed text-graphite">
-                        {service.body[0]}
-                      </p>
 
                       <div className="mt-6">
                         <p className="text-sm font-semibold text-navy">
                           Co obejmuje
                         </p>
                         <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-                          {service.scope.slice(0, 6).map((item) => (
+                          {service.scope.slice(0, 4).map((item) => (
                             <li
                               key={item}
                               className="border-l-2 border-accent/40 pl-3 text-sm leading-snug text-muted"

@@ -106,7 +106,7 @@ export function getPublicRealizationBySlug(
 
 export function uniqueRealizationSlug(base: string, excludeId?: string) {
   const db = getDb();
-  let slug = slugify(base) || "realizacja";
+  const slug = slugify(base) || "realizacja";
   let i = 0;
   while (true) {
     const candidate = i === 0 ? slug : `${slug}-${i}`;

@@ -22,7 +22,7 @@ export function Logo({ className = "", compact = false }: LogoProps) {
           <span>TECH</span>
         </span>
         {!compact ? (
-          <span className="hidden text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-muted sm:block">
+          <span className="hidden text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-navy/80 sm:block">
             Elektroserwis
           </span>
         ) : null}

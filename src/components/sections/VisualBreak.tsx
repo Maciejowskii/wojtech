@@ -8,7 +8,7 @@ type VisualBreakProps = {
 };
 
 export function VisualBreak({
-  image = "espressoClose",
+  image = "electronicsRepair",
   tall = false,
 }: VisualBreakProps) {
   const shot = media[image];

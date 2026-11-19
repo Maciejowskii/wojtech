@@ -6,10 +6,12 @@ import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
 import { Process } from "@/components/sections/Process";
 import { Reviews } from "@/components/sections/Reviews";
+import { ServiceCarousel } from "@/components/sections/ServiceCarousel";
 import { ServiceMarquee } from "@/components/sections/ServiceMarquee";
 import { Services } from "@/components/sections/Services";
 import { VisualBreak } from "@/components/sections/VisualBreak";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { offerServices } from "@/data/services";
 import { faqItems } from "@/data/faq";
 import { faqJsonLd } from "@/lib/schema";
 
@@ -29,19 +31,19 @@ export default function HomePage() {
           __html: JSON.stringify(faqJsonLd(faqItems)),
         }}
       />
+      <ServiceCarousel items={offerServices} />
       <Hero />
       <ScrollReveal variant="fade" delay={40}>
         <ServiceMarquee />
       </ScrollReveal>
       <Services />
       <Process />
-      <VisualBreak image="espressoClose" tall />
       <Reviews />
       <Suspense fallback={null}>
         <BlogTeaser />
       </Suspense>
       <Faq />
-      <VisualBreak image="electronicsRepair" />
+      <VisualBreak />
       <Contact />
     </>
   );

@@ -89,7 +89,10 @@ export function Footer() {
 
       <div className="border-t border-border">
         <div className="container-page flex flex-col gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 {siteConfig.legalName}</p>
+          <p>
+            © 2026 {siteConfig.legalName} · NIP {siteConfig.nip} · REGON{" "}
+            {siteConfig.regon}
+          </p>
           <p className="sm:text-right">
             Serwis elektroniki Ostrzeszów. Wykonano przez{" "}
             <a

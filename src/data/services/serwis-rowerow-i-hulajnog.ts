@@ -1,34 +1,30 @@
 import type { Service } from "@/data/services/types";
 
 export const service: Service = {
-    id: "serwis-rowerow-i-hulajnog",
-    title: "Serwis rowerów i hulajnóg",
-    shortTitle: "Rowery i hulajnogi",
-    href: "/serwis-rowerow-i-hulajnog",
-    summary:
-      "Rowery zwykłe i elektryczne, hulajnogi elektryczne, diagnostyka napędu oraz wymiana opon.",
-    description:
-      "Serwis rowerów i hulajnóg w Ostrzeszowie. Sprawdzam napęd, elektronikę i mechanikę. Wymieniam też opony w hulajnogach.",
-    body: [
-      "Przy e-rowerze i hulajnodze liczy się nie tylko mechanika. Sterownik, bateria, czujniki i napęd muszą działać razem. Gdy sprzęt traci moc, nie ładuje się albo zachowuje się nierówno, najpierw ustalam, czy problem jest elektryczny, czy mechaniczny.",
-      "Serwisuję rowery tradycyjne i elektryczne oraz hulajnogi. Wymieniam opony, sprawdzam napęd i naprawiam to, co da się sensownie zrobić w warsztacie.",
-      "Jeśli jesteś spoza Ostrzeszowa, zadzwoń wcześniej. Powiem, czy warto przyjechać od razu, czy najpierw opisać objawy.",
-    ],
-    commonIssues: [
-      "Hulajnoga słabo przyspiesza albo wyłącza się w trakcie jazdy",
-      "Problemy z ładowaniem baterii",
-      "Zużyte opony, wibracje, niestabilna jazda",
-      "Rower elektryczny traci wspomaganie",
-      "Dziwne dźwięki z napędu albo hamulców",
-    ],
-    scope: [
-      "Serwis rowerów tradycyjnych",
-      "Serwis rowerów elektrycznych",
-      "Serwis hulajnóg elektrycznych",
-      "Wymiana opon w hulajnogach",
-      "Diagnostyka usterek elektrycznych i mechanicznych",
-    ],
-    seoTitle: "Serwis rowerów i hulajnóg elektrycznych Ostrzeszów | WOJ-TECH",
-    seoDescription:
-      "Serwis rowerów, e-rowerów i hulajnóg elektrycznych w Ostrzeszowie. Diagnostyka, naprawy, wymiana opon. WOJ-TECH.",
-  };
+  id: "serwis-rowerow-i-hulajnog",
+  title: "Hulajnogi i rowery elektryczne",
+  shortTitle: "Hulajnogi i rowery elektryczne",
+  href: "/serwis-rowerow-i-hulajnog",
+  summary: "Baterie i BMS, sterowniki, opony, hamulce, napędy i amortyzatory.",
+  description: "Baterie i BMS, sterowniki, opony, hamulce, napędy i amortyzatory.",
+  scope: [
+    "Baterie i akumulatory: diagnostyka, pomiary wydajności, wymiana uszkodzonych ogniw, naprawa lub wymiana BMS (systemu zarządzania baterią)",
+    "Wymiana czujników",
+    "Czyszczenie wnętrza z korozji i wilgoci",
+    "Naprawa lub wymiana sterowników (kontrolerów)",
+    "Naprawa manetek gazu/przyspieszenia, wyświetlaczy, stacyjek, okablowania oraz oświetlenia",
+    "Wymiana opon i dętek",
+    "Wymiana łożysk w piastach, naprawa uszkodzonych felg",
+    "Serwis układu hamulcowego",
+    "Serwis napędów w rowerach elektrycznych",
+    "Serwis amortyzatorów (przód/tył)",
+    "Dokręcanie i naprawa mechanizmów składania w hulajnogach (likwidacja luzów)",
+  ],
+  banner: {
+    src: "/banery/rowery-hulajnogi.jpg",
+    alt: "Rower i hulajnoga elektryczna w warsztacie",
+    position: "55% 55%",
+  },
+  seoTitle: "Serwis rowerów i hulajnóg elektrycznych Ostrzeszów | WOJ-TECH",
+  seoDescription: "Serwis rowerów, e-rowerów i hulajnóg elektrycznych w Ostrzeszowie. Diagnostyka, naprawy, wymiana opon. WOJ-TECH.",
+};

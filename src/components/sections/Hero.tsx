@@ -1,61 +1,96 @@
-import Image from "next/image";
 import Link from "next/link";
-import { googleRatingSummary } from "@/data/reviews";
-import { heroImage } from "@/data/media";
+import type { ReactNode } from "react";
 import { siteConfig } from "@/lib/site.config";
 
+const icon = {
+  className: "h-5 w-5",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.7,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  viewBox: "0 0 24 24",
+  "aria-hidden": true,
+};
+
+const icons = {
+  firma: (
+    <svg {...icon}>
+      <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" />
+    </svg>
+  ),
+  kontakt: (
+    <svg {...icon}>
+      <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+    </svg>
+  ),
+  godziny: (
+    <svg {...icon}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  ),
+  termin: (
+    <svg {...icon}>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M3 10h18M8 3v4M16 3v4" />
+    </svg>
+  ),
+  wysylka: (
+    <svg {...icon}>
+      <path d="M3 7l9-4 9 4-9 4-9-4ZM3 7v10l9 4 9-4V7M12 11v10" />
+    </svg>
+  ),
+};
+
+function Fact({
+  label,
+  glyph,
+  children,
+}: {
+  label: string;
+  glyph: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex gap-3">
+      <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy text-white">
+        {glyph}
+      </span>
+      <div className="min-w-0">
+        <dt className="text-[11px] font-bold uppercase tracking-[0.16em] text-navy/60">
+          {label}
+        </dt>
+        <dd className="mt-1 text-sm leading-relaxed text-navy">{children}</dd>
+      </div>
+    </div>
+  );
+}
+
+/** Szary pasek pod karuzelą: dane firmy, kontakt, godziny i zasady przyjęcia sprzętu. */
 export function Hero() {
-  const rating = googleRatingSummary.rating.toFixed(1).replace(".", ",");
   const weekday = siteConfig.openingHours[0];
-  const hoursLine =
-    weekday?.days === "Poniedziałek - Piątek"
-      ? `Pon–Pt ${weekday.hours}`
-      : weekday
-        ? `${weekday.days} ${weekday.hours}`
-        : null;
 
   return (
-    <section id="start" className="border-b border-border bg-white">
-      <div className="container-page py-8 sm:py-10 lg:py-12">
-        <div className="hero-enter-meta flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-navy pb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
-          <span>Naprawa</span>
-          <span className="text-border" aria-hidden>
-            /
-          </span>
-          <span>Ostrzeszów</span>
-          <span className="text-border" aria-hidden>
-            /
-          </span>
-          <a
-            href={siteConfig.googleBusinessUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-navy hover:text-accent"
-          >
-            Google {rating}
-          </a>
-        </div>
-
-        <div className="mt-8 grid items-start gap-8 lg:mt-10 lg:grid-cols-12 lg:gap-10 xl:gap-14">
-          <div className="flex flex-col lg:col-span-5 lg:pt-2">
-            <p className="hero-enter-meta text-sm font-semibold uppercase tracking-[0.22em] text-muted">
-              Elektroserwis
-            </p>
-
-            <h1 className="hero-enter-brand mt-3 font-display text-[clamp(2.8rem,8vw,4.5rem)] font-bold uppercase leading-[0.92] tracking-[0.04em] text-navy">
+    <section
+      id="start"
+      className="border-b border-navy/15 bg-card"
+      aria-label="Dane firmy"
+    >
+      <div className="container-page py-10 sm:py-12">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="hero-enter-brand lg:col-span-4">
+            <h1 className="font-display text-[clamp(2.4rem,5vw,3.5rem)] font-bold uppercase leading-[0.95] tracking-[0.04em] text-navy">
               WOJ
               <span className="text-accent" aria-hidden>
                 |
               </span>
               TECH
             </h1>
-
-            <p className="hero-enter-lead mt-6 max-w-[32ch] text-[1.05rem] leading-relaxed text-graphite sm:text-lg">
-              Ekspresy, AGD, RTV i elektronika. Przywieź sprzęt albo zadzwoń —
-              po diagnostyce dostajesz wycenę.
+            <p className="mt-1.5 text-sm font-semibold uppercase tracking-[0.2em] text-navy/70">
+              Elektroserwis · Ostrzeszów
             </p>
-
-            <div className="hero-enter-cta mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="hero-enter-cta mt-6 flex flex-col gap-3 sm:flex-row">
               <a href={siteConfig.phone.href} className="btn btn-primary">
                 {siteConfig.phone.display}
               </a>
@@ -63,47 +98,56 @@ export function Hero() {
                 Zapytaj o wycenę
               </Link>
             </div>
-
-            <dl className="hero-enter-facts mt-10 hidden gap-6 border-t border-border pt-6 sm:grid sm:grid-cols-2">
-              <div>
-                <dt className="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
-                  Warsztat
-                </dt>
-                <dd className="mt-1.5 text-sm font-semibold text-navy">
-                  {siteConfig.address.street}
-                </dd>
-              </div>
-              {hoursLine ? (
-                <div>
-                  <dt className="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
-                    Godziny
-                  </dt>
-                  <dd className="mt-1.5 text-sm font-semibold text-navy">
-                    {hoursLine}
-                  </dd>
-                </div>
-              ) : null}
-            </dl>
           </div>
 
-          <figure className="hero-enter-panel lg:col-span-7">
-            <div className="border border-navy bg-mist p-2 sm:p-3">
-              <div className="relative aspect-[4/3] overflow-hidden bg-card sm:aspect-[5/4]">
-                <Image
-                  src={heroImage.src}
-                  alt={heroImage.alt}
-                  fill
-                  priority
-                  className="object-cover object-center"
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                />
-              </div>
+          <dl className="hero-enter-facts grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:col-span-8 lg:border-l lg:border-navy/15 lg:pl-12">
+            <Fact label="Firma" glyph={icons.firma}>
+              <span className="font-semibold">
+                {siteConfig.legalName}
+              </span>
+              <br />
+              {siteConfig.address.street}, {siteConfig.address.postalCode}{" "}
+              {siteConfig.address.city}
+              <br />
+              <span className="text-navy/70">
+                NIP {siteConfig.nip} · REGON {siteConfig.regon}
+              </span>
+            </Fact>
+
+            <Fact label="Kontakt" glyph={icons.kontakt}>
+              <a
+                href={siteConfig.phone.href}
+                className="font-semibold hover:underline"
+              >
+                {siteConfig.phone.display}
+              </a>
+              <br />
+              <a
+                href={siteConfig.email.href}
+                className="break-all hover:underline"
+              >
+                {siteConfig.email.display}
+              </a>
+            </Fact>
+
+            {weekday ? (
+              <Fact label="Godziny otwarcia" glyph={icons.godziny}>
+                <span className="font-semibold">Pon.–Pt. {weekday.hours}</span>
+                <br />
+                <span className="text-navy/70">Sobota i niedziela: zamknięte</span>
+              </Fact>
+            ) : null}
+
+            <Fact label="Inny termin" glyph={icons.termin}>
+              {siteConfig.hoursNote}
+            </Fact>
+
+            <div className="sm:col-span-2">
+              <Fact label="Naprawa wysyłkowa" glyph={icons.wysylka}>
+                {siteConfig.shippingNote}
+              </Fact>
             </div>
-            <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
-              <span>Rys. 01 · Wejście warsztatu</span>
-              <span className="text-navy">{siteConfig.address.street}</span>
-            </figcaption>
-          </figure>
+          </dl>
         </div>
       </div>
     </section>

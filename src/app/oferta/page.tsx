@@ -7,7 +7,7 @@ import { siteConfig } from "@/lib/site.config";
 export const metadata: Metadata = {
   title: "Oferta",
   description:
-    "Oferta WOJ-TECH Ostrzeszów: ekspresy do kawy, AGD, RTV, elektronika samochodowa, rowery, hulajnogi i elektronarzędzia.",
+    "Oferta WOJ-TECH Ostrzeszów: ekspresy do kawy, AGD, RTV i car audio, elektronika samochodowa, hulajnogi, rowery elektryczne, elektronarzędzia i kluczyki samochodowe.",
   alternates: { canonical: "/oferta" },
 };
 
@@ -23,8 +23,9 @@ export default function OfertaPage() {
                 Co naprawiam
               </h1>
               <p className="mt-4 max-w-[58ch] text-base leading-relaxed text-muted md:text-lg">
-                Najwięcej robię przy ekspresach do kawy. Biorę też AGD, RTV,
-                elektronikę samochodową, rowery, hulajnogi i elektronarzędzia.
+                Najwięcej robię przy ekspresach do kawy. Biorę też AGD, RTV i car
+                audio, elektronikę samochodową, hulajnogi i rowery elektryczne,
+                elektronarzędzia oraz dorabiam kluczyki samochodowe.
                 Po sprawdzeniu sprzętu mówię, co da się zrobić i ile to będzie
                 kosztować.
               </p>

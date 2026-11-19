@@ -53,7 +53,20 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: "WOJ-TECH Elektroserwis Ostrzeszów",
     description: siteConfig.description,
-    images: [{ url: "/brand/icon-512.png", width: 512, height: 512 }],
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "WOJ-TECH Elektroserwis, Ostrzeszów",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WOJ-TECH Elektroserwis Ostrzeszów",
+    description: siteConfig.description,
+    images: ["/og.jpg"],
   },
 
   robots: {
